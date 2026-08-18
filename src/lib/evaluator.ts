@@ -334,11 +334,11 @@ export function bandFor(value: number): string {
 
 export const GAP_READINGS: Record<EvaluationResult["gapDirection"], string> = {
   aligned:
-    "Your felt reading and the provisional figure land close together. That agreement is worth noting, not celebrating — both readings come from you.",
+    "Your felt reading and the evaluated figure land close together. That agreement is worth noting, not celebrating — both readings come from you.",
   overestimated:
-    "The provisional figure came out lower than your felt reading. That is common, and it is not a verdict. It usually points at a part of the situation that has not been examined as closely as the rest.",
+    "The evaluated figure came out lower than your felt reading. That is common, and it is not a verdict. It usually points at a part of the situation that has not been examined as closely as the rest.",
   underestimated:
-    "The provisional figure came out higher than your felt reading. You may know more about this than it feels like from the inside.",
+    "The evaluated figure came out higher than your felt reading. You may know more about this than it feels like from the inside.",
 };
 
 /** Reflection prompts shown at the end of the flow. */
