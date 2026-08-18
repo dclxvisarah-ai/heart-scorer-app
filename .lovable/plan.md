@@ -193,39 +193,134 @@ Design constraints (carried from the shared rules; apply when these items are wi
 - Each item keeps the existing `note` (steadying line) and a `mismatchSource` (what a low score may point at, never a diagnosis).
 - Focused branches for this dimension per the table in section 2: **relationship**, **pattern**, and **decision** (`observe` appears as a focused dimension for those three).
 
-## Dimension 4 — UNCERTAINTY / MISSING INFORMATION (question-writing session)
+## Dimension 4 — UNCERTAINTY / MISSING INFORMATION (FINALIZED wording)
 
-Status: design task, fourth of the 8 planned dimensions, following the already approved Dimensions 1–3. Not yet implemented — we write the questions together before any code changes. The app and all current functionality stay untouched until the question set is agreed.
+Status: fourth of the 8 planned dimensions. Wording finalized in this pass and recorded verbatim for the permanent plan. Not yet implemented; no code changes.
 
-Core distinction for this dimension: clarity does not mean having an answer. Sometimes the clearest conclusion is recognizing what is not known yet. A person can be clear *because* they have accurately located the edge of their certainty, not because they have filled it in.
+Core distinction: clarity does not mean having an answer — sometimes the clearest conclusion is accurately recognizing what is not known yet.
 
-Purpose of this dimension: test whether the person can (a) identify what information is missing in the situation, (b) distinguish genuine uncertainty from certainty — tell apart what they do not know from what they do, and (c) recognize what additional information would actually resolve the uncertainty, as opposed to information that would merely feel reassuring. The instrument should surface whether someone treats an open question as a flaw to close, or as a fact about the situation to hold accurately.
+The dimension tests whether the person can (a) identify what information is missing, (b) tell genuine uncertainty apart from certainty, and (c) recognize what information would actually resolve the uncertainty rather than merely feel reassuring. It also aims to distinguish *resolvable* uncertainty (a specific missing piece that would change the reading) from *irreducible* uncertainty (nothing obtainable would settle it).
 
-Separation from the adjacent dimensions (guard against leakage while drafting):
+Finalized questions (agreement scale 1–5; agreement = more clarity; no reverse items in this dimension):
 
-- From Dimension 1 (fact vs interpretation): Dim 1 asks whether a person can separate what happened from the meaning they assigned to it. Dim 4 is not about meaning-vs-occurrence; it is about the presence or absence of information itself — what is simply not there yet. An item that asks "is this my reading or what actually happened?" belongs to Dim 1; an item that asks "can I name what I still don't have" belongs to Dim 4.
-- From Dimension 2 (known vs felt/assumed): Dim 2 marks the boundary of one's own information — where knowing stops and feeling/assuming begins, held as an internal state. Dim 4 goes one step further: it asks the person to actively inventory the gap, distinguish its kind (resolvable vs not), and name what would close it. Dim 2 is "do I know where my knowledge ends"; Dim 4 is "can I say what is missing and what would change it." Avoid writing Dim 4 items that collapse back into a felt-vs-known self-check.
-- From Dimension 3 (observation vs reaction): Dim 3 tests whether the account of the situation is independent of the person's response to it. Dim 4 is agnostic to the emotional reaction; it concerns the information landscape, not whether the telling is contaminated by feeling. Do not write items that conflate "I don't know" with "I'm upset about not knowing."
+- General: "How clearly can you name what you do not know yet about this situation?"
+- Decision (focused): "How clearly can you name the information you are still missing before this choice can be made?"
+- Direction (focused): "How clearly can you tell which of your open questions about where you are heading could be answered, and which cannot be answered yet?"
+- Timing (focused): "How clearly can you name what would have to become known before the timing of this is settled?"
 
-Design constraints for the questions (to be drafted in the session):
+Notes on the finalized set:
 
-- Plain, non-diagnostic language. No clinical terminology, no correct-answer cues. "Uncertainty" and "missing information" are working labels for the design — the user-facing wording stays in the existing plain register.
-- Each item isolates the identify-the-gap / certainty-vs-uncertainty / what-would-resolve-it distinction and does not pull in fact-vs-interpretation, known-vs-felt, or observation-vs-reaction.
-- Agreement scale 1–5 stays as-is. An item is written so that agreement consistently points one way on the dimension (no mixed-direction wording); reverse scoring only applies if the statement is phrased so that agreement means *less* clarity (e.g. an item worded as "I already know everything I need" would be reverse-scored, because comfort-with-closure can be the opposite of accurately held uncertainty). Direction to settle per item in the session.
-- Wording must not hand the user the "right" reading. The question should make the gap-nameable, not announce that naming gaps is the goal. Avoid items like "I cannot identify what I don't know" (that names the failure); prefer items that ask the person to locate the open edge in their own terms.
-- A genuine Dim 4 item should distinguish *resolvable* uncertainty (a specific missing piece that, if known, would change the reading) from *irreducible* uncertainty (no obtainable information would settle it). The strongest items touch whether the person can tell which kind they are sitting in. Keep this as a drafting aim, not a rigid rule on every item.
-- Need a small set: one general (situation-agnostic) item plus branch-specific focused items for the branches where this dimension distorts most. Per the table in section 2, `unknown` is a focused dimension for **decision**, **direction**, and **timing** — target ~1 general + 3 focused. Exact count to settle in the session.
-- Each item gets the existing `note` (steadying line) and a `mismatchSource` (what a low score may point at, never a diagnosis).
+- All four are phrased as "how clearly can you name / tell", so agreement points one way (more naming = more clarity) and no reverse scoring is needed. Comfort-with-closure wording ("I already know everything I need") was considered and rejected: it would have required reverse scoring and reads as a trap.
+- The direction item is the one that carries the resolvable-vs-irreducible test; the decision and timing items carry identify-the-gap and what-would-resolve-it respectively. Together the three cover the dimension without any single item doing all the work.
+- No item names the failure, and none tells the user that naming gaps is the goal.
+- Separation from Dimensions 1–3 as recorded above still holds: nothing here asks about meaning-vs-occurrence (Dim 1), the know/assume source of a held claim (Dim 2), or reaction contaminating the account (Dim 3).
 
-Drafting checklist for the session:
+Existing `unknown`-tagged questions — call now that wording exists: replace `g5` with the new general item (same intent, plainer); retain the rewritten `d1` only if a second decision item is wanted later, otherwise drop it in favour of the new decision item; fold `t2`/`t3` ("what changes if I wait / act") into the new timing item, which asks the same thing without presupposing that waiting and acting are the only two moves.
 
-1. Agree the exact certainty-vs-uncertainty and resolvable-vs-irreducible distinctions, each in one sentence.
-2. Write candidate general item; check it does not leak into Dim 1, 2, or 3.
-3. Write 3 focused items (decision, direction, timing); check each is the same dimension in branch language, not a new one.
-4. Check direction of scoring and mark `reverse` where needed — watch especially for comfort-with-closure wording.
-5. Decide whether any existing `unknown`-tagged question from section 6 is retained verbatim, rewritten, or replaced — `g5` ("what I'd need to be more certain"), the rewritten `d1` (toward what is unnamed), and `t2`/`t3` (what changes if I wait / act) are the candidates to compare against. Defer the call until the new wording exists.
+Each item still gets the existing `note` (steadying line) and a `mismatchSource` when implemented.
 
-No code is changed in this task. When the wording is settled, implementation follows the Technical notes above, scoped to dimension 4 only.
+## Dimension 5 — EMOTIONAL LOAD (PROPOSED — pending Sarah's review)
+
+Name recommendation: **Emotional Load**, with an alternative framing below that I think is stronger; please choose.
+
+Core distinction: how much weight the situation is currently carrying, and whether the person can see that weight acting on their reading of it.
+
+Why it belongs: every dimension so far tests a discrimination the person can make. Load is different — it is a *condition* under which those discriminations get harder. Without it, the instrument can report high clarity on a situation that is simply too heavy to be read accurately right now, and the Clarity Gap loses its most common explanation.
+
+How it differs from 1–4: Dim 3 (observation vs reaction) asks whether the *account* is contaminated by reaction; Dim 5 asks how much *weight* is present at all. A person can be carrying a great deal and still describe the situation cleanly (high 3, high load), or be carrying little and still report reactively (low 3, low load). It is not Dim 2 or 4 — no epistemic or information content.
+
+Two candidate framings:
+
+- **A — state measure (reverse-scored).** Asks directly how heavy it is. Honest, but it measures the situation's weight rather than the person's clarity, so it does not sit naturally on a clarity scale.
+- **B — load awareness (forward-scored). Recommended.** Asks how clearly the person can see the weight and its effect on their reading. Same territory, but it stays a clarity discrimination like every other dimension, needs no reverse scoring, and does not penalize someone for being in a hard situation — which matters given the non-diagnostic framing.
+
+Proposed questions, framing B (agreement = more clarity):
+
+- General: "How clearly can you see how much this situation is weighing on you right now?"
+- Relationship (focused): "How clearly can you see how much weight this relationship is carrying for you at the moment?"
+- Timing (focused): "How clearly can you see whether the pressure you feel about timing is coming from the situation or from how much it matters to you?"
+- Decision (focused): "How clearly can you see how much the weight of this decision is affecting how you are thinking about it?"
+
+If framing A is preferred instead, the general item becomes "How much is this situation weighing on you right now?" with `reverse: true`, and the focused items are reworded the same way. Framing B is my recommendation.
+
+Overlap check against 1–4: no meaning/occurrence content (1), no know/assume content (2), no observe/react account content (3), no missing-information content (4). Clean.
+
+## Dimension 6 — MENTAL MOVEMENT (PROPOSED — pending Sarah's review)
+
+Name recommendation: **Mental Movement** rather than "thought pattern" or "mental noise". "Pattern" already means something else in this app (the `pattern` branch, recurring situations), and "noise" is a volume metaphor that invites the same state-vs-clarity problem as Dim 5.
+
+Core distinction: whether thinking about the situation is moving — going somewhere new — or circling the same ground.
+
+Why it belongs: repetition can imitate clarity. Rehearsing a conclusion produces fluency and confidence without producing new information, which is exactly the failure mode that inflates the initial by-feel reading. Nothing in Dimensions 1–5 detects it.
+
+How it differs: Dim 4 is about the information landscape; Dim 6 is about the motion of the thinking regardless of what information exists. Dim 5 is weight; Dim 6 is repetition — a light situation can loop and a heavy one can move. Dim 6 is also not the `pattern` branch, which is about recurrence in the world, not in the thinking.
+
+Proposed questions (agreement = more clarity; forward-scored, matching the Dim 5 framing-B logic):
+
+- General: "How clearly can you tell whether your thinking about this is moving forward or going over the same ground?"
+- Direction (focused): "How clearly can you tell whether your thinking about where you are heading is developing or repeating?"
+- Pattern (focused): "How clearly can you tell the difference between noticing this pattern and going over it again?"
+- Timing (focused): "How clearly can you tell whether returning to the question of timing is producing anything new?"
+
+Reverse-scored alternative if you prefer the direct state measure: "How much of your thinking about this is going over ground you have already covered?" with `reverse: true`.
+
+Overlap check against 1–5: no information-gap content (4); no weight content (5) — an item mentioning how tiring the looping is would leak into 5 and has been avoided; no account-contamination content (3). Clean.
+
+## Dimension 7 — AVOIDANCE (PROPOSED — pending Sarah's review)
+
+Name recommendation: **Avoidance** (working label; user-facing wording never uses the word).
+
+Core distinction: whether there is a part of the situation being steered around, and whether the person can see themselves steering.
+
+Why it belongs: this is the only dimension that addresses *coverage* — whether the reading includes the whole situation. All of Dimensions 1–6 can be answered well about a partial picture. A clarity instrument with no coverage dimension can be passed by looking clearly at the easy half.
+
+How it differs: Dim 4 is about information that is not available; Dim 7 is about information that is available but not being looked at. That distinction is the sharpest boundary in the set and must be protected in wording — "I don't have it" (4) vs "I have it and am going around it" (7). Dim 5 is the weight itself; Dim 7 is the movement away from the weight.
+
+Proposed questions (agreement = more clarity):
+
+- General: "How clearly can you tell whether there is a part of this you are staying away from?"
+- Relationship (focused): "How clearly can you tell whether there is something about this relationship you are not letting yourself look at directly?"
+- Decision (focused): "How clearly can you tell whether one of your options is one you are avoiding considering?"
+- Timing (focused): "How clearly can you tell whether waiting is a considered choice or a way of not facing this yet?"
+
+The timing item is the strongest of the four because it makes the distinction doable rather than announcing it, and it does not assume the answer is avoidance.
+
+Overlap check against 1–6: distinct from 4 (unavailable vs unexamined), from 5 (weight vs movement away from it), from 6 (repetition vs omission). Clean. Note that a person high on 6 and low on 7 — looping precisely to avoid something — is a real and interesting combination the profile will now capture.
+
+## Dimension 8 — REVISABILITY (PROPOSED — pending Sarah's review)
+
+Core distinction: whether the current reading can be updated when something new arrives.
+
+Why it belongs: it is the difference between clarity and conviction. A fixed reading and an accurate one look identical from the inside; only revisability separates them. It is also the dimension that makes repeat runs meaningful.
+
+How it differs: every other dimension asks about the reading as it stands now. Dim 8 asks about the reading's relationship to future information. It is not Dim 4 — naming what you are missing (4) is compatible with refusing to update when you get it (8).
+
+Proposed questions (agreement = more clarity):
+
+- General: "How openly could your current read on this change if you learned something new?"
+- Direction (focused): "How openly could your sense of where you are heading change if something unexpected arrived?"
+- Pattern (focused): "How openly could your explanation of this pattern change if it did not repeat next time?"
+- Decision (focused): "How openly could your leaning on this decision change between now and when you have to choose?"
+
+Behavioural second reading (carried from section 4 above, unchanged and still recommended): after the reveal, re-ask the initial by-feel 1–5 — "Having answered these, where does it sit now?" The movement between reading one and reading two is the behavioural revisability measure, and it is more trustworthy than the self-report. Both are kept: the statement scores the dimension, the movement validates it.
+
+Overlap check against 1–7: no information-inventory content (4), no weight (5), no repetition (6), no coverage (7). Clean.
+
+## Ordering recommendation for Dimensions 5–8
+
+Proposed order: 5 Emotional Load → 6 Mental Movement → 7 Avoidance → 8 Revisability. Rationale: 5–7 are all *conditions on* the discriminations in 1–4, ordered from most passive (weight is present) through repetition to active steering-away. 8 is last because it is the only forward-looking dimension and the only one with a post-reveal behavioural component, so it naturally sits at the end of the run.
+
+Alternative worth considering: move Avoidance to 5 and Emotional Load to 7, on the grounds that avoidance is a coverage question about the situation and belongs closer to Dimensions 1–4, while load and revisability are both about the person's stance. Either order works for the instrument; the first reads more naturally in the flow.
+
+Open calls for Sarah:
+
+1. Dimension 5 — framing A (state, reverse-scored) or framing B (load awareness, forward-scored, recommended)?
+2. Dimension 6 — name "Mental Movement" (recommended) or keep "thought pattern" / "mental noise"?
+3. Dimension 6 — forward-scored or the reverse-scored direct alternative?
+4. Ordering — 5/6/7/8 as proposed, or the avoidance-first alternative?
+
+Nothing in Dimensions 5–8 is implemented, and no 1–9 meanings or scoring changes are proposed in this pass. No code is changed in this task.
+
 
 ## Design note — optional non-scored "I genuinely don't know" response (future, not yet implemented)
 
