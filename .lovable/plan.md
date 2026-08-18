@@ -350,3 +350,90 @@ Hard constraints:
 Underlying principle to preserve in any future implementation: **"You are allowed to not know."** This pairs with Dimension 4 (uncertainty / missing information): accurately locating the edge of certainty is a form of clarity, and the non-scored response is the human-facing expression of the same stance — not knowing is permitted, not penalized.
 
 No code is changed in this task.
+
+## NUMBER ARCHITECTURE DESIGN — proposal (no code changes)
+
+Architecture/reasoning pass only. No implementation, no question edits, no scoring change, no UI change. Digits stay meaningless: this section decides only how a 1–9 figure is *derived*, never what a digit *means*. Tree of Life / angel-number mapping stays deferred.
+
+### Principles this architecture must not violate
+
+- Strong emotional load is not automatically low clarity.
+- "I don't know" is not automatically low clarity.
+- Reconsidering is not automatically low clarity.
+- The number emerges from the *pattern* of responses, not from their average.
+- Initial (by-feel) number vs evaluated number stays the centrepiece.
+
+### 1. What each dimension contributes
+
+Three roles. The distinction is the core of the whole design: only some dimensions are evidence *of* clarity; others describe the *conditions under which* the reading was taken.
+
+| Dim | Name | Role |
+| --- | --- | --- |
+| 1 | Fact vs Interpretation | **Signal** — core discrimination |
+| 2 | Known vs Felt/Assumed | **Signal** — core discrimination |
+| 3 | Observation vs Reaction | **Signal** — core discrimination |
+| 4 | Uncertainty / Missing Information | **Signal (inverted-U, not linear)** — see §3 |
+| 5 | Emotional Load (awareness) | **Context** — never raises or lowers the number by itself |
+| 6 | Mental Movement | **Modifier** — bounded adjustment |
+| 7 | Avoidance | **Modifier (coverage penalty)** — bounded |
+| 8 | Revisability | **Confidence / stability qualifier** — bounds the number, does not push it |
+
+Signal dimensions (1–4) answer "how well is this seen?" Modifiers (6–7) answer "was the seeing complete and moving?" Context (5) answers "under what weight was this seen?" — reported, displayed, never scored. Dim 8 answers "how provisional is this figure?" — it sets how wide the reading's stated range is.
+
+### 2. Should all dimensions have equal mathematical weight?
+
+No — and equal weighting is exactly the failure mode to avoid. Reasons:
+
+- The eight dimensions are not eight measurements of the same thing. Averaging them silently asserts that being aware of emotional weight is the same kind of evidence as being able to separate fact from interpretation. It is not.
+- Equal weighting makes the principles above impossible: any dimension with weight has to move the number, so a heavy-load or high-uncertainty answer must drag the figure down. The only way to honour "load is not low clarity" is to give load zero mathematical weight and full narrative visibility.
+- The four core discriminations (1–4) carry the clarity claim, so they carry the weight — equally *among themselves*, because no case has been made that any one discrimination is more fundamental than another. Say it plainly rather than tuning coefficients we cannot justify.
+
+Proposed weight: Dims 1–4 equal, together 100% of the base figure. Dims 6–7 adjust the base within a hard cap (see §4). Dim 5 = 0 weight. Dim 8 = 0 weight, sets the band width.
+
+### 3. Uncertainty, load, avoidance, revisability without false judgments
+
+- **Uncertainty (4)** is scored on *accuracy of locating the edge of certainty*, not on how much is known. High Dim 4 = "I can name what I don't know and what would resolve it" — that is clarity and scores as clarity. Nothing in the number reads "has fewer unknowns = clearer". The future non-scored "I genuinely don't know" off-ramp is entirely outside the number.
+- **Emotional load (5)** never enters the arithmetic. It appears in the read-out as a stated condition: "this reading was taken under significant weight, and you could see the weight." High load with high awareness is a *strong* result and should be said so in words. A dimension that cannot be gamed downward cannot be used to judge.
+- **Avoidance (7)** is a *coverage* note, capped. Low Dim 7 does not mean "you are avoiding, therefore unclear"; it means part of the situation has not been looked at, so the figure covers less ground than it appears to. Implemented as a small bounded reduction plus an explicit sentence naming the uncovered part — the sentence carries most of the meaning, the arithmetic carries little.
+- **Revisability (8)** never lowers the number. High revisability *narrows* nothing and low revisability *widens* nothing about the digit itself; instead low Dim 8 widens the stated range around the figure ("this reading is likely to move" / "this reading is holding still"), and the behavioural second by-feel reading is reported as movement, not as error. Reconsidering therefore never costs a point.
+
+### 4. Candidate method — banded profile projection (recommended)
+
+Four steps, all statable in one paragraph to a user.
+
+1. **Base** = mean of Dims 1–4, each on 1–5. Range 1.0–5.0.
+2. **Coverage adjustment** = bounded contribution from Dims 6–7: `adj = ((mean(6,7) − 3) / 2) × 0.35`, i.e. at most ±0.35 on the 1–5 scale. Deliberately too small to overturn the signal, large enough to separate two otherwise identical profiles.
+3. **Adjusted clarity** = clamp(Base + adj, 1.0, 5.0).
+4. **Project to 1–9** by fixed banding, not by rescaling arithmetic: eight cut points across 1.0–5.0 map to digits 1–9. Banding is used on purpose — it keeps the digit a *category the pattern fell into* rather than a computed quantity, which is what "the number should emerge from the response pattern" requires, and it prevents the digit being reverse-engineered into a percentage.
+
+**Pattern override (the part that makes it a profile, not a score):** before banding, check profile shape. If the four signal dimensions disagree sharply (spread ≥ 2.0 between highest and lowest), the profile is *uneven*, and an uneven profile must not be reported as a mid number. In that case the digit is taken from the **lowest signal dimension's** band, not the mean, and the read-out says which dimension set it. Rationale: clarity is limited by its weakest discrimination, and averaging is precisely what hides that.
+
+**Dim 8 sets the band width, not the digit:** high revisability → "this figure is held lightly"; low revisability → "this figure is held firmly, which is worth testing." Same digit either way.
+
+Dim 5 is printed alongside as context. Never in the formula.
+
+### 5. Clarity Gap
+
+- Keep the current definition's spirit but move it onto the digit scale: **Gap = evaluated digit (1–9) − initial by-feel digit**, where the initial 1–5 by-feel reading is projected onto 1–9 with the *same* band table so the two numbers are commensurable. Comparing a 1–5 feel against a 1–9 evaluation without a shared projection is the one arithmetic error that would make the whole instrument look arbitrary.
+- Interpretation stays non-diagnostic and gains a third term from the second by-feel reading: **gap** (feel vs evaluated) and **movement** (first feel vs post-reveal feel). Small gap + some movement = the healthiest pattern, and the copy should say so. Large negative gap = a part of the situation less examined than the rest, not a wrong person. Large positive gap = knows more than it feels like from inside.
+- Gap is never called accuracy, and never accumulated into a score across runs. History keeps both numbers and the movement, so repeat runs show a trajectory rather than a grade.
+
+### 6. Alternatives considered
+
+**A. Weighted mean of all eight, projected to 1–9.** Pros: simplest to build and explain; one formula. Cons: forces load, uncertainty and revisability to move the number, breaking three stated principles; hides uneven profiles behind a mid digit; invites coefficient-fiddling with no justification. Rejected.
+
+**B. Signal-only digit with everything else narrative.** Digit from Dims 1–4 alone; 5–8 appear only as sentences. Pros: cleanest principle compliance; nothing can create a false judgment. Cons: half the instrument does no work in the figure, so two clearly different profiles can return the same digit; avoidance in particular deserves *some* arithmetic presence. Strong fallback if Sarah wants maximum caution.
+
+**C. Banded profile projection (§4) — recommended.** Signal-weighted base, bounded modifier, fixed banding, lowest-dimension override for uneven profiles, load excluded, revisability as band width. Pros: honours every stated principle; the digit reflects pattern shape, not an average; the weakest discrimination cannot be averaged away; explainable in plain language. Cons: more moving parts than A or B; the cut points and the 0.35 cap and the 2.0 spread threshold are chosen judgements that need one calibration pass against real runs before they are trusted.
+
+**Recommendation: C**, with B as the fallback if the override rule proves confusing in practice.
+
+### Open decisions for Sarah before implementation
+
+1. Confirm Dim 5 carries **zero** mathematical weight (context only).
+2. Approve or adjust the uneven-profile override (spread ≥ 2.0 → digit from lowest signal dimension).
+3. Approve the ±0.35 cap on the Dims 6–7 modifier.
+4. Confirm the initial by-feel reading is projected onto 1–9 for the Gap.
+5. Decide whether the nine bands are evenly spaced across 1.0–5.0 or slightly widened at the extremes so digits 1 and 9 stay rare.
+
+No code, questions, scoring, or UI changed in this task.
