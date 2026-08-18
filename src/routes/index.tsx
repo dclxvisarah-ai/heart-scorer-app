@@ -116,6 +116,7 @@ function GabrielsNumberPage() {
     const probe = getDeeperProbe(result.contested, deeperIds);
     if (!probe) return;
     setDeeperIds([...deeperIds, probe.id]);
+    setLeftHere(false);
     setIndex(sequence.length);
     setSavedId(undefined);
     setStage("questions");
