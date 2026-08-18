@@ -43,6 +43,9 @@ function GabrielsNumberPage() {
   const [index, setIndex] = useState(0);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [savedId, setSavedId] = useState<string | undefined>();
+  /** Reworded probes the person opted into from an undetermined result. */
+  const [deeperIds, setDeeperIds] = useState<string[]>([]);
+  const [leftHere, setLeftHere] = useState(false);
 
   useEffect(() => {
     setHistory(loadHistory());
@@ -51,8 +54,8 @@ function GabrielsNumberPage() {
   const doorway = getDoorway(doorwayId);
 
   const sequence: Question[] = useMemo(
-    () => (doorway ? buildSequence(doorway, answers) : []),
-    [doorway, answers],
+    () => (doorway ? buildSequence(doorway, answers, deeperIds) : []),
+    [doorway, answers, deeperIds],
   );
 
   const result = useMemo(
@@ -84,6 +87,8 @@ function GabrielsNumberPage() {
     setAnswers({});
     setIndex(0);
     setSavedId(undefined);
+    setDeeperIds([]);
+    setLeftHere(false);
   }
 
   function choose(questionId: string, choiceId: string) {
@@ -94,12 +99,26 @@ function GabrielsNumberPage() {
     setAnswers(next);
     setSavedId(undefined);
 
-    const nextSequence = doorway ? buildSequence(doorway, next) : [];
+    const nextSequence = doorway ? buildSequence(doorway, next, deeperIds) : [];
     if (index + 1 >= nextSequence.length) {
       setStage("result");
     } else {
       setIndex(index + 1);
     }
+  }
+
+  /**
+   * Opens one more question — the same underlying dimension, worded another
+   * way — aimed at whichever numbers the answers are tied between.
+   */
+  function goDeeper() {
+    if (!doorway || !result) return;
+    const probe = getDeeperProbe(result.contested, deeperIds);
+    if (!probe) return;
+    setDeeperIds([...deeperIds, probe.id]);
+    setIndex(sequence.length);
+    setSavedId(undefined);
+    setStage("questions");
   }
 
   function goBack() {
