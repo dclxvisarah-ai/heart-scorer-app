@@ -50,7 +50,7 @@ function ReadingsPage() {
             <h1 className="mt-1 font-display text-2xl leading-tight sm:text-3xl">Past readings</h1>
           </div>
           <Link
-            to="/vol2"
+            to="/"
             className="mt-1 shrink-0 rounded-full border border-hairline bg-cream px-3 py-1.5 text-xs text-olive-soft transition-colors hover:border-teal/60 hover:text-foreground"
           >
             New reading
@@ -69,7 +69,7 @@ function ReadingsPage() {
             <div className="mt-6 rounded-xl border border-hairline bg-background/40 px-4 py-6 text-center">
               <p className="text-sm text-olive-soft">No readings saved yet.</p>
               <Link
-                to="/vol2"
+                to="/"
                 className="mt-4 inline-flex h-11 items-center justify-center rounded-full bg-teal px-6 text-sm font-medium text-teal-foreground transition-opacity hover:opacity-90"
               >
                 Start one
