@@ -337,6 +337,16 @@ function GabrielsNumberPage() {
 
             <FramingNote />
 
+            <button
+              type="button"
+              onClick={goBack}
+              className="self-start text-xs text-olive-soft underline-offset-4 hover:underline"
+            >
+              ← Back to the last question
+            </button>
+
+
+
             <div className="flex flex-col gap-2.5 sm:flex-row">
               <button
                 type="button"
