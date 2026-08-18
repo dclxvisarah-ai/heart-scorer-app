@@ -1,27 +1,22 @@
 /**
- * Local, device-only history for completed evaluations.
- * Nothing leaves the browser. Stored in localStorage.
+ * Local, device-only history of readings. Nothing leaves the browser.
  */
 
-import type { Answers, ScaleValue } from "./evaluator";
+import type { GNumber } from "./gabriel";
 
-export const HISTORY_KEY = "gn-clarity-evaluator-history-v1";
+export const HISTORY_KEY = "gabriels-number-readings-v2";
 const MAX_ENTRIES = 50;
 
 export interface HistoryEntry {
   id: string;
-  /** ISO timestamp of completion. */
+  /** ISO timestamp. */
   createdAt: string;
-  branchId: string;
-  branchLabel: string;
-  initial: ScaleValue;
-  evaluated: number;
-  clarityGap: number;
-  gapDirection: "overestimated" | "underestimated" | "aligned";
-  generalMean: number;
-  focusedMean: number;
-  answers: Answers;
-  reflection: string;
+  doorwayId: string;
+  doorwayLabel: string;
+  /** null when the reading came back undetermined. */
+  primary: GNumber | null;
+  supporting: GNumber[];
+  reasoning: string;
 }
 
 function isEntry(value: unknown): value is HistoryEntry {
@@ -30,9 +25,8 @@ function isEntry(value: unknown): value is HistoryEntry {
   return (
     typeof entry.id === "string" &&
     typeof entry.createdAt === "string" &&
-    typeof entry.branchId === "string" &&
-    typeof entry.evaluated === "number" &&
-    typeof entry.initial === "number"
+    typeof entry.doorwayId === "string" &&
+    (entry.primary === null || typeof entry.primary === "number")
   );
 }
 
@@ -54,7 +48,7 @@ function persist(entries: HistoryEntry[]): void {
   try {
     window.localStorage.setItem(HISTORY_KEY, JSON.stringify(entries.slice(0, MAX_ENTRIES)));
   } catch {
-    /* storage unavailable or full — history is a convenience, never required */
+    /* storage unavailable — history is a convenience, never required */
   }
 }
 
@@ -96,9 +90,4 @@ export function formatWhen(iso: string): string {
     month: "short",
     day: "numeric",
   });
-}
-
-export function formatGap(gap: number): string {
-  if (gap > 0) return `+${gap.toFixed(1)}`;
-  return gap.toFixed(1);
 }

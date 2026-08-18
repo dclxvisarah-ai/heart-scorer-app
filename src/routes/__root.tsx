@@ -79,11 +79,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Gabriel's Number Clarity Evaluator" },
+      { title: "What's Gabriel's Number? Vol. 2" },
       {
         name: "description",
         content:
-          "A self-guided clarity evaluation: rate by feel, answer general and focused questions, then compare perception against the evaluated figure.",
+          "Bring whatever is actually going on. A few short, honest questions, and a number emerges from the pattern in your answers.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
