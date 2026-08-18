@@ -20,7 +20,7 @@ const TITLE = "What's Gabriel's Number? Vol. 2";
 const DESCRIPTION =
   "Bring whatever is actually going on. A few short, honest questions, and a number emerges from the pattern in your answers — no right answer, no wrong number.";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/vol2")({
   head: () => ({
     meta: [
       { title: `${TITLE} — a reflection lens for real situations` },
