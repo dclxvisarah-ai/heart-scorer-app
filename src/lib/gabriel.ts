@@ -139,6 +139,8 @@ export interface Question {
   prompt: string;
   note?: string;
   choices: Choice[];
+  /** Asked next regardless of which answer was chosen (linear chains). */
+  next?: string;
 }
 
 export interface Doorway {
