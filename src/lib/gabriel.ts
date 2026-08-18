@@ -1056,26 +1056,67 @@ export type AnswerMap = Record<string, string>;
  * follow-up appears only once the universal question has been answered,
  * so the path genuinely branches on what the person said.
  */
+/** Every question that can be reached through a branch, by id. */
+const ALL_BRANCHES: Record<string, Question> = {
+  ...BRANCH_QUESTIONS,
+  ...UNIVERSAL_FOLLOW_UPS,
+};
+
+function getQuestion(id: string): Question | undefined {
+  return ALL_BRANCHES[id];
+}
+
+/**
+ * Walks a question and everything the person's own answer opened after it:
+ * `choice.followUp` for answer-specific branches, `question.next` for a
+ * linear chain. Nothing beyond the last answered question is added, so the
+ * path genuinely diverges instead of pre-loading a fixed sequence.
+ */
+function expand(question: Question, answers: AnswerMap, out: Question[], seen: Set<string>) {
+  if (seen.has(question.id)) return;
+  seen.add(question.id);
+  out.push(question);
+
+  const chosenId = answers[question.id];
+  if (!chosenId) return;
+  const chosen = question.choices.find((c) => c.id === chosenId);
+  const nextId = chosen?.followUp ?? question.next;
+  if (!nextId) return;
+  const next = getQuestion(nextId);
+  if (next) expand(next, answers, out, seen);
+}
+
 export function buildSequence(
   doorway: Doorway,
   answers: AnswerMap,
   deeperIds: string[] = [],
 ): Question[] {
-  const sequence: Question[] = [...doorway.questions];
+  const sequence: Question[] = [];
+  const seen = new Set<string>();
+  for (const question of doorway.questions) expand(question, answers, sequence, seen);
 
-  if (doorway.universal) {
-    sequence.push(UNIVERSAL_QUESTION);
-    const chosenId = answers[UNIVERSAL_QUESTION.id];
-    const chosen = UNIVERSAL_QUESTION.choices.find((c) => c.id === chosenId);
-    if (chosen?.followUp) {
-      const followUp = UNIVERSAL_FOLLOW_UPS[chosen.followUp];
-      if (followUp) sequence.push(followUp);
-    }
+  // The universal "what are you trying not to experience" question is asked
+  // only when the person's own answers point toward avoidance — or when the
+  // doorway always asks it.
+  const suggestsAvoidance = sequence.some((q) => {
+    const chosenId = answers[q.id];
+    return q.choices.some((c) => c.id === chosenId && c.avoids);
+  });
+
+  if (doorway.universal === "always" || (doorway.universal === "ifAvoidance" && suggestsAvoidance)) {
+    expand(UNIVERSAL_QUESTION, answers, sequence, seen);
   }
 
-  // Keep the whole path short: enough core questions to reach 5–6 total.
-  const remaining = Math.max(2, 6 - sequence.length);
-  sequence.push(...CORE_QUESTIONS.slice(0, Math.min(CORE_QUESTIONS.length, remaining)));
+  // Top up with the shared closing questions only if the branch was short,
+  // so the whole path stays around five or six taps.
+  const remaining = 5 - sequence.length;
+  if (remaining > 0) {
+    sequence.push(...CORE_QUESTIONS.slice(0, Math.min(CORE_QUESTIONS.length, remaining)));
+  } else {
+    // Always end on the same closing question, whatever the branch length.
+    const closing = CORE_QUESTIONS[CORE_QUESTIONS.length - 1];
+    if (closing && !seen.has(closing.id)) sequence.push(closing);
+  }
 
   // Deeper probes, asked only when the person chose to go deeper from an
   // undetermined result. They are appended in the order they were offered.
