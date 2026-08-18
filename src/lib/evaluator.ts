@@ -327,7 +327,6 @@ export function evaluate(
 export function bandFor(value: number): string {
   if (value < 1.8) return "Very little clarity yet";
   if (value < 2.6) return "Early, mostly unformed";
-by:
   if (value < 3.4) return "Partial — some parts hold";
   if (value < 4.3) return "Largely clear, with gaps";
   return "Clear on the terms you can see";
