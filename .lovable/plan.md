@@ -226,3 +226,20 @@ Drafting checklist for the session:
 5. Decide whether any existing `unknown`-tagged question from section 6 is retained verbatim, rewritten, or replaced — `g5` ("what I'd need to be more certain"), the rewritten `d1` (toward what is unnamed), and `t2`/`t3` (what changes if I wait / act) are the candidates to compare against. Defer the call until the new wording exists.
 
 No code is changed in this task. When the wording is settled, implementation follows the Technical notes above, scoped to dimension 4 only.
+
+## Design note — optional non-scored "I genuinely don't know" response (future, not yet implemented)
+
+This is a recorded design intention only. Do not implement it yet. No code changes.
+
+Proposal: add an optional, end-of-test, **non-scored** lighthearted response that lets a person mark "I genuinely don't know" without it being a failure. Candidate playful wording: "I don't know. I'm just a baby." with a funny baby visual. The tone is deliberately warm and deflating — it gives permission rather than evaluating.
+
+Hard constraints:
+
+- It must **never affect scoring**. It is not a 1–5 value, not a reverse item, and not part of the evaluated figure, the Clarity Gap, mismatch sources, or the clarity profile. It is orthogonal to all of that.
+- It is **optional and end-of-test** — an off-ramp, not a substitute for any rated question. It cannot be used to skip the instrument.
+- It must not be diagnostically loaded or used to infer anything about the person. It is a gesture, not a signal.
+- Visual treatment stays inside the existing design language (warm off-white, cream, olive text, teal/terracotta/gold accents); the baby visual is playful but restrained, not a separate art direction.
+
+Underlying principle to preserve in any future implementation: **"You are allowed to not know."** This pairs with Dimension 4 (uncertainty / missing information): accurately locating the edge of certainty is a form of clarity, and the non-scored response is the human-facing expression of the same stance — not knowing is permitted, not penalized.
+
+No code is changed in this task.
