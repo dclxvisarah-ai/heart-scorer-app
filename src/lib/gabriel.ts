@@ -163,14 +163,15 @@ export const UNIVERSAL_QUESTION: Question = {
   prompt: "What are you trying not to experience right now?",
   note: "Not an accusation. Sometimes the honest answer is that you aren't avoiding anything.",
   choices: [
-    { id: "u1-discomfort", label: "Discomfort — I just don't want to feel this", evidence: { 7: 2, 9: 1 }, followUp: "uf-discomfort" },
-    { id: "u1-conversation", label: "A conversation I don't want to have", evidence: { 8: 2, 2: 1 }, followUp: "uf-conversation" },
-    { id: "u1-uncertainty", label: "Not knowing — the uncertainty itself", evidence: { 5: 2, 7: 1 }, followUp: "uf-uncertainty" },
-    { id: "u1-decision", label: "A decision, or being the one responsible for it", evidence: { 4: 2, 6: 1 }, followUp: "uf-decision" },
-    { id: "u1-boredom", label: "Boredom, restlessness, the quiet", evidence: { 7: 3 }, followUp: "uf-boredom" },
-    { id: "u1-relief", label: "Nothing, really — I just want relief", evidence: { 9: 1, 7: 1 }, followUp: "uf-relief" },
-    { id: "u1-enjoy", label: "Honestly, nothing. I'm enjoying myself", evidence: { 7: 1, 2: 1 } },
-    { id: "u1-unsure", label: "I'm not sure", evidence: { 1: 1 } },
+    { id: "u1-discomfort", label: "A feeling I don't want to sit in", evidence: { 7: 2, 9: 1 }, followUp: "uf-discomfort" },
+    { id: "u1-conversation", label: "A conversation I keep putting off", evidence: { 8: 2, 2: 1 }, followUp: "uf-conversation" },
+    { id: "u1-uncertainty", label: "Not knowing how this turns out", evidence: { 5: 2, 7: 1 }, followUp: "uf-uncertainty" },
+    { id: "u1-decision", label: "Being the one who has to decide", evidence: { 4: 2, 6: 1 }, followUp: "uf-decision" },
+    { id: "u1-boredom", label: "Boredom. The quiet. Nothing happening", evidence: { 7: 3 }, followUp: "uf-boredom" },
+    { id: "u1-task", label: "One specific thing I said I'd do", evidence: { 9: 3 } },
+    { id: "u1-relief", label: "Nothing in particular — I just want a break", evidence: { 9: 1, 7: 1 }, followUp: "uf-relief" },
+    { id: "u1-enjoy", label: "Honestly nothing. I'm enjoying myself", evidence: { 7: 1, 2: 1 } },
+    { id: "u1-unsure", label: "I don't know", evidence: { 1: 1 } },
   ],
 };
 
