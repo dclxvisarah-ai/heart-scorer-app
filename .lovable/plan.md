@@ -1511,3 +1511,112 @@ If the answer is *enjoyment, celebration, curiosity, or habit*, the run continue
 This does not replace Doorway 1's *"I'm trying not to drink/use"* branch — it generalizes the principle underneath it. That branch now routes through this pathway, and the same pathway is available from any behavior-redirect surface across the library. It is added to the reusable engine from Milestone 6 as a cross-cutting branch, not as additional per-doorway authoring.
 
 No production code, questions, scoring, or UI changed in this task.
+
+---
+
+## Milestone 8 — CLARITY CONTRACT + OPENING SCREEN (design only, no production code)
+
+### Product insight recorded
+
+The original name **"Clarity Tracker"** described the app's original purpose for Sarah: checking whether she actually understood what she was talking about — whether she was seeing clearly, especially when discomfort, anxiety, or stress could distort perception. That underlying purpose is **preserved as the core function** of Gabriel's Number: reality-based clarity through reflection.
+
+- We are **not** keeping "Clarity Tracker" as the product name or primary UX label.
+- We are **not** renaming Gabriel's Number.
+- The "Clarity Tracker" concept lives on as the instrument's job-to-be-done: it tracks whether you're seeing what's actually there, not what the discomfort wants you to see.
+
+### The Clarity Contract
+
+A compact set of principles the app communicates before the first doorway. The goal: say very little, say it well, and make it feel like an invitation rather than a disclaimer wall. Where possible these are shown implicitly (in tone, in the options offered, in the absence of right/wrong framing) rather than as a bullet list. When shown explicitly, they fit on one screen.
+
+**The principles (what the contract guarantees):**
+
+1. **No right or wrong answers.** There is nothing to get correct.
+2. **No good or bad number.** No number is better than another; nothing pushes toward 9.
+3. **No need to know what you're looking for.** You can arrive with "I don't know what the hell to do today" and that is enough.
+4. **Honesty beats confidence.** A flat "I don't know" is more useful than a confident guess.
+5. **"I don't know" is useful information.** It is never scored as poor clarity.
+6. **The app will not tell you what decision to make.** It does not advise for or against your premise. It will not tell you to text, to not gamble, to quit your job, or to stay.
+7. **The number is a reflection lens**, based on the pattern in your answers — not a diagnosis, verdict, prediction, or permanent label. Today's number is today's.
+
+**How it is communicated (the compact form).** The contract appears as a short, warm passage — not a numbered disclaimer list — visible on the opening screen and collapsible/available later. Candidate copy:
+
+> This isn't a test, and there's nothing to get right.
+> You can't be wrong here, and there's no number worth more than another.
+> If you don't know what you're looking for, that's a fine place to start.
+> Honest is better than sure. "I don't know" counts.
+> This won't tell you what to do. It'll show you the shape of how you're seeing it — and a number to hold that shape, just for today.
+
+The tone is intriguing and human, not clinical. It lowers the stakes before the first tap.
+
+### Three candidate opening screens
+
+Each replaces the old numeric "Clarity Tracker" start screen while preserving its function (the doorway into reality-based reflection). Each carries the Clarity Contract in its own register and offers the same underlying doorways.
+
+---
+
+**(A) Direct / curious**
+
+- **Headline:** *What are you actually seeing right now?*
+- **One-line invitation:** *Answer a few honest questions. A number will come out the other side — not a verdict, just the shape of how you're seeing it today.*
+- **Contract line:** *There are no right answers, and no number is better than another. "I don't know" counts. This won't tell you what to do.*
+- **Initial doorway choices:**
+  - I don't know what the hell to do today
+  - Should I text them?
+  - I have a huge decision to make
+  - Something happened and I can't stop thinking about it
+  - Something feels off and I don't know why
+  - I'm feeling lucky — should I gamble?
+  - Something else, in my own words
+
+---
+
+**(B) Playful / psychological-tarot**
+
+- **Headline:** *A reading, not a rule.*
+- **One-line invitation:** *Bring whatever's on your mind — the ordinary, the heavy, or the half-noticed. The cards here are your own answers, and the number is just the shape they make today.*
+- **Contract line:** *No good cards or bad cards. No right draw. "I don't know" is a real card in this deck. We won't tell your fortune or your future — and we won't tell you what to do.*
+- **Initial doorway choices:** (same six + "something else", slightly warmer wording)
+  - I don't know what the hell to do today
+  - Should I text them?
+  - I have a huge decision to make
+  - Something happened and I can't stop thinking about it
+  - Something feels off and I don't know why
+  - I'm feeling lucky — should I gamble?
+  - Something else, in my own words
+
+---
+
+**(C) Minimal / mysterious**
+
+- **Headline:** *Today's number.*
+- **One-line invitation:** *Start anywhere. Say as little or as much as you like. A number emerges from the shape of it — yours, just for today.*
+- **Contract line:** *(small, low)* *No right answers. No better number. "I don't know" is allowed. This won't decide for you.*
+- **Initial doorway choices:**
+  - I don't know what to do today
+  - Should I text them?
+  - A big decision
+  - Something I can't stop thinking about
+  - Something feels off
+  - Should I gamble?
+  - Something else
+
+---
+
+### Recommendation
+
+**Recommend (A) Direct / curious**, with the doorways lightly warmed.
+
+Reasoning:
+- **(A) matches the locked product direction** ("psychologically grounded, reality-based reflection / decision lens") without leaning on a metaphor the user has to learn. It says plainly what the instrument does — show you the shape of how you're seeing it — which is exactly the "Clarity Tracker" function preserved under a new name.
+- **(B) is appealing but risky.** The tarot framing is intriguing and human, but it can pull toward "the number means something mystical about you," which is the opposite of "today's number is today's, a reflection lens, not a label." It also preloads an expectation that the number is a *fortune*, which the established Tree-of-Life layer will later have to carefully correct rather than simply add. The playful register is worth borrowing in the doorways and the result language, but not as the governing frame.
+- **(C) is beautiful but cold.** The minimal register can feel intriguing, but it under-communicates the safety contract at exactly the moment a hesitant user most needs it ("is this going to judge me?"). For a tool whose whole point is making discomfort approachable, (A)'s plain warmth is the better opening. (C)'s restraint is worth borrowing for the result screen, not the opening.
+
+A small borrow from (B) and (C): the result reading can use the "a reading, not a rule" warmth, and the result's number presentation can use (C)'s spareness. But the opening screen stays (A) — direct, curious, and honest about what it is.
+
+### Explicitly not in this milestone
+
+- No renaming of Gabriel's Number.
+- No production code, UI, or scoring change.
+- No assignment or redesign of the 1–9 meanings — those remain the later interpretive layer, still awaited in readable form.
+
+No production code, questions, scoring, or UI changed in this task.
