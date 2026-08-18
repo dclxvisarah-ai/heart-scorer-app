@@ -363,7 +363,7 @@ Architecture/reasoning pass only. No implementation, no question edits, no scori
 - "I don't know" is not automatically low clarity.
 - Reconsidering is not automatically low clarity.
 - The number emerges from the *pattern* of responses, not from their average.
-- Initial (by-feel) number vs evaluated number stays the centrepiece.
+- ~~Initial (by-feel) number vs evaluated number stays the centrepiece.~~ **Revised (see Phase 2D):** the opening self-selected numeric reading is removed. The opening is now a brief *word-based* "where am I starting from?" baseline — context only, never scored, never a 1–5 or 1–9 number. The number emerges only after the response pattern is evaluated. The comparison that stays central is **word-based starting state → emergent evaluated number**, not two self-selected numbers.
 
 ### 1. What each dimension contributes
 
