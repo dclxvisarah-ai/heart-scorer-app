@@ -534,8 +534,8 @@ function RevealStage({
         </div>
       </dl>
       <p className="mt-4 text-sm leading-relaxed text-olive-soft">
-        The two halves are weighted equally: general clarity and clarity specific to{" "}
-        {branch.label.toLowerCase()} each account for half of the figure above.
+        The two halves are weighted equally: general clarity and clarity specific to this branch —{" "}
+        {branch.label} — each account for half of the figure above.
       </p>
       <ProvisionalNote className="mt-4" />
       <div className="mt-6">
