@@ -1,43 +1,29 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { ClarityDial } from "../components/ClarityDial";
-import { OptionChoice, ScaleChoice } from "../components/ScaleChoice";
+import { FramingNote } from "@/components/FramingNote";
+import { NumberPanel } from "@/components/NumberPanel";
 import {
-  BRANCHES,
-  BRANCH_PROMPT,
-  EMPTY_GENERAL,
-  INITIAL_NOTE,
-  INITIAL_PROMPT,
-  KNOWN_VS_FELT_OPTIONS,
-  NERVOUS_SYSTEM_OPTIONS,
-  OBSERVATION_OPTIONS,
-  PROVISIONAL_NOTE,
-  REFLECTION_PROMPT,
-  SOCIAL_TONE_OPTIONS,
-  THOUGHT_STYLE_OPTIONS,
-  evaluate,
-  getBranch,
-  isGeneralComplete,
-  type BranchId,
-  type GeneralEvaluation,
-  type ScaleValue,
-} from "../lib/evaluator";
-import {
-  formatEvaluationDate,
-  newEvaluationId,
-  saveEvaluation,
-  type EvaluationRecord,
-} from "../lib/evaluations";
+  DOORWAYS,
+  FRAMING_LINES,
+  NUMBERS,
+  buildSequence,
+  evaluatePattern,
+  getDeeperProbe,
+  getDoorway,
+  type AnswerMap,
+  type Question,
+} from "@/lib/gabriel";
+import { loadHistory, newId, saveEntry, type HistoryEntry } from "@/lib/history";
 
-const TITLE = "What's Gabriel's Number? — Clarity Evaluation";
+const TITLE = "What's Gabriel's Number? Vol. 2";
 const DESCRIPTION =
-  "Record the clarity number you feel, answer a short set of evaluation questions, and compare your initial perception with an evaluated clarity reading and its Clarity Gap.";
+  "Bring whatever is actually going on. A few short, honest questions, and a number emerges from the pattern in your answers — no right answer, no wrong number.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: TITLE },
+      { title: `${TITLE} — a reflection lens for real situations` },
       { name: "description", content: DESCRIPTION },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
@@ -45,468 +31,419 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: EvaluatorPage,
+  component: GabrielsNumberPage,
 });
 
-type Stage = "initial" | "branch" | "general" | "focused" | "reveal" | "reflection" | "saved";
+type Stage = "start" | "questions" | "result";
 
-const STAGE_ORDER: Stage[] = ["initial", "branch", "general", "focused", "reveal", "reflection"];
+function GabrielsNumberPage() {
+  const [stage, setStage] = useState<Stage>("start");
+  const [doorwayId, setDoorwayId] = useState<string | undefined>();
+  const [answers, setAnswers] = useState<AnswerMap>({});
+  const [index, setIndex] = useState(0);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [savedId, setSavedId] = useState<string | undefined>();
+  /** Reworded probes the person opted into from an undetermined result. */
+  const [deeperIds, setDeeperIds] = useState<string[]>([]);
+  const [leftHere, setLeftHere] = useState(false);
 
-function EvaluatorPage() {
-  const [stage, setStage] = useState<Stage>("initial");
-  const [initial, setInitial] = useState<ScaleValue | undefined>();
-  const [branchId, setBranchId] = useState<BranchId | undefined>();
-  const [general, setGeneral] = useState<GeneralEvaluation>(EMPTY_GENERAL);
-  const [focusedAnswers, setFocusedAnswers] = useState<string[]>([]);
-  const [reflection, setReflection] = useState("");
-  const [savedRecord, setSavedRecord] = useState<EvaluationRecord | undefined>();
+  useEffect(() => {
+    setHistory(loadHistory());
+  }, []);
 
-  const branch = getBranch(branchId);
-  const outcome = useMemo(
-    () => (initial === undefined ? undefined : evaluate(initial, general)),
-    [initial, general],
+  const doorway = getDoorway(doorwayId);
+
+  const sequence: Question[] = useMemo(
+    () => (doorway ? buildSequence(doorway, answers, deeperIds) : []),
+    [doorway, answers, deeperIds],
   );
 
-  function patch(next: Partial<GeneralEvaluation>) {
-    setGeneral((current) => ({ ...current, ...next }));
-  }
+  const result = useMemo(
+    () => (stage === "result" ? evaluatePattern(sequence, answers) : undefined),
+    [stage, sequence, answers],
+  );
 
-  function chooseBranch(id: BranchId) {
-    setBranchId(id);
-    const questions = getBranch(id)?.questions ?? [];
-    setFocusedAnswers(questions.map(() => ""));
-    setStage("general");
-  }
+  useEffect(() => {
+    if (stage !== "result" || !result || !doorway) return;
+    const id = `${doorway.id}-${Object.keys(answers).length}`;
+    if (savedId === id) return;
+    setSavedId(id);
+    setHistory(
+      saveEntry({
+        id: newId(),
+        createdAt: new Date().toISOString(),
+        doorwayId: doorway.id,
+        doorwayLabel: doorway.label,
+        primary: result.primary ?? null,
+        supporting: result.supporting,
+        reasoning: result.reasoning,
+      }),
+    );
+  }, [stage, result, doorway, answers, savedId]);
 
   function restart() {
-    setStage("initial");
-    setInitial(undefined);
-    setBranchId(undefined);
-    setGeneral(EMPTY_GENERAL);
-    setFocusedAnswers([]);
-    setReflection("");
-    setSavedRecord(undefined);
-    if (typeof window !== "undefined") window.scrollTo({ top: 0 });
+    setStage("start");
+    setDoorwayId(undefined);
+    setAnswers({});
+    setIndex(0);
+    setSavedId(undefined);
+    setDeeperIds([]);
+    setLeftHere(false);
   }
 
-  function back() {
-    const index = STAGE_ORDER.indexOf(stage);
-    if (index > 0) setStage(STAGE_ORDER[index - 1]!);
+  function choose(questionId: string, choiceId: string) {
+    const next = { ...answers, [questionId]: choiceId };
+    // Changing an answer invalidates anything answered after this question,
+    // since later questions can depend on this branch.
+    for (const q of sequence.slice(index + 1)) delete next[q.id];
+    setAnswers(next);
+    setSavedId(undefined);
+
+    const nextSequence = doorway ? buildSequence(doorway, next, deeperIds) : [];
+    if (index + 1 >= nextSequence.length) {
+      setStage("result");
+    } else {
+      setIndex(index + 1);
+    }
   }
 
-  function save() {
-    if (!outcome || initial === undefined || !branch) return;
-    const record: EvaluationRecord = {
-      id: newEvaluationId(),
-      createdAt: new Date().toISOString(),
-      initial,
-      evaluated: outcome.evaluated,
-      gap: outcome.gap,
-      alignment: outcome.alignment,
-      branchId: branch.id,
-      branchLabel: branch.label,
-      general,
-      focused: branch.questions.map((question, index) => ({
-        question,
-        answer: focusedAnswers[index] ?? "",
-      })),
-      mismatchSources: outcome.mismatchSources,
-      reflection,
-    };
-    saveEvaluation(record);
-    setSavedRecord(record);
-    setStage("saved");
-    if (typeof window !== "undefined") window.scrollTo({ top: 0 });
+  /**
+   * Opens one more question — the same underlying dimension, worded another
+   * way — aimed at whichever numbers the answers are tied between.
+   */
+  function goDeeper() {
+    if (!doorway || !result) return;
+    const probe = getDeeperProbe(result.contested, deeperIds);
+    if (!probe) return;
+    setDeeperIds([...deeperIds, probe.id]);
+    setLeftHere(false);
+    setIndex(sequence.length);
+    setSavedId(undefined);
+    setStage("questions");
   }
+
+  function goBack() {
+    if (stage === "result") {
+      setStage("questions");
+      setIndex(Math.max(sequence.length - 1, 0));
+      setSavedId(undefined);
+      return;
+    }
+    if (index > 0) setIndex(index - 1);
+  }
+
+
+  const current = sequence[index];
+  const nextProbe = result && !result.primary ? getDeeperProbe(result.contested, deeperIds) : undefined;
 
   return (
     <main className="paper min-h-screen">
-      <div className="mx-auto w-full max-w-2xl px-4 pb-4 pt-10 sm:px-6 sm:pt-14">
-        <header className="text-center">
-          <p className="eyebrow">Clarity evaluation</p>
-          <h1 className="mt-3 text-3xl leading-tight text-olive sm:text-4xl">
-            What's Gabriel's Number?
-          </h1>
-          <p className="mx-auto mt-3 max-w-md text-[0.9375rem] leading-relaxed text-muted-foreground">
-            {DESCRIPTION}
-          </p>
-          <div className="mt-5">
-            <Link
-              to="/history"
-              className="text-[0.8125rem] text-teal underline-offset-4 hover:underline"
-            >
-              Past evaluations
-            </Link>
+      <div className="mx-auto w-full max-w-2xl px-4 pt-8 pb-6 sm:px-6 sm:pt-12">
+        <header className="mb-7 flex items-start justify-between gap-4">
+          <div>
+            <p className="eyebrow">Gabriel's Number™</p>
+            <h1 className="mt-1 font-display text-2xl leading-tight sm:text-3xl">
+              What's Gabriel's Number?{" "}
+              <span className="text-olive-soft">Vol. 2</span>
+            </h1>
           </div>
+          <Link
+            to="/readings"
+            className="mt-1 shrink-0 rounded-full border border-hairline bg-cream px-3 py-1.5 text-xs text-olive-soft transition-colors hover:border-teal/60 hover:text-foreground"
+          >
+            Readings
+          </Link>
         </header>
 
-        <div className="mt-8 space-y-5">
-          {stage === "initial" ? (
-            <section className="card-cream animate-rise p-6 sm:p-8">
-              <h2 className="text-xl text-olive">Initial clarity</h2>
-              <p className="mt-2 text-[0.9375rem] leading-relaxed text-olive-soft">
-                {INITIAL_PROMPT}
-              </p>
-              <p className="mt-2 text-[0.8125rem] leading-relaxed text-muted-foreground">
-                {INITIAL_NOTE}
-              </p>
-              <div className="mt-7">
-                <ClarityDial value={initial} onChange={setInitial} label="Initial feeling" />
-              </div>
-              <div className="mt-8">
-                <PrimaryButton disabled={initial === undefined} onClick={() => setStage("branch")}>
-                  Continue
-                </PrimaryButton>
-                {initial === undefined ? (
-                  <p className="mt-3 text-center text-[0.75rem] text-muted-foreground">
-                    Pick a number to continue.
-                  </p>
-                ) : null}
-              </div>
-            </section>
-          ) : null}
+        {stage === "start" ? (
+          <section className="card-cream animate-fade-in p-5 sm:p-7">
+            <h2 className="rule-gold font-display text-xl sm:text-2xl">What's going on?</h2>
+            <p className="mt-4 text-sm leading-relaxed text-olive-soft">
+              Pick whatever is closest to true right now — casual, serious, or barely formed. A few
+              short questions follow, and a number emerges from the pattern in your answers.
+            </p>
+            <ul className="mt-4 flex flex-col gap-1.5 text-sm text-olive-soft">
+              {FRAMING_LINES.map((line) => (
+                <li key={line} className="flex gap-2">
+                  <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gold" />
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
 
-          {stage === "branch" ? (
-            <section className="card-cream animate-rise p-6 sm:p-8">
-              <StepHeader step="Step 2" onBack={back} />
-              <h2 className="mt-2 text-xl text-olive">{BRANCH_PROMPT}</h2>
-              <div className="mt-5 space-y-2">
-                {BRANCHES.map((option) => (
-                  <button
-                    key={option.id}
-                    type="button"
-                    onClick={() => chooseBranch(option.id)}
-                    aria-pressed={branchId === option.id}
-                    className={[
-                      "w-full rounded-xl border px-4 py-3.5 text-left text-[0.9375rem] transition-colors",
-                      branchId === option.id
-                        ? "border-teal bg-teal text-teal-foreground"
-                        : "border-hairline bg-cream text-olive hover:bg-cream-deep",
-                    ].join(" ")}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-            </section>
-          ) : null}
-
-          {stage === "general" ? (
-            <section className="card-cream animate-rise p-6 sm:p-8">
-              <StepHeader step="Step 3" onBack={back} />
-              <h2 className="mt-2 text-xl text-olive">General evaluation</h2>
-              <p className="mt-2 text-[0.8125rem] text-muted-foreground">
-                Answer as you actually are right now, not as you'd like to be.
-              </p>
-
-              <div className="mt-7 space-y-7">
-                <ScaleChoice
-                  label="Mental Clarity"
-                  lowLabel="Foggy"
-                  highLabel="Clear"
-                  value={general.mentalClarity}
-                  onChange={(value) => patch({ mentalClarity: value })}
-                />
-                <ScaleChoice
-                  label="Emotional Load"
-                  hint="How much emotional weight are you carrying right now?"
-                  lowLabel="Light"
-                  highLabel="Heavy"
-                  value={general.emotionalLoad}
-                  onChange={(value) => patch({ emotionalLoad: value })}
-                />
-                <OptionChoice
-                  label="Nervous System State"
-                  options={NERVOUS_SYSTEM_OPTIONS}
-                  value={general.nervousSystem}
-                  onChange={(value) => patch({ nervousSystem: value })}
-                />
-                <OptionChoice
-                  label="Thought Style"
-                  options={THOUGHT_STYLE_OPTIONS}
-                  value={general.thoughtStyle}
-                  onChange={(value) => patch({ thoughtStyle: value })}
-                />
-                <OptionChoice
-                  label="Social Tone"
-                  options={SOCIAL_TONE_OPTIONS}
-                  value={general.socialTone}
-                  onChange={(value) => patch({ socialTone: value })}
-                />
-                <OptionChoice
-                  label="Observation vs. Reaction"
-                  options={OBSERVATION_OPTIONS}
-                  value={general.observation}
-                  onChange={(value) => patch({ observation: value })}
-                />
-                <OptionChoice
-                  label="What I Know vs. What I Feel"
-                  options={KNOWN_VS_FELT_OPTIONS}
-                  value={general.knownVsFelt}
-                  onChange={(value) => patch({ knownVsFelt: value })}
-                />
-
-                <TextField
-                  label="Mindframe Snapshot"
-                  hint="A line or two describing the frame you're in."
-                  value={general.mindframe}
-                  onChange={(value) => patch({ mindframe: value })}
-                  rows={2}
-                />
-                <TextField
-                  label="What discomfort am I avoiding?"
-                  value={general.avoiding}
-                  onChange={(value) => patch({ avoiding: value })}
-                  rows={3}
-                />
-                <TextField
-                  label="What would a steady response look like?"
-                  value={general.steadyResponse}
-                  onChange={(value) => patch({ steadyResponse: value })}
-                  rows={2}
-                />
-              </div>
-
-              <div className="mt-8">
-                <PrimaryButton
-                  disabled={!isGeneralComplete(general)}
-                  onClick={() => setStage("focused")}
+            <div className="mt-6 flex flex-col gap-2.5">
+              {DOORWAYS.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => {
+                    setDoorwayId(option.id);
+                    setAnswers({});
+                    setIndex(0);
+                    setSavedId(undefined);
+                    setStage("questions");
+                  }}
+                  className="group rounded-xl border border-hairline bg-background/50 px-4 py-3.5 text-left transition-colors hover:border-teal/60 hover:bg-teal/5"
                 >
-                  Continue to focused questions
-                </PrimaryButton>
-                {!isGeneralComplete(general) ? (
-                  <p className="mt-3 text-center text-[0.75rem] text-muted-foreground">
-                    Answer each scale and option question to continue.
-                  </p>
+                  <span className="block text-sm leading-snug text-foreground sm:text-base">
+                    {option.label}
+                  </span>
+                  <span className="mt-0.5 block text-xs text-muted-foreground">{option.sub}</span>
+                </button>
+              ))}
+            </div>
+
+            {history.length > 0 ? (
+              <p className="mt-6 text-xs text-muted-foreground">
+                You have {history.length} saved reading{history.length === 1 ? "" : "s"} on this
+                device.{" "}
+                <Link to="/readings" className="text-teal underline-offset-4 hover:underline">
+                  Look back
+                </Link>
+              </p>
+            ) : null}
+          </section>
+        ) : null}
+
+        {stage === "questions" && current && doorway ? (
+          <section className="card-cream animate-rise p-5 sm:p-7">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                {index > 0 ? (
+                  <button
+                    type="button"
+                    onClick={goBack}
+                    aria-label="Back to the previous question"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-background/60 px-3 py-1.5 text-xs text-olive-soft transition-colors hover:border-teal/60 hover:text-foreground"
+                  >
+                    <span aria-hidden>←</span> Back
+                  </button>
                 ) : null}
+                <p className="eyebrow">{doorway.label}</p>
               </div>
-            </section>
-          ) : null}
+              <p className="text-xs text-muted-foreground">
+                {index + 1} of {sequence.length}
+              </p>
+            </div>
 
-          {stage === "focused" && branch ? (
-            <section className="card-cream animate-rise p-6 sm:p-8">
-              <StepHeader step="Step 4" onBack={back} />
-              <h2 className="mt-2 text-xl text-olive">Focused evaluation</h2>
-              <p className="mt-2 text-[0.8125rem] text-muted-foreground">{branch.label}</p>
+            <div className="mt-3 h-0.5 w-full overflow-hidden rounded-full bg-cream-deep">
+              <div
+                className="h-full rounded-full bg-teal transition-all duration-500"
+                style={{ width: `${((index + 1) / sequence.length) * 100}%` }}
+              />
+            </div>
 
-              <div className="mt-7 space-y-6">
-                {branch.questions.map((question, index) => (
-                  <TextField
-                    key={question}
-                    label={question}
-                    value={focusedAnswers[index] ?? ""}
-                    onChange={(value) =>
-                      setFocusedAnswers((current) => {
-                        const next = [...current];
-                        next[index] = value;
-                        return next;
-                      })
-                    }
-                    rows={3}
-                  />
-                ))}
-              </div>
+            <h2 className="mt-5 font-display text-xl leading-snug sm:text-2xl">{current.prompt}</h2>
+            {current.note ? (
+              <p className="mt-2 text-sm text-muted-foreground">{current.note}</p>
+            ) : null}
 
-              <div className="mt-8">
-                <PrimaryButton onClick={() => setStage("reveal")}>
-                  Reveal evaluation
-                </PrimaryButton>
-                <p className="mt-3 text-center text-[0.75rem] text-muted-foreground">
-                  These answers are for your reflection. They are not scored.
-                </p>
-              </div>
-            </section>
-          ) : null}
+            <div className="mt-5 flex flex-col gap-2.5">
+              {current.choices.map((choice) => {
+                const selected = answers[current.id] === choice.id;
+                return (
+                  <button
+                    key={choice.id}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => choose(current.id, choice.id)}
+                    className={`rounded-xl border px-4 py-3.5 text-left text-sm leading-snug text-foreground transition-colors sm:text-base ${
+                      selected
+                        ? "border-teal bg-teal/10"
+                        : "border-hairline bg-background/50 hover:border-teal/60 hover:bg-teal/5"
+                    }`}
+                  >
+                    {choice.label}
+                  </button>
+                );
+              })}
+            </div>
 
-          {(stage === "reveal" || stage === "reflection") && outcome && initial !== undefined ? (
-            <>
-              <section className="card-cream animate-rise p-6 sm:p-8">
-                <StepHeader step="Evaluation" onBack={back} />
-                <h2 className="mt-2 text-xl text-olive">Initial feeling vs. evaluated state</h2>
+            <div className="mt-6 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={index === 0 ? restart : goBack}
+                className="text-xs text-olive-soft underline-offset-4 hover:underline"
+              >
+                {index === 0 ? "Back to the start" : "Previous question"}
+              </button>
+              <button
+                type="button"
+                onClick={restart}
+                className="text-xs text-muted-foreground underline-offset-4 hover:underline"
+              >
+                Start over
+              </button>
+            </div>
+          </section>
+        ) : null}
 
-                <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-hairline bg-background/50 p-4">
-                    <ClarityDial value={initial} label="Initial feeling" tone="terracotta" />
+
+        {stage === "result" && result && doorway ? (
+          <section className="animate-rise flex flex-col gap-4">
+            <div className="card-cream p-5 sm:p-7">
+              <p className="eyebrow">{doorway.label}</p>
+
+              {result.primary ? (
+                <>
+                  <div className="mt-4 flex items-baseline gap-4">
+                    <span className="numeral text-6xl text-teal sm:text-7xl">{result.primary}</span>
+                    <div>
+                      <p className="font-display text-xl leading-tight sm:text-2xl">
+                        {NUMBERS[result.primary].name}
+                      </p>
+                      <p className="mt-0.5 text-xs tracking-[0.14em] text-muted-foreground uppercase">
+                        {NUMBERS[result.primary].tree}
+                      </p>
+                    </div>
                   </div>
-                  <div className="rounded-2xl border border-hairline bg-background/50 p-4">
-                    <ClarityDial value={outcome.evaluated} label="Evaluated state" />
-                  </div>
-                </div>
 
-                <div className="mt-6 rounded-2xl border border-hairline bg-cream-deep/60 p-5 text-center">
-                  <p className="eyebrow">Clarity Gap</p>
-                  <p className="numeral mt-2 text-4xl text-olive">{outcome.gap.toFixed(1)}</p>
-                  <p className="mt-2 text-[0.9375rem] text-olive">{outcome.alignment}</p>
-                  <p className="mt-1 text-[0.8125rem] text-muted-foreground">
-                    {outcome.direction === "same"
-                      ? "The evaluation landed on the number you felt."
-                      : `The evaluated number is ${outcome.direction} than the number you felt.`}
+                  <p className="mt-5 text-sm leading-relaxed text-foreground">
+                    {NUMBERS[result.primary].meaning}
                   </p>
-                </div>
+                  <p className="mt-3 rounded-xl border border-teal/30 bg-teal/8 px-4 py-3 text-sm leading-relaxed text-foreground">
+                    <span className="font-medium">Core lesson.</span>{" "}
+                    {NUMBERS[result.primary].lesson}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h2 className="mt-4 font-display text-2xl leading-tight sm:text-3xl">
+                    Your number is undetermined right now.
+                  </h2>
+                  <p className="mt-4 text-sm leading-relaxed text-foreground">{result.reasoning}</p>
+                  {result.contested.length > 1 ? (
+                    <p className="mt-3 text-sm leading-relaxed text-olive-soft">
+                      At the moment the answers lean toward{" "}
+                      {result.contested
+                        .map((n) => `${n} ${NUMBERS[n].name}`)
+                        .join(", ")
+                        .replace(/, ([^,]*)$/, " and $1")}{" "}
+                      at once — a real state, not a failed reading.
+                    </p>
+                  ) : null}
 
-                <div className="mt-6">
-                  <h3 className="text-[0.9375rem] font-medium text-olive">
-                    How the evaluated number was formed
-                  </h3>
-                  <ul className="mt-3 divide-y divide-hairline overflow-hidden rounded-xl border border-hairline">
-                    {outcome.parts.map((part) => (
-                      <li
-                        key={part.label}
-                        className="flex items-center justify-between gap-4 px-4 py-2.5 text-[0.8125rem]"
+                  {leftHere ? (
+                    <p className="mt-4 rounded-xl border border-hairline bg-background/50 px-4 py-3 text-sm leading-relaxed text-olive-soft">
+                      Left here. Undetermined is a legitimate place to stop.
+                    </p>
+                  ) : nextProbe ? (
+                    <div className="mt-5 rounded-xl border border-teal/30 bg-teal/8 p-4">
+                      <p className="text-sm leading-relaxed text-foreground">
+                        There's one more question that would help separate them — the same ground,
+                        asked another way. It's still multiple choice, and you can stop instead.
+                      </p>
+                      <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
+                        <button
+                          type="button"
+                          onClick={goDeeper}
+                          className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-teal px-5 text-sm font-medium text-teal-foreground transition-opacity hover:opacity-90"
+                        >
+                          Go one layer deeper
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setLeftHere(true)}
+                          className="inline-flex h-11 flex-1 items-center justify-center rounded-full border border-hairline bg-cream px-5 text-sm text-olive-soft transition-colors hover:border-teal/60 hover:text-foreground"
+                        >
+                          Leave it here
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={restart}
+                        className="mt-3 text-xs text-muted-foreground underline-offset-4 hover:underline"
                       >
-                        <span className="text-olive-soft">{part.label}</span>
-                        <span className="text-right text-olive">
-                          {part.answer}
-                          <span className="numeral ml-3 text-teal">{part.score}</span>
-                        </span>
+                        Start over with a different way in
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="mt-5 rounded-xl border border-hairline bg-background/50 p-4">
+                      <p className="text-sm leading-relaxed text-foreground">
+                        You've gone as deep as this situation goes today, and it's still pointing in
+                        more than one direction. That's allowed to stand — there is no wrong number
+                        and no wrong answer.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={restart}
+                        className="mt-3 text-xs text-olive-soft underline-offset-4 hover:underline"
+                      >
+                        Start over with a different way in
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+
+            {result.primary ? (
+              <div className="card-cream p-5 sm:p-7">
+                <h3 className="font-display text-lg">Why the pattern led there</h3>
+                <p className="mt-3 text-sm leading-relaxed text-foreground">{result.reasoning}</p>
+                {result.contributions.length > 0 ? (
+                  <ul className="mt-4 flex flex-col gap-3">
+                    {result.contributions.map((contribution, i) => (
+                      <li key={i} className="border-l-2 border-gold/60 pl-3">
+                        <p className="text-xs text-muted-foreground">
+                          {contribution.questionPrompt}
+                        </p>
+                        <p className="mt-0.5 text-sm text-foreground">
+                          {contribution.choiceLabel}
+                        </p>
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-3 text-[0.75rem] leading-relaxed text-muted-foreground">
-                    {PROVISIONAL_NOTE}
-                  </p>
-                </div>
-
-                {outcome.mismatchSources.length > 0 ? (
-                  <div className="mt-6 rounded-2xl border border-hairline bg-background/50 p-5">
-                    <h3 className="text-[0.9375rem] font-medium text-olive">
-                      Possible sources of mismatch
-                    </h3>
-                    <ul className="mt-3 space-y-2 text-[0.875rem] leading-relaxed text-olive-soft">
-                      {outcome.mismatchSources.map((source) => (
-                        <li key={source} className="flex gap-2">
-                          <span className="text-gold">—</span>
-                          <span>{source}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
                 ) : null}
-
-                {stage === "reveal" ? (
-                  <div className="mt-8">
-                    <PrimaryButton onClick={() => setStage("reflection")}>
-                      Continue to reflection
-                    </PrimaryButton>
-                  </div>
-                ) : null}
-              </section>
-
-              {stage === "reflection" ? (
-                <section className="card-cream animate-rise p-6 sm:p-8">
-                  <StepHeader step="Reflection" onBack={back} />
-                  <TextField label={REFLECTION_PROMPT} value={reflection} onChange={setReflection} rows={6} />
-                  <div className="mt-6 space-y-3">
-                    <PrimaryButton onClick={save}>Save evaluation</PrimaryButton>
-                    <SecondaryButton onClick={restart}>Start another evaluation</SecondaryButton>
-                  </div>
-                </section>
-              ) : null}
-            </>
-          ) : null}
-
-          {stage === "saved" && savedRecord ? (
-            <section className="card-cream animate-rise p-6 text-center sm:p-8">
-              <p className="eyebrow">Saved to this device</p>
-              <h2 className="mt-3 text-xl text-olive">Evaluation recorded</h2>
-              <p className="mt-2 text-[0.875rem] text-muted-foreground">
-                {formatEvaluationDate(savedRecord.createdAt)} · {savedRecord.branchLabel}
-              </p>
-              <p className="numeral mt-6 text-3xl text-olive">
-                {savedRecord.initial} → {savedRecord.evaluated.toFixed(1)}
-              </p>
-              <p className="mt-2 text-[0.875rem] text-olive-soft">
-                Clarity Gap {savedRecord.gap.toFixed(1)} · {savedRecord.alignment}
-              </p>
-              <div className="mt-8 space-y-3">
-                <PrimaryButton onClick={restart}>Start another evaluation</PrimaryButton>
-                <Link
-                  to="/history"
-                  className="block rounded-xl border border-hairline bg-cream px-5 py-3 text-center text-[0.9375rem] text-olive transition-colors hover:bg-cream-deep"
-                >
-                  View past evaluations
-                </Link>
               </div>
-            </section>
-          ) : null}
-        </div>
+            ) : null}
+
+            {result.supporting.length > 0 ? (
+              <div className="card-cream p-5 sm:p-7">
+                <h3 className="font-display text-lg">
+                  {result.primary ? "Also present" : "Threads that showed up"}
+                </h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Supporting patterns — quieter, but there in your answers.
+                </p>
+                <div className="mt-4 flex flex-col gap-3">
+                  {result.supporting.map((n) => (
+                    <NumberPanel key={n} n={n} />
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            <FramingNote />
+
+            <button
+              type="button"
+              onClick={goBack}
+              className="self-start text-xs text-olive-soft underline-offset-4 hover:underline"
+            >
+              ← Back to the last question
+            </button>
+
+
+
+            <div className="flex flex-col gap-2.5 sm:flex-row">
+              <button
+                type="button"
+                onClick={restart}
+                className="inline-flex h-12 flex-1 items-center justify-center rounded-full bg-teal px-6 text-sm font-medium text-teal-foreground transition-opacity hover:opacity-90"
+              >
+                Try another question
+              </button>
+              <Link
+                to="/readings"
+                className="inline-flex h-12 flex-1 items-center justify-center rounded-full border border-hairline bg-cream px-6 text-sm text-olive-soft transition-colors hover:border-teal/60 hover:text-foreground"
+              >
+                See past readings
+              </Link>
+            </div>
+          </section>
+        ) : null}
       </div>
     </main>
-  );
-}
-
-function StepHeader({ step, onBack }: { step: string; onBack: () => void }) {
-  return (
-    <div className="flex items-center justify-between">
-      <p className="eyebrow">{step}</p>
-      <button
-        type="button"
-        onClick={onBack}
-        className="text-[0.8125rem] text-muted-foreground underline-offset-4 transition-colors hover:text-olive hover:underline"
-      >
-        ← Back
-      </button>
-    </div>
-  );
-}
-
-function PrimaryButton({
-  children,
-  onClick,
-  disabled,
-}: {
-  children: React.ReactNode;
-  onClick: () => void;
-  disabled?: boolean;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      className="w-full rounded-xl bg-teal px-5 py-3.5 text-[0.9375rem] font-medium text-teal-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-    >
-      {children}
-    </button>
-  );
-}
-
-function SecondaryButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="w-full rounded-xl border border-hairline bg-cream px-5 py-3.5 text-[0.9375rem] text-olive transition-colors hover:bg-cream-deep"
-    >
-      {children}
-    </button>
-  );
-}
-
-function TextField({
-  label,
-  hint,
-  value,
-  onChange,
-  rows = 3,
-}: {
-  label: string;
-  hint?: string;
-  value: string;
-  onChange: (value: string) => void;
-  rows?: number;
-}) {
-  return (
-    <label className="block">
-      <span className="text-[0.9375rem] font-medium text-olive">{label}</span>
-      {hint ? <span className="mt-1 block text-[0.8125rem] text-muted-foreground">{hint}</span> : null}
-      <textarea
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        rows={rows}
-        className="mt-3 w-full rounded-xl border border-hairline bg-background/60 px-4 py-3 text-[0.9375rem] leading-relaxed text-olive outline-none transition-colors placeholder:text-muted-foreground focus:border-teal"
-        placeholder="Optional"
-      />
-    </label>
   );
 }
