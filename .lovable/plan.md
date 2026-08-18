@@ -1434,3 +1434,80 @@ Rules: at most **one** boundary probe per run. If it doesn't separate the pair, 
 - The established 1–9 meanings remain the later interpretive layer, unchanged and still awaited in readable form.
 
 No production code, scoring formula, averaging, or number algorithm in this task.
+
+---
+
+## Milestone 7 — "WHAT AM I TRYING NOT TO EXPERIENCE RIGHT NOW?" (design principle, locked)
+
+A major design principle is now locked: **"What am I trying not to experience right now?" is a universal clarity doorway.** It is a core reusable pathway across the whole app, not a drinking- or addiction-specific question, and not an accusation.
+
+### Why it belongs
+
+The single most common shape under "I don't know what to do" is not indecision — it is the quiet steering-away from a feeling, conversation, or fact. Asking it directly, gently, and early gives the system a high-value piece of evidence and gives the person a useful thing to notice. But the question is only useful if it never assumes the answer.
+
+### The non-negotiable rule
+
+**Do NOT assume the behavior is avoidance.** Reaching for a drink, scrolling, gambling, texting someone, sleeping, working, shopping, picking a fight, making a sudden change — any of these may be avoidance, and any of them may be genuine enjoyment, celebration, curiosity, rest, or love. The doorway offers the question and follows the person's answer. The deeper framework decides what pattern is actually present. If the person says "I just enjoy it," that is taken at face value and the run continues from there — it is not treated as denial, and it is not scored down.
+
+### Tone principle
+
+Wrap the difficult question in approachable language and small choices, never clinical terminology or required writing. People resist direct discomfort; the doorway lowers the cost of looking by offering a tap before it asks for words. Short, human, sometimes a little warm or dry. "I don't know" is valid at every branch and is never low clarity.
+
+### The doorway as a reusable pathway
+
+This is a **cross-cutting branch**, not a top-level intent of its own. It can be reached from many surfaces:
+- Doorway 1 ("I don't know what the hell to do today") → branch *"I'm trying not to drink/use"* or *"I feel restless and need something to do"*.
+- Doorway 3 ("I'm feeling lucky") → the probe is available when the activity could be a steering-away, without moralizing the activity.
+- Any Level 1 whose selected context implies a redirect behavior (scrolling, sleeping, shopping, working, picking a fight, sudden life change, texting) may route here.
+
+It can also surface adaptively: when Level 3 coverage probes `[7]` show a consistently untouched part, the system may offer *"Is there something here you'd rather not sit with?"* as a gentle, optional invitation — never a demand.
+
+### The branch shape
+
+**Level 1 (the invitation, never an accusation):**
+*"You reached for [thing]. What's that about, do you think?"*
+- I enjoy it, genuinely
+- I'm celebrating / it's a good thing
+- I'm curious about it
+- I'm trying not to feel something
+- I'm trying not to think about something
+- I'm trying not to be somewhere (in my head, in the room)
+- It's just habit
+- I don't know
+- None of these — let me explain
+
+If the answer is *enjoyment, celebration, curiosity, or habit*, the run continues from that honest position. The behavior is not reframed as avoidance behind the person's back. The deeper framework still runs its probes; if coverage `[7]` later shows an untouched area, that is reported as an observation, not as proof the person was in denial.
+
+**Level 2 (only if the person pointed at a "trying not to"):**
+*"What is it you're trying not to experience?"*
+- A feeling (name it loosely — heavy, flat, anxious, ashamed, something else)
+- A conversation
+- A memory
+- A decision
+- The quiet
+- Being alone with it
+- I don't actually know
+- None of these — let me explain
+
+**Level 3** then proceeds into the normal Depth Ladder reusable core, framed on the named thing:
+- SORT `[1]` + second cut `[2]` on lines built from the named discomfort.
+- The resolver pair `[4]:` *"What don't you have yet?"* → *"Which would change what you do?"* — where "nothing would" and "I don't know" are valid and readable.
+- The coverage probe `[7]:` *"Which part of this have you not looked at?"*
+- The movement probe `[6]:` *"Does it move, or go round?"*
+- The load pair `[5]` as **context only** — weight present / weight seen, read as coherence, never as level. Distress is never a negative signal.
+- The stance close `[8]:* re-show their own opening words → *"Where does it sit now?"*
+
+### Design guarantees this pathway must preserve
+
+- It is a doorway, not a diagnosis. The purpose is to help the user **discover something about their current reality**, not to tell them what they should do.
+- No shame, no assumption of avoidance, no reframing of an honest "I enjoy it" into denial.
+- "I don't know" is valid at every branch and is never scored as low clarity.
+- Honest uncertainty about what one is avoiding is itself readable — accurately locating the edge of what you know is clarity, not its absence.
+- Every pattern from 1–9 plus Undetermined remains reachable from this pathway. Nothing here hard-codes a destination number.
+- The established 1–9 meanings remain the later interpretive layer, unchanged.
+
+### Reconciliation with earlier milestones
+
+This does not replace Doorway 1's *"I'm trying not to drink/use"* branch — it generalizes the principle underneath it. That branch now routes through this pathway, and the same pathway is available from any behavior-redirect surface across the library. It is added to the reusable engine from Milestone 6 as a cross-cutting branch, not as additional per-doorway authoring.
+
+No production code, questions, scoring, or UI changed in this task.
