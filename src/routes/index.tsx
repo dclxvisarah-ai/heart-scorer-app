@@ -87,7 +87,11 @@ function GabrielsNumberPage() {
 
   function choose(questionId: string, choiceId: string) {
     const next = { ...answers, [questionId]: choiceId };
+    // Changing an answer invalidates anything answered after this question,
+    // since later questions can depend on this branch.
+    for (const q of sequence.slice(index + 1)) delete next[q.id];
     setAnswers(next);
+    setSavedId(undefined);
 
     const nextSequence = doorway ? buildSequence(doorway, next) : [];
     if (index + 1 >= nextSequence.length) {
@@ -96,6 +100,17 @@ function GabrielsNumberPage() {
       setIndex(index + 1);
     }
   }
+
+  function goBack() {
+    if (stage === "result") {
+      setStage("questions");
+      setIndex(Math.max(sequence.length - 1, 0));
+      setSavedId(undefined);
+      return;
+    }
+    if (index > 0) setIndex(index - 1);
+  }
+
 
   const current = sequence[index];
 
@@ -169,9 +184,21 @@ function GabrielsNumberPage() {
         ) : null}
 
         {stage === "questions" && current && doorway ? (
-          <section className="card-cream animate-rise p-5 sm:p-7" key={current.id}>
+          <section className="card-cream animate-rise p-5 sm:p-7">
             <div className="flex items-center justify-between gap-3">
-              <p className="eyebrow">{doorway.label}</p>
+              <div className="flex items-center gap-2">
+                {index > 0 ? (
+                  <button
+                    type="button"
+                    onClick={goBack}
+                    aria-label="Back to the previous question"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-background/60 px-3 py-1.5 text-xs text-olive-soft transition-colors hover:border-teal/60 hover:text-foreground"
+                  >
+                    <span aria-hidden>←</span> Back
+                  </button>
+                ) : null}
+                <p className="eyebrow">{doorway.label}</p>
+              </div>
               <p className="text-xs text-muted-foreground">
                 {index + 1} of {sequence.length}
               </p>
@@ -190,22 +217,30 @@ function GabrielsNumberPage() {
             ) : null}
 
             <div className="mt-5 flex flex-col gap-2.5">
-              {current.choices.map((choice) => (
-                <button
-                  key={choice.id}
-                  type="button"
-                  onClick={() => choose(current.id, choice.id)}
-                  className="rounded-xl border border-hairline bg-background/50 px-4 py-3.5 text-left text-sm leading-snug text-foreground transition-colors hover:border-teal/60 hover:bg-teal/5 sm:text-base"
-                >
-                  {choice.label}
-                </button>
-              ))}
+              {current.choices.map((choice) => {
+                const selected = answers[current.id] === choice.id;
+                return (
+                  <button
+                    key={choice.id}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => choose(current.id, choice.id)}
+                    className={`rounded-xl border px-4 py-3.5 text-left text-sm leading-snug text-foreground transition-colors sm:text-base ${
+                      selected
+                        ? "border-teal bg-teal/10"
+                        : "border-hairline bg-background/50 hover:border-teal/60 hover:bg-teal/5"
+                    }`}
+                  >
+                    {choice.label}
+                  </button>
+                );
+              })}
             </div>
 
             <div className="mt-6 flex items-center justify-between">
               <button
                 type="button"
-                onClick={() => (index === 0 ? restart() : setIndex(index - 1))}
+                onClick={index === 0 ? restart : goBack}
                 className="text-xs text-olive-soft underline-offset-4 hover:underline"
               >
                 {index === 0 ? "Back to the start" : "Previous question"}
@@ -220,6 +255,7 @@ function GabrielsNumberPage() {
             </div>
           </section>
         ) : null}
+
 
         {stage === "result" && result && doorway ? (
           <section className="animate-rise flex flex-col gap-4">
@@ -300,6 +336,16 @@ function GabrielsNumberPage() {
             ) : null}
 
             <FramingNote />
+
+            <button
+              type="button"
+              onClick={goBack}
+              className="self-start text-xs text-olive-soft underline-offset-4 hover:underline"
+            >
+              ← Back to the last question
+            </button>
+
+
 
             <div className="flex flex-col gap-2.5 sm:flex-row">
               <button
