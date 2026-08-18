@@ -583,7 +583,7 @@ function CompareStage({
 
       <div
         className={`mt-7 rounded-2xl border px-5 py-5 text-center ${
-          tone === "teal" ? "border-teal/40 bg-teal/8" : "border-terracotta/40 bg-terracotta/8"
+          tone === "teal" ? "border-teal/40 bg-teal/10" : "border-terracotta/40 bg-terracotta/10"
         }`}
       >
         <p className="eyebrow">Clarity Gap</p>
