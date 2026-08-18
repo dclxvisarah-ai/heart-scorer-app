@@ -219,9 +219,14 @@ Existing `unknown`-tagged questions — call now that wording exists: replace `g
 
 Each item still gets the existing `note` (steadying line) and a `mismatchSource` when implemented.
 
-## Dimension 5 — EMOTIONAL LOAD (PROPOSED — pending Sarah's review)
+## Dimension 5 — EMOTIONAL LOAD (LOCKED — Sarah approved)
 
-Name recommendation: **Emotional Load**, with an alternative framing below that I think is stronger; please choose.
+Status: fifth of the 8 planned dimensions. Decisions locked in this pass and recorded verbatim for the permanent plan. Not yet implemented; no code changes.
+
+Locked decisions:
+
+- **Framing B — load awareness, forward-scored.** The dimension scores how clearly the person can see the emotional weight and its effect on their reading, not how heavy the situation is directly. This keeps it a clarity discrimination like every other dimension, needs no reverse scoring, and does not penalize someone for being in a hard situation — consistent with the non-diagnostic framing.
+- **Name:** Emotional Load.
 
 Core distinction: how much weight the situation is currently carrying, and whether the person can see that weight acting on their reading of it.
 
@@ -229,25 +234,24 @@ Why it belongs: every dimension so far tests a discrimination the person can mak
 
 How it differs from 1–4: Dim 3 (observation vs reaction) asks whether the *account* is contaminated by reaction; Dim 5 asks how much *weight* is present at all. A person can be carrying a great deal and still describe the situation cleanly (high 3, high load), or be carrying little and still report reactively (low 3, low load). It is not Dim 2 or 4 — no epistemic or information content.
 
-Two candidate framings:
-
-- **A — state measure (reverse-scored).** Asks directly how heavy it is. Honest, but it measures the situation's weight rather than the person's clarity, so it does not sit naturally on a clarity scale.
-- **B — load awareness (forward-scored). Recommended.** Asks how clearly the person can see the weight and its effect on their reading. Same territory, but it stays a clarity discrimination like every other dimension, needs no reverse scoring, and does not penalize someone for being in a hard situation — which matters given the non-diagnostic framing.
-
-Proposed questions, framing B (agreement = more clarity):
+Locked questions (agreement scale 1–5; agreement = more clarity; forward-scored):
 
 - General: "How clearly can you see how much this situation is weighing on you right now?"
 - Relationship (focused): "How clearly can you see how much weight this relationship is carrying for you at the moment?"
 - Timing (focused): "How clearly can you see whether the pressure you feel about timing is coming from the situation or from how much it matters to you?"
 - Decision (focused): "How clearly can you see how much the weight of this decision is affecting how you are thinking about it?"
 
-If framing A is preferred instead, the general item becomes "How much is this situation weighing on you right now?" with `reverse: true`, and the focused items are reworded the same way. Framing B is my recommendation.
-
 Overlap check against 1–4: no meaning/occurrence content (1), no know/assume content (2), no observe/react account content (3), no missing-information content (4). Clean.
 
-## Dimension 6 — MENTAL MOVEMENT (PROPOSED — pending Sarah's review)
+## Dimension 6 — MENTAL MOVEMENT (LOCKED — Sarah approved)
 
-Name recommendation: **Mental Movement** rather than "thought pattern" or "mental noise". "Pattern" already means something else in this app (the `pattern` branch, recurring situations), and "noise" is a volume metaphor that invites the same state-vs-clarity problem as Dim 5.
+Status: sixth of the 8 planned dimensions. Decisions locked in this pass and recorded verbatim for the permanent plan. Not yet implemented; no code changes.
+
+Locked decisions:
+
+- **Name: Mental Movement.** Retained over "thought pattern" / "mental noise" — "pattern" already names a branch in this app, and "noise" invites a state-vs-clarity problem.
+- **Forward-scored wording.** Agreement = more clarity; no reverse scoring. The looping/circling concept stays in the underlying language of the items, but "looping" is not used as the scored state label — the scored state is movement vs. repetition, phrased forward.
+- **Underlying concept:** movement vs. looping/repetition.
 
 Core distinction: whether thinking about the situation is moving — going somewhere new — or circling the same ground.
 
@@ -255,20 +259,23 @@ Why it belongs: repetition can imitate clarity. Rehearsing a conclusion produces
 
 How it differs: Dim 4 is about the information landscape; Dim 6 is about the motion of the thinking regardless of what information exists. Dim 5 is weight; Dim 6 is repetition — a light situation can loop and a heavy one can move. Dim 6 is also not the `pattern` branch, which is about recurrence in the world, not in the thinking.
 
-Proposed questions (agreement = more clarity; forward-scored, matching the Dim 5 framing-B logic):
+Locked questions (agreement scale 1–5; agreement = more clarity; forward-scored):
 
 - General: "How clearly can you tell whether your thinking about this is moving forward or going over the same ground?"
 - Direction (focused): "How clearly can you tell whether your thinking about where you are heading is developing or repeating?"
 - Pattern (focused): "How clearly can you tell the difference between noticing this pattern and going over it again?"
 - Timing (focused): "How clearly can you tell whether returning to the question of timing is producing anything new?"
 
-Reverse-scored alternative if you prefer the direct state measure: "How much of your thinking about this is going over ground you have already covered?" with `reverse: true`.
-
 Overlap check against 1–5: no information-gap content (4); no weight content (5) — an item mentioning how tiring the looping is would leak into 5 and has been avoided; no account-contamination content (3). Clean.
 
-## Dimension 7 — AVOIDANCE (PROPOSED — pending Sarah's review)
+## Dimension 7 — AVOIDANCE (LOCKED — Sarah approved)
 
-Name recommendation: **Avoidance** (working label; user-facing wording never uses the word).
+Status: seventh of the 8 planned dimensions. Locked as proposed, forward-scored. Not yet implemented; no code changes.
+
+Locked decisions:
+
+- **Forward-scored.** Agreement = more clarity; no reverse scoring.
+- **Name:** Avoidance (working label; user-facing wording never uses the word).
 
 Core distinction: whether there is a part of the situation being steered around, and whether the person can see themselves steering.
 
@@ -276,18 +283,23 @@ Why it belongs: this is the only dimension that addresses *coverage* — whether
 
 How it differs: Dim 4 is about information that is not available; Dim 7 is about information that is available but not being looked at. That distinction is the sharpest boundary in the set and must be protected in wording — "I don't have it" (4) vs "I have it and am going around it" (7). Dim 5 is the weight itself; Dim 7 is the movement away from the weight.
 
-Proposed questions (agreement = more clarity):
+Locked questions (agreement scale 1–5; agreement = more clarity):
 
 - General: "How clearly can you tell whether there is a part of this you are staying away from?"
 - Relationship (focused): "How clearly can you tell whether there is something about this relationship you are not letting yourself look at directly?"
 - Decision (focused): "How clearly can you tell whether one of your options is one you are avoiding considering?"
 - Timing (focused): "How clearly can you tell whether waiting is a considered choice or a way of not facing this yet?"
 
-The timing item is the strongest of the four because it makes the distinction doable rather than announcing it, and it does not assume the answer is avoidance.
-
 Overlap check against 1–6: distinct from 4 (unavailable vs unexamined), from 5 (weight vs movement away from it), from 6 (repetition vs omission). Clean. Note that a person high on 6 and low on 7 — looping precisely to avoid something — is a real and interesting combination the profile will now capture.
 
-## Dimension 8 — REVISABILITY (PROPOSED — pending Sarah's review)
+## Dimension 8 — REVISABILITY (LOCKED — Sarah approved)
+
+Status: eighth of the 8 planned dimensions. Locked as proposed, forward-scored. Not yet implemented; no code changes.
+
+Locked decisions:
+
+- **Forward-scored.** Agreement = more clarity; no reverse scoring.
+- **Name:** Revisability.
 
 Core distinction: whether the current reading can be updated when something new arrives.
 
@@ -295,7 +307,7 @@ Why it belongs: it is the difference between clarity and conviction. A fixed rea
 
 How it differs: every other dimension asks about the reading as it stands now. Dim 8 asks about the reading's relationship to future information. It is not Dim 4 — naming what you are missing (4) is compatible with refusing to update when you get it (8).
 
-Proposed questions (agreement = more clarity):
+Locked questions (agreement scale 1–5; agreement = more clarity):
 
 - General: "How openly could your current read on this change if you learned something new?"
 - Direction (focused): "How openly could your sense of where you are heading change if something unexpected arrived?"
@@ -306,20 +318,20 @@ Behavioural second reading (carried from section 4 above, unchanged and still re
 
 Overlap check against 1–7: no information-inventory content (4), no weight (5), no repetition (6), no coverage (7). Clean.
 
-## Ordering recommendation for Dimensions 5–8
+## Locked order for Dimensions 5–8
 
-Proposed order: 5 Emotional Load → 6 Mental Movement → 7 Avoidance → 8 Revisability. Rationale: 5–7 are all *conditions on* the discriminations in 1–4, ordered from most passive (weight is present) through repetition to active steering-away. 8 is last because it is the only forward-looking dimension and the only one with a post-reveal behavioural component, so it naturally sits at the end of the run.
+Order: **5 Emotional Load → 6 Mental Movement → 7 Avoidance → 8 Revisability.** Locked by Sarah in this pass. Rationale: 5–7 are all *conditions on* the discriminations in 1–4, ordered from most passive (weight is present) through repetition to active steering-away. 8 is last because it is the only forward-looking dimension and the only one with a post-reveal behavioural component, so it naturally sits at the end of the run.
 
-Alternative worth considering: move Avoidance to 5 and Emotional Load to 7, on the grounds that avoidance is a coverage question about the situation and belongs closer to Dimensions 1–4, while load and revisability are both about the person's stance. Either order works for the instrument; the first reads more naturally in the flow.
+## Eight-dimension question architecture — status and next phase
 
-Open calls for Sarah:
+All eight dimensions are now designed and locked in this plan (1–4 finalized wording, 5–8 locked decisions). No app code, questions, scoring formula, UI, or number system has been changed. The future non-scored "I genuinely don't know" playful option remains a design note only (see below).
 
-1. Dimension 5 — framing A (state, reverse-scored) or framing B (load awareness, forward-scored, recommended)?
-2. Dimension 6 — name "Mental Movement" (recommended) or keep "thought pattern" / "mental noise"?
-3. Dimension 6 — forward-scored or the reverse-scored direct alternative?
-4. Ordering — 5/6/7/8 as proposed, or the avoidance-first alternative?
+The eight-dimension question architecture is now ready for the next phase:
 
-Nothing in Dimensions 5–8 is implemented, and no 1–9 meanings or scoring changes are proposed in this pass. No code is changed in this task.
+1. **Review the complete instrument for overlap.** Walk all eight dimensions together and confirm the boundaries between every pair still hold now that the full set exists — especially the 4-vs-7 (unavailable vs unexamined) and 5-vs-7 (weight vs movement away) edges, and any drift introduced by the 5–8 wording. Revise wording only if a real leak is found; do not redesign dimensions.
+2. **Design how the 1–9 number system should be integrated before implementation.** Per the rules in section 5, the number must be *derived from the answers* (a stated rule over the eight-value clarity profile), with no meaning attached to any digit and no mapping to Tree of Life or angel numbers. Settle the derivation rule before any code changes.
+
+Implementation of the eight-dimension instrument and the number system does not begin until both of the above are agreed. No code is changed in this task.
 
 
 ## Design note — optional non-scored "I genuinely don't know" response (future, not yet implemented)
