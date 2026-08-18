@@ -23,12 +23,12 @@ import { formatGap, loadHistory, newId, saveEntry, type HistoryEntry } from "@/l
 
 const TITLE = "Gabriel's Number Clarity Evaluator";
 const DESCRIPTION =
-  "A provisional, self-guided evaluation: rate your clarity by feel, work through general and situation-specific questions, then compare your perception against the evaluated figure.";
+  "A self-guided evaluation: rate your clarity by feel, work through general and situation-specific questions, then compare your perception against the evaluated figure.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: `${TITLE} — Provisional Clarity Evaluation` },
+      { title: `${TITLE} — Clarity Evaluation` },
       { name: "description", content: DESCRIPTION },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
@@ -326,7 +326,7 @@ function StartStage({ onBegin }: { onBegin: () => void }) {
         <p>
           You will give a first reading by feel, choose the kind of situation you are evaluating,
           answer a set of general clarity questions and then a focused set, and finally compare your
-          first reading against the provisional evaluated figure.
+          first reading against the evaluated figure.
         </p>
         <p>
           The difference between those two readings is the <strong>Clarity Gap</strong>. It is the
@@ -494,7 +494,7 @@ function QuestionStage({
           disabled={!value}
           onClick={() => (isLast ? onComplete() : onIndexChange(index + 1))}
         >
-          {isLast ? "See provisional clarity" : "Next question"}
+          {isLast ? "See evaluated clarity" : "Next question"}
         </PrimaryButton>
       </div>
     </Card>
@@ -519,7 +519,7 @@ function RevealStage({
   return (
     <Card>
       <p className="eyebrow">Step three</p>
-      <h2 className="mt-2 font-display text-xl sm:text-2xl">Provisional evaluated clarity</h2>
+      <h2 className="mt-2 font-display text-xl sm:text-2xl">Evaluated clarity</h2>
       <div className="mt-7 flex justify-center">
         <ClarityDial value={evaluated} caption={band} tone="teal" />
       </div>
@@ -716,7 +716,7 @@ function DoneStage({
       <dl className="mt-6 divide-y divide-hairline border-y border-hairline">
         <Row label="Branch" value={branch.label} />
         <Row label="By feel" value={initial.toFixed(1)} />
-        <Row label="Evaluated (provisional)" value={result.evaluated.toFixed(1)} />
+        <Row label="Evaluated" value={result.evaluated.toFixed(1)} />
         <Row label="Clarity Gap" value={formatGap(result.clarityGap)} />
       </dl>
 
