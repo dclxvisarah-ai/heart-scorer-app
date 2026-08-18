@@ -660,3 +660,136 @@ The result is **the emergent number plus a concise non-diagnostic reflection**, 
 **DRAFT — explicitly not final.** These nine patterns are a stress-test artefact. Next steps before any implementation: run real and constructed profiles against the nine definitions, confirm the 6-precedence rule holds, decide which dimensions become demonstrated tasks (Phase 2C step 1), and only then move to Phase 2E for restoring the 1–9 meanings from the uploaded Pythagorean / Tree-of-Life source.
 
 No code, questions, scoring, or UI changed in this task.
+
+## Phase 2C — STRESS TEST OF THE NINE-PATTERN ARCHITECTURE (research only)
+
+Design/research exercise. No code, UI, question, scoring, or behaviour change. No symbolic system is used anywhere below to rescue a definition; the digits remain provisional labels.
+
+Notation: `1–4` = core discriminations + uncertainty handling. `5L` = load present, `5S` = load seen. `6` movement, `7` coverage, `8` stance. `D–S` = demonstrated vs self-perceived (aligned / over / under).
+
+### TEST SET A — Constructed profiles
+
+**A1. Very low clarity, genuinely unsure, not overclaiming.** 1–3 weak, 4 weak (cannot yet name unknowns), 5L low, 6 weak, 7 mixed, 8 mixed, D–S aligned.
+→ **1**. Drivers: weak core + D–S aligned. Competing: 2 (weak core), 7 (unsureness). Resolver: D–S alignment separates 1 from 2; 7 requires Dim 4 *strong* (unknowns **and** criteria named) which is absent. **Succeeds.**
+
+**A2. Very low clarity, extremely confident, assumption-heavy.** 1–2 weak, 3 mixed, 4 weak, 8 weak, D–S over (large).
+→ **2**. Drivers: D–S over + 2 weak + 8 weak. Competing: 1, 6. Resolver: D–S over rules out 1; the inconsistency is across the D–S axis, not inside the core, so not 6. **Succeeds — and this is the case self-report alone cannot catch.**
+
+**A3. High emotional load, excellent discrimination.** 1–4 strong, 5L high + 5S high, 6 mixed, 7 mixed, 8 strong, D–S aligned.
+→ **8**. Drivers: strong core under high-and-seen load. Competing: 9 (strong core), 7. Resolver: 9 requires 5/6/7 all strong; here 6 and 7 are mixed. **Succeeds.**
+
+**A4. Calm, low load, poor discrimination.** 1–3 weak, 4 weak, 5L low, 6 mixed, 7 mixed, 8 mixed, D–S aligned.
+→ **1**. Drivers: weak core, low load contributes nothing. Competing: 2. Resolver: D–S aligned. **Succeeds — confirms calm is not evidence.**
+
+**A5. Honest uncertainty + excellent resolution criteria.** 1–3 strong, 4 strong (unknowns + what would settle them), 6 strong, 7 strong, 5L mixed + seen, 8 strong, D–S aligned.
+→ **7**. Drivers: Dim 4 strong with strong core and strong 8. Competing: 9 (conditions look strong). Resolver: 9 needs 5/6/7 all strong *including* load seen at full strength; here load is mixed and Dim 4 is the defining finding. **Ambiguous at the margin** — see Set C, 6-vs-7 and 7-vs-9 notes; needs a stated precedence rule (proposed below).
+
+**A6. High-confidence reasoning, weak fact/interpretation separation.** 1 weak, 2 mixed, 3 mixed-strong, 4 mixed, 8 weak, D–S over.
+→ **2**. Drivers: D–S over + 8 weak. Competing: 6 (single weak core dimension), 3. Resolver: precedence — D–S over with 8 weak claims 2 before spread claims 6; 3 requires the weak dimension to be 3 with load unseen. **Succeeds, but only because the D–S rule fires first — precedence must be written down explicitly.**
+
+**A7. Strong reasoning, repetitive looping.** 1–3 strong, 4 weak on criteria only, 6 weak, 7 strong, 8 mixed.
+→ **4**. Drivers: 6 weak + 7 strong. Competing: 5 (inverse), 6. Resolver: the 6/7 inversion. **Succeeds.**
+
+**A8. Strong reasoning, one emotionally avoided area.** 1–3 strong, 4 mixed, 6 strong, 7 weak, 5L present, 8 mixed.
+→ **5**. Drivers: 7 weak + 6 strong. Competing: 4, 8. Resolver: inversion rules out 4; 8 requires load high *and seen* plus core 1–4 strong. **Succeeds.**
+
+**A9. Strong reasoning with genuine iterative updating.** 1–4 strong, 6 strong (each pass changes the account), 7 strong, 5L mixed + seen, 8 strong.
+→ **9** if 5S counts as strong, **7** if load reads as only mixed. Competing: 7, 8. **Ambiguous** — the 7/8/9 triangle is decided by a load judgement that is currently underspecified.
+
+**A10. Highly revisable, keeps correcting accurately.** 1–4 strong, 8 strong, 6 strong, 7 mixed, D–S aligned or under.
+→ **7** or **9**. Drivers: 8 strong never lowers. Competing: 4 (revisits!). Resolver: 6 strong + accurate correction distinguishes iteration from looping. **Succeeds on the 4 boundary, ambiguous on 7/9.**
+
+**A11. Excellent almost everywhere, large D–S mismatch.** 1–4 strong demonstrated, 6–7 strong, 8 strong, D–S over (large).
+→ **currently 9 or 2, and neither is right.** 2's definition requires a weak core; 9's requires D–S aligned. **FAILS — architecture gap.** A strong-demonstrated profile with a large self-perception gap has no home. See Set E.
+
+**A12. Highly integrated, ordinary/low load.** 1–4 strong, 5L low (nothing to see), 6 strong, 7 strong, 8 strong, D–S aligned.
+→ **9**. Competing: 8. Resolver: 8 requires load high-and-seen. **Succeeds — but exposes that 5S cannot be "strong" when there is no load to see.** Load must be scored as *coherence between 5L and 5S*, not as a level.
+
+### TEST SET B — Adversarial profiles
+
+**B1. Polished language, weak reasoning.** Fluency inflates nothing if Dims 1–3 are demonstrated; if self-rated, polish drives D–S over → **2**. **Succeeds only with demonstrated 1–3.** Self-report-only implementation fails this case.
+
+**B2. Anxious language, strong reasoning.** High 5L, hedged wording, demonstrated 1–4 strong. → **8**. Risk: a language-sensitive evaluator misreads hedging as weak discrimination. **Succeeds if and only if scoring reads response structure, not tone.** Recorded as a hard implementation constraint.
+
+**B3. Uncertainty that is actually avoidance.** "I don't know" everywhere, no resolution criteria, one specific area consistently unaddressed. → should be **5**, competes with **7**. Resolver: 7 requires named resolution criteria; avoidance produces unknowns without criteria *and* a coverage hole. **Succeeds — this is exactly why Dim 4 was defined as unknowns + criteria.**
+
+**B4. Apparent revisability that is indecision.** Reading changes repeatedly, no new information driving change, 6 weak. → **4**. Competing: 8-strong reading. Resolver: revisability requires change *in response to something*; without 6 strong it is churn. **Succeeds, but requires Dim 8 to be demonstrated (movement against the opening words), not self-rated.**
+
+**B5. Apparent iteration that is looping.** Same conclusion re-narrated with new vocabulary. → **4**. Resolver: demonstrated Dim 6 must test whether the *account changed*, not whether the person revisited. **Succeeds only with demonstrated 6.**
+
+**B6. High load recognized vs high load distorting.** Recognized → **8**. Distorting (load present, unseen, contaminating Dim 3) → **3**. Resolver: 5L/5S coherence plus Dim 3. **Succeeds — clean separation.**
+
+**B7. Self-ratings dramatically higher than demonstrated.** → **2** if core weak; **no home** if core strong (see A11). **Partial fail.**
+
+**B8. Self-ratings dramatically lower than demonstrated.** D–S under, core strong. → **7** or **9**, unpenalized. **Succeeds** — but the reflection must name the gap, and nothing currently guarantees it.
+
+### TEST SET C — Boundary tests (smallest meaningful change)
+
+- **1 vs 2:** self-perception rises above demonstrated while the core stays weak — one axis, clean. **Clean boundary.**
+- **2 vs 3:** load becomes present-and-unseen and the weakness localizes to Dim 3 while 1–2 recover to mixed. **Clean, but 2 must take precedence when D–S over is large — needs writing down.**
+- **3 vs 6:** a second core dimension diverges sharply, or load becomes seen. **Clean under the proposed precedence rule (named single-dimension beats 6); undefined without it.**
+- **4 vs 5:** flip which of 6/7 is weak. **Cleanest boundary in the set.**
+- **5 vs 6:** the coverage hole is accompanied by a second sharply divergent core dimension. **Clean with precedence; ambiguous without.**
+- **6 vs 7:** the spread inside 1–4 closes and Dim 4 becomes strong on criteria. **Clean.**
+- **7 vs 8:** load moves from mixed to high-and-seen. **Boundary depends entirely on a load threshold that does not yet exist. Not clean.**
+- **8 vs 9:** conditions 5/6/7 move from partial to complete. **Not clean while 5S is unscoreable at low load (A12).**
+- **2 vs 6:** the inconsistency relocates from the D–S axis to inside the core. **Conceptually clean; operationally needs the precedence rule.**
+
+Conclusion for Set C: five boundaries are clean, four (3/6, 5/6, 7/8, 8/9) depend on rules that are currently implicit.
+
+### TEST SET D — Fundamental logic check
+
+- **Nine distinct configurations, or a nine-step hierarchy?** Mostly distinct — 4/5 and 7/8 are genuinely sideways from each other. But 1 → 2 → 3 → 6 → 7 → 9 reads as ascending, and A5/A9/A10/A12 all drifted toward the high end, which is what a hierarchy does. **Partial failure: the ordering is doing quiet ranking work.** Fix: state the meaning-free labels as an unordered set, and stop implying neighbours differ by degree.
+- **Any dimension treated as inherently better?** Dims 1–4 carry all the classification weight; 5–8 only condition it. That is defensible and was decided deliberately — but Dim 4 has become unusually powerful (it alone gates Pattern 7). Worth watching, not a fault.
+- **Unfairly rewards low emotional load?** No, and A4/A12 confirm it — low load lands on 1 when discrimination is weak. But A12 exposes the reverse problem: low load makes Pattern 9 *easier* to reach than Pattern 8, because 5S is trivially satisfiable when there is nothing to see. **Must fix: score load as 5L/5S coherence.**
+- **Rewards certainty over honest uncertainty?** No. A5/B3 show Dim 4 strength is a defining strength and unknowns-without-criteria is caught elsewhere. **Passes.**
+- **Penalizes reconsideration?** No. A10/B4 land correctly and Dim 8 never subtracts. **Passes.**
+- **Gameable?** Yes, substantially, if any of 1, 2, 3, 6, 8 stay self-report — B1/B4/B5 are all won by knowing what to say. Gaming demonstrated tasks is much harder because the sorting structure, not the confidence, is evaluated. **Conditional pass, dependent on demonstration.**
+- **Which dimensions absolutely require demonstrated evidence?** **1, 2, 3, 6** — mandatory (B1, B5). **8** — mandatory as behavioural movement against the opening words (B4). **4** — strongly recommended (criteria can be shown). **5, 7** — self-report acceptable; 7 can be partly inferred from what the responses never touch.
+- **Is D–S alignment a hidden scoring mechanism?** It is drifting that way: it is currently the sole separator for 1/2 and the tiebreak in A6, yet it has no definition, threshold, or bound. **Risk flagged.** It should stay a *qualifier* that selects between patterns and appears in the reflection — never a magnitude that pushes a result up or down.
+- **Is Pattern 6 an overly broad catch-all?** Yes, as written. A6, A7, A8 and every single-weak-dimension case could all be argued into 6. The proposed precedence rule (named single-dimension patterns 3/4/5 beat 6; 6 requires two or more of 1–4 sharply disagreeing) fixes it, and must be promoted from a note to a rule.
+
+### TEST SET E — Verdicts and required outcome
+
+**1) Verdict per pattern**
+
+| Pattern | Verdict | Note |
+| --- | --- | --- |
+| 1 | **PASS** | A1, A4 clean |
+| 2 | **REVISE** | Must cover strong-core + large D–S over (A11), or a new pattern must |
+| 3 | **PASS** | B6 separation is clean |
+| 4 | **PASS** | Strongest definition in the set |
+| 5 | **PASS** | B3 handled |
+| 6 | **REVISE** | Precedence rule must become explicit |
+| 7 | **REVISE** | Needs a stated load threshold to separate from 8, and criteria-precedence vs 9 |
+| 8 | **REVISE** | Load must be defined as 5L/5S coherence, with a threshold |
+| 9 | **REVISE** | Cannot be reachable more easily at low load than 8 |
+
+**2) Definitions that must change**
+
+1. **Load definition.** Dim 5 becomes *coherence between load present (5L) and load seen (5S)*, not a level. "Load seen" is undefined when no load is present, so Pattern 9 must not treat absent load as a satisfied condition.
+2. **Pattern 6 precedence.** Written as a rule: a named single-dimension pattern (3, 4, 5) claims the profile when the weakness is isolated to that dimension; 6 requires two or more of Dims 1–4 in sharp disagreement.
+3. **D–S bounds.** D–S is a qualifier, not a magnitude. Define what "over" and "under" mean operationally, cap its role at *pattern selection plus a named sentence in the reflection*, and forbid it from moving a result up or down.
+4. **7 vs 8 vs 9 precedence.** Explicit order of tests: is load high-and-seen (→8) → are all conditions coherent (→9) → is Dim 4 the defining finding (→7). Written as a decision order, not three overlapping descriptions.
+5. **Drop the ascending presentation.** Labels are an unordered set; neighbour language in the draft implies degree and must go.
+
+**3) Missing pattern**
+
+Yes — **a strong-demonstrated profile with a large self-perception mismatch** (A11, B7). Two options: (a) widen Pattern 2 to "confidence outruns structure *or* self-read diverges sharply from demonstrated, at any core level", or (b) add it as its own configuration and retire the weakest of the current nine. Option (a) is cheaper and keeps nine slots; option (b) is cleaner conceptually. **Recommendation: (a) for now**, since the mismatch is the same phenomenon at a different level, and revisit if real runs show the two levels behave differently.
+
+**4) Proposed revision**
+
+Revision is necessary but **not** a rewrite: the nine configurations survive. Required changes are the five definitional fixes above plus the Pattern 2 widening. A full replacement architecture is not warranted by this stress test, and is not proposed.
+
+**5) Unresolved questions before Phase 2E**
+
+1. What operationally counts as "high load" for the 7/8 boundary?
+2. How is 5L/5S coherence measured — self-report pair, or inferred from response structure?
+3. What magnitude of D–S divergence counts as "over"/"under", and who decides — fixed thresholds or relative to the rest of the profile?
+4. Does the widened Pattern 2 stay one pattern across all core levels, or split?
+5. Which of Dims 1, 2, 3, 6, 8 get demonstrated tasks in the first implementation, and what is the fallback for the rest?
+6. How is demonstrated Dim 6 tested — does the evaluator need two passes over the same scenario to see whether the account changed?
+7. Are the nine labels genuinely unordered in presentation, and how is that shown to a person without implying rank?
+8. What happens when a profile matches no pattern, or two equally? Is there an explicit "no clean pattern" outcome, and what does the reflection say then?
+
+**Status: REVISE — architecture survives the stress test with six required definitional fixes and one gap to close.** No code, questions, scoring, or UI changed in this task.
