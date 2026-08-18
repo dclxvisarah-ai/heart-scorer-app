@@ -351,7 +351,9 @@ Underlying principle to preserve in any future implementation: **"You are allowe
 
 No code is changed in this task.
 
-## NUMBER ARCHITECTURE DESIGN — proposal (no code changes)
+## NUMBER ARCHITECTURE DESIGN — proposal (§4 formula REJECTED / DEFERRED — see Phase 2C below)
+
+> **Status update (Sarah, stress test):** the arithmetic derivation in §4 below — mean of Dims 1–4, bounded 6–7 modifier, banding to 1–9 — is **REJECTED as the production method and DEFERRED**. It was never implemented and will not be. The rejection is specific: averaging eight self-rated 1–5 dimensions cannot produce the number, because the number must emerge from the overall response pattern and from dimension *configurations*, not from a central tendency. §1–§3 (roles, unequal weight, the non-judgment rules for uncertainty / load / avoidance / revisability) and §5 (Clarity Gap intent) remain valid as reasoning and carry forward. §4 and §6 are retained only as a record of a rejected route. Superseded by **Phase 2C — Pattern-to-Number Discovery**.
 
 Architecture/reasoning pass only. No implementation, no question edits, no scoring change, no UI change. Digits stay meaningless: this section decides only how a 1–9 figure is *derived*, never what a digit *means*. Tree of Life / angel-number mapping stays deferred.
 
@@ -435,5 +437,60 @@ Dim 5 is printed alongside as context. Never in the formula.
 3. Approve the ±0.35 cap on the Dims 6–7 modifier.
 4. Confirm the initial by-feel reading is projected onto 1–9 for the Gap.
 5. Decide whether the nine bands are evenly spaced across 1.0–5.0 or slightly widened at the extremes so digits 1 and 9 stay rare.
+
+No code, questions, scoring, or UI changed in this task.
+
+## Phase 2C — PATTERN-TO-NUMBER DISCOVERY (new phase, design/research only)
+
+Recorded as the architecture phase that supersedes the rejected arithmetic route. No code changes in this phase either.
+
+### Decision being recorded
+
+The final 1–9 Gabriel's Number is **not** an average of eight self-rated 1–5 dimensions. The eight dimensions remain the conceptual lenses, but the number is the **emergent classification of the overall response pattern** — which dimensions are strong, which are weak, and crucially *in what combination*. Two people with the same mean can fall on different numbers, and that is correct behaviour, not an inconsistency.
+
+### Demonstrated reasoning vs self-perception
+
+Two distinct data types, both kept, never merged:
+
+- **Demonstrated** — what the person's response *structure* shows when given a task. Evaluated on structure, not on confidence.
+- **Self-perceived** — the person's own 1–5 rating of the same territory. Still valuable: the distance between demonstrated and self-perceived is one of the most informative things the instrument can capture (confident-but-assumption-heavy is exactly this gap).
+
+At least some dimensions must move from self-report to scenario-based task/classification. Dimensions 1–3 are the strongest candidates (they are discriminations, so they can be *shown*); 4 and 7 are plausible; 5 and 8 stay largely self-report plus behavioural movement.
+
+Worked example — **Dimension 1, Fact vs Interpretation.** Present a concrete scenario: *a friend reads a message and does not respond for six hours.* The person is then asked to sort or write what is observable fact versus what is interpretation. The system evaluates the **structure** of that response — whether motive, explanation, and conclusion are correctly placed on the interpretation side — rather than trusting a confidence rating. The same scenario also yields a self-perceived rating for comparison. Scenario content stays plain and non-diagnostic; the person is never told which sorting is "correct" before answering.
+
+### Goal of Phase 2C
+
+Construct and stress-test candidate **response patterns** for Numbers 1–9, with no meanings assigned. For each candidate number, the question to answer is: *what configuration across Dimensions 1–8 would plausibly characterize it?* Numbers are defined by pattern shape only — no ordering claim, no "9 is best", no meaning.
+
+### Edge cases the pattern set must handle correctly
+
+Each of these must land on a distinct, defensible pattern — and none may be pushed toward a low number by the principles already locked:
+
+1. High emotional load + high clarity.
+2. Calm + poor clarity.
+3. Honest uncertainty + strong clarity.
+4. Confident but assumption-heavy (self-perception high, demonstrated low).
+5. Looping vs genuine iterative reasoning (both revisit; only one develops).
+6. Avoidance with otherwise strong reasoning.
+7. High revisability (must never read as instability or weakness).
+
+An architecture that collapses any two of these onto the same number for the same reason is not yet defensible.
+
+### Output shape
+
+The final result is **the number plus a concise reflection** describing the observed pattern and the dimensions that characterize it — e.g. which discriminations held, which did not, what condition the reading was taken under. The reflection is non-diagnostic, describes the pattern rather than the person, and carries the interpretive weight so the digit does not have to.
+
+### Still deferred
+
+- Tree of Life / angel-number meanings — only after the 1–9 pattern architecture is defensible.
+- Any implementation: questions, scenarios, scoring, number, and UI all stay as they are until Phase 2C is agreed.
+
+### Next steps in Phase 2C
+
+1. Decide which dimensions become scenario/task-based and which stay self-report.
+2. Write the first scenario set (starting from the Dimension 1 message-read example) and the structural rules that evaluate a response.
+3. Draft candidate patterns for Numbers 1–9 as dimension configurations, meaning-free.
+4. Run the seven edge cases against those patterns and revise until each lands distinctly.
 
 No code, questions, scoring, or UI changed in this task.
