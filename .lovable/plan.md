@@ -1924,3 +1924,138 @@ These must be resolved before the number engine is implemented.
 Everything else in the matrix separates on at least two dimensions plus a qualifier.
 
 No production code, questions, scoring, or UI changed in this task.
+
+---
+
+## Milestone 11 — TWO-PASS THINKING / MOVEMENT DETECTION (design only)
+
+Purpose: distinguish genuine iterative reasoning from repetition, using two short tap moments rather than written reflection, and without ever telling the user what is being observed.
+
+### The mechanism in the flow
+
+```text
+Doorway (Level 1 + 2)  →  PASS 1: initial view (1 tap, optional 1 free line)
+                       →  2–4 targeted clarifying items (uncertainty / assumption /
+                          missing info / reaction / avoidance, chosen by context)
+                       →  PASS 2: re-check (1 tap, optional "what changed" tap)
+                       →  evidence layer  →  overlap map (Milestone 10)
+```
+
+Total added cost: two taps. No essays. Nothing is labelled as a measurement.
+
+### PASS 1 — Initial view
+
+One question, phrased to fit the doorway, with 4–6 concrete taps authored per context plus two always-present options.
+
+- Decision doorway: *"What are you leaning toward right now?"*
+- Something-happened doorway: *"What do you think is happening?"*
+- Diffuse / off doorway: *"What feels most true right now?"*
+
+Always available: **"Two of these at once"** and **"I don't know yet."** Both are legitimate and neither is treated as a failure. An optional single short line ("say it in a few words") is offered but never required — it is used only to compare *content* at Pass 2 when present.
+
+The Pass 1 selection is stored as the person's **initial stance**: which option, plus which reasons they touched in the clarifying items.
+
+### The middle — clarifying items
+
+2–4 items, drawn from the existing library, chosen by what the doorway exposed. They are the *only* thing between the two passes, which is what makes Pass 2 interpretable: any change is attributable to having looked at those specific things.
+
+### PASS 2 — Re-check
+
+One question, then one optional follow-up if the answer indicates change.
+
+Primary taps:
+- Changed substantially
+- Changed a little
+- Same, but clearer
+- Same, and still uncertain
+- I don't know
+
+If "changed substantially" or "changed a little," one follow-up: *"What moved it?"* → **New information** · **A different way of looking at it** · **Realized I was assuming something** · **The feeling shifted** · **Not sure.**
+
+If "same, but clearer," one follow-up: *"What got clearer?"* → **What I actually know** · **What I was adding to it** · **What I still don't know** · **What I want.**
+
+These follow-ups are what let "same conclusion" still register as movement.
+
+### Observable pattern states (no subscore, no number)
+
+The two passes resolve to exactly one state. These are labels for what was observed, not grades.
+
+| State | What was observed |
+| --- | --- |
+| `movement-with-new-content` | Conclusion changed, and the change is attributed to information, a reframe, or a named assumption |
+| `movement-within-same-conclusion` | Conclusion held, but the reasons named at Pass 2 differ from Pass 1 — the account developed |
+| `stable-and-articulated` | Conclusion held, reasons held, and the person can name what they know vs. don't — settled, not stuck |
+| `repetition` | Conclusion held, reasons identical, uncertainty still unresolved and unlocated |
+| `oscillation` | Conclusion changed with no new content named ("not sure" what moved it), or changed direction more than once |
+| `honest-unknown-stable` | "I don't know" at both passes, with the unknown nameable |
+| `honest-unknown-unlocated` | "I don't know" at both passes, and the unknown cannot be pointed at |
+| `insufficient` | Pass 2 abandoned, or Pass 1 offered no stance to compare |
+
+Non-negotiables baked into these definitions:
+- `oscillation` is **not** a fault state. It is a recognizable shape, described neutrally.
+- `honest-unknown-stable` is a legitimate, coherent result — it can sit inside strong configurations.
+- Emotional load never selects or downgrades a state. Load is read separately and only as context.
+- Reconsidering is never penalized: `movement-with-new-content` is among the strongest evidence the instrument can collect.
+
+### Which dimensions this informs
+
+| Dimension | What the two passes contribute |
+| --- | --- |
+| **6 Mental Movement** | Primary source. `movement-*` → `moving` / `iterating`; `repetition` → `repeating`; `stable-and-articulated` → `moving` (settled, not stuck) |
+| **8 Revisability** | Primary source. `movement-with-new-content` → `updated on evidence`; `stable-and-articulated` → `open but unmoved`; unchanged with reasons unchanged and firmly held → `held firm`; `oscillation` → the `unstable` reading |
+| **4 Uncertainty** | The "what got clearer / what still don't I know" follow-up shows whether the unknown is locatable, separating `located` from `not located` |
+| **1 Fact vs Interpretation** | "A different way of looking at it" and "what I was adding to it" are direct evidence that fact and meaning came apart between passes |
+| **2 Known vs Assumed** | "Realized I was assuming something" is the cleanest available evidence for `separated` on this dimension |
+
+### How it separates the collapsed pairs
+
+- **4 vs 5.** Both look like going back over the same ground. `repetition` (same conclusion, same reasons, unresolved unknown) supports 4. `movement-within-same-conclusion` or `movement-with-new-content` rules 4 out and leaves 5 available where coverage is still partial. The distinction is now *observed across two moments*, not self-described.
+- **8 vs 9.** Both need intact separation and full coverage. 9 additionally requires `movement-with-new-content` or `movement-within-same-conclusion` — actual development. 8 is where the account held under weight without needing to move (`stable-and-articulated`).
+
+### Why this is not a test-taking game
+
+- The user is never told that a second pass exists, that change is meaningful, or that any answer is better.
+- Both directions are represented as ordinary: "same, but clearer" reads as legitimate as "changed substantially," and the follow-up treats each with equal interest.
+- Changing has no reward and holding has no penalty, so there is nothing to strategize toward. Someone who changes to look good lands in `oscillation` (no content named), which is a different shape from `movement-with-new-content` — not a better one.
+- "I don't know" is present at both passes with no visual de-emphasis.
+
+### Three Pass 2 wordings
+
+**A — Direct**
+> After looking at it this way, what feels most true now?
+> Changed substantially · Changed a little · Same, but clearer · Same, and still uncertain · I don't know
+
+**B — Warm / playful**
+> Okay — back to you. Same read, or did something shift while you weren't looking?
+> Something shifted · Nudged a bit · Same, but I can see it better · Same, still fuzzy · Still don't know
+
+**C — Minimal / mysterious**
+> And now?
+> Different · A little different · Clearer · Unchanged · Unknown
+
+**Recommendation: A — Direct.** It states plainly what is being asked, which matches the locked product direction (reality-based reflection, no mystique, honesty over cleverness). B's "while you weren't looking" implies the app is watching for change, which invites performance. C is elegant but ambiguous — "Unchanged" and "Clearer" would be read inconsistently, and ambiguity here corrupts the one comparison the mechanism depends on. B's tone is worth keeping as an alternate voice for the lighter doorways ("Take a Chance," "feeling lucky") if a voice variant is ever wanted.
+
+### Stress test
+
+**A) "I knew my answer immediately and still know it."** → Pass 2 = same. Follow-up decides: if "what I actually know" got clearer → `movement-within-same-conclusion`. If no reasons changed and the read is defended → `repetition` or `held firm`, depending on whether an unknown remains unresolved. **The mechanism does not treat speed as a fault** — a fast correct read and a fast fused read are separated by whether the reasons developed, not by how quickly they arrived.
+
+**B) "I changed my mind because I realized I was assuming their motive."** → `movement-with-new-content`, with the "realized I was assuming" attribution. Feeds 6 `iterating`, 8 `updated on evidence`, and 2 `separated`. **The strongest evidence the layer can produce**, and it comes from one tap plus one follow-up.
+
+**C) "I changed my mind three times but learned nothing new."** → `oscillation` (change with "not sure" attribution). Described neutrally as movement without new ground. **This is the state Milestone 10 flagged as unowned** — the two-pass layer now produces it cleanly, which means the overlap map must assign it a configuration or declare it a standing cautious-result case. The mechanism has done its job; the gap is downstream.
+
+**D) "My answer didn't change, but I can explain it much better now."** → `movement-within-same-conclusion`. This is exactly the case that a naive changed/unchanged check would misread as looping. **Handled correctly, and it is the reason the "what got clearer" follow-up is mandatory rather than optional.**
+
+**E) "I still don't know."** → `honest-unknown-stable` if the follow-up can locate the unknown; `honest-unknown-unlocated` if not. Neither is a failure state, and the first can sit inside a strong configuration. **Works as intended.**
+
+**F) "Everything is going well and I'm uncomfortable with that."** → Pass 1 stance is likely "two of these at once." Pass 2 typically `stable-and-articulated` or `movement-within-same-conclusion`, since the clarifying items usually surface what the discomfort is pointing at. **Caution: this profile can produce a thin Pass 1** (nothing to lean toward), which risks `insufficient`. Finding: the Pass 1 option set for the "going well" doorway must include stances about the *discomfort* itself, not only about the situation.
+
+**G) "I want a drink and don't know why."** → Pass 1 is legitimately "I don't know yet." The clarifying items — routed through the Milestone 7 pathway only if the person points that way — give Pass 2 something to compare against. Common outcomes: `movement-with-new-content` (something got named) or `honest-unknown-stable`. **Works, with the standing rule intact: the mechanism does not infer avoidance, and "I don't know why" is never converted into a deficit.**
+
+### Findings / required before implementation
+
+1. **The "what moved it" and "what got clearer" follow-ups are mandatory**, not optional — without them, cases A and D are indistinguishable from repetition.
+2. **Pass 1 needs authored option sets per doorway**, including stances about the person's own reaction, or the "going well" and diffuse doorways will produce `insufficient` (case F).
+3. **`oscillation` still needs a home in the overlap map** (carried over from Milestone 10, case G).
+4. **Pass 1's optional free line must stay optional** and must never be required to reach a result — content comparison degrades gracefully to reason-tap comparison when it is absent.
+
+No numbers assigned. No production code, questions, scoring, or UI changed in this task.
