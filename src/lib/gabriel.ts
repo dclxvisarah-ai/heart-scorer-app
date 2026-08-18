@@ -803,6 +803,8 @@ export interface PatternResult {
   reasoning: string;
   /** How spread out the evidence was. */
   coherent: boolean;
+  /** When undetermined: the numbers the answers are pointing at at once. */
+  contested: GNumber[];
 }
 
 /** A pattern is primary when it is both present and clearly ahead. */
