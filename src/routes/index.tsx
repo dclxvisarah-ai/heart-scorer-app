@@ -9,6 +9,7 @@ import {
   NUMBERS,
   buildSequence,
   evaluatePattern,
+  getDeeperProbe,
   getDoorway,
   type AnswerMap,
   type Question,
@@ -42,6 +43,9 @@ function GabrielsNumberPage() {
   const [index, setIndex] = useState(0);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [savedId, setSavedId] = useState<string | undefined>();
+  /** Reworded probes the person opted into from an undetermined result. */
+  const [deeperIds, setDeeperIds] = useState<string[]>([]);
+  const [leftHere, setLeftHere] = useState(false);
 
   useEffect(() => {
     setHistory(loadHistory());
@@ -50,8 +54,8 @@ function GabrielsNumberPage() {
   const doorway = getDoorway(doorwayId);
 
   const sequence: Question[] = useMemo(
-    () => (doorway ? buildSequence(doorway, answers) : []),
-    [doorway, answers],
+    () => (doorway ? buildSequence(doorway, answers, deeperIds) : []),
+    [doorway, answers, deeperIds],
   );
 
   const result = useMemo(
@@ -83,6 +87,8 @@ function GabrielsNumberPage() {
     setAnswers({});
     setIndex(0);
     setSavedId(undefined);
+    setDeeperIds([]);
+    setLeftHere(false);
   }
 
   function choose(questionId: string, choiceId: string) {
@@ -93,12 +99,27 @@ function GabrielsNumberPage() {
     setAnswers(next);
     setSavedId(undefined);
 
-    const nextSequence = doorway ? buildSequence(doorway, next) : [];
+    const nextSequence = doorway ? buildSequence(doorway, next, deeperIds) : [];
     if (index + 1 >= nextSequence.length) {
       setStage("result");
     } else {
       setIndex(index + 1);
     }
+  }
+
+  /**
+   * Opens one more question — the same underlying dimension, worded another
+   * way — aimed at whichever numbers the answers are tied between.
+   */
+  function goDeeper() {
+    if (!doorway || !result) return;
+    const probe = getDeeperProbe(result.contested, deeperIds);
+    if (!probe) return;
+    setDeeperIds([...deeperIds, probe.id]);
+    setLeftHere(false);
+    setIndex(sequence.length);
+    setSavedId(undefined);
+    setStage("questions");
   }
 
   function goBack() {
@@ -113,6 +134,7 @@ function GabrielsNumberPage() {
 
 
   const current = sequence[index];
+  const nextProbe = result && !result.primary ? getDeeperProbe(result.contested, deeperIds) : undefined;
 
   return (
     <main className="paper min-h-screen">
@@ -287,13 +309,70 @@ function GabrielsNumberPage() {
               ) : (
                 <>
                   <h2 className="mt-4 font-display text-2xl leading-tight sm:text-3xl">
-                    Your number is undetermined at this point.
+                    Your number is undetermined right now.
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-foreground">{result.reasoning}</p>
-                  <p className="mt-3 text-sm leading-relaxed text-olive-soft">
-                    You can go again with one concrete part of the situation in mind — that usually
-                    gives the pattern something to hold on to.
-                  </p>
+                  {result.contested.length > 1 ? (
+                    <p className="mt-3 text-sm leading-relaxed text-olive-soft">
+                      At the moment the answers lean toward{" "}
+                      {result.contested
+                        .map((n) => `${n} ${NUMBERS[n].name}`)
+                        .join(", ")
+                        .replace(/, ([^,]*)$/, " and $1")}{" "}
+                      at once — a real state, not a failed reading.
+                    </p>
+                  ) : null}
+
+                  {leftHere ? (
+                    <p className="mt-4 rounded-xl border border-hairline bg-background/50 px-4 py-3 text-sm leading-relaxed text-olive-soft">
+                      Left here. Undetermined is a legitimate place to stop.
+                    </p>
+                  ) : nextProbe ? (
+                    <div className="mt-5 rounded-xl border border-teal/30 bg-teal/8 p-4">
+                      <p className="text-sm leading-relaxed text-foreground">
+                        There's one more question that would help separate them — the same ground,
+                        asked another way. It's still multiple choice, and you can stop instead.
+                      </p>
+                      <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
+                        <button
+                          type="button"
+                          onClick={goDeeper}
+                          className="inline-flex h-11 flex-1 items-center justify-center rounded-full bg-teal px-5 text-sm font-medium text-teal-foreground transition-opacity hover:opacity-90"
+                        >
+                          Go one layer deeper
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setLeftHere(true)}
+                          className="inline-flex h-11 flex-1 items-center justify-center rounded-full border border-hairline bg-cream px-5 text-sm text-olive-soft transition-colors hover:border-teal/60 hover:text-foreground"
+                        >
+                          Leave it here
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={restart}
+                        className="mt-3 text-xs text-muted-foreground underline-offset-4 hover:underline"
+                      >
+                        Start over with a different way in
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="mt-5 rounded-xl border border-hairline bg-background/50 p-4">
+                      <p className="text-sm leading-relaxed text-foreground">
+                        You've gone as deep as this situation goes today, and it's still pointing in
+                        more than one direction. That's allowed to stand — there is no wrong number
+                        and no wrong answer.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={restart}
+                        className="mt-3 text-xs text-olive-soft underline-offset-4 hover:underline"
+                      >
+                        Start over with a different way in
+                      </button>
+                    </div>
+                  )}
                 </>
               )}
             </div>
