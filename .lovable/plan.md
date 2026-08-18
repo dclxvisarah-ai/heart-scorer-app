@@ -351,7 +351,9 @@ Underlying principle to preserve in any future implementation: **"You are allowe
 
 No code is changed in this task.
 
-## NUMBER ARCHITECTURE DESIGN — proposal (no code changes)
+## NUMBER ARCHITECTURE DESIGN — proposal (§4 formula REJECTED / DEFERRED — see Phase 2C below)
+
+> **Status update (Sarah, stress test):** the arithmetic derivation in §4 below — mean of Dims 1–4, bounded 6–7 modifier, banding to 1–9 — is **REJECTED as the production method and DEFERRED**. It was never implemented and will not be. The rejection is specific: averaging eight self-rated 1–5 dimensions cannot produce the number, because the number must emerge from the overall response pattern and from dimension *configurations*, not from a central tendency. §1–§3 (roles, unequal weight, the non-judgment rules for uncertainty / load / avoidance / revisability) and §5 (Clarity Gap intent) remain valid as reasoning and carry forward. §4 and §6 are retained only as a record of a rejected route. Superseded by **Phase 2C — Pattern-to-Number Discovery**.
 
 Architecture/reasoning pass only. No implementation, no question edits, no scoring change, no UI change. Digits stay meaningless: this section decides only how a 1–9 figure is *derived*, never what a digit *means*. Tree of Life / angel-number mapping stays deferred.
 
