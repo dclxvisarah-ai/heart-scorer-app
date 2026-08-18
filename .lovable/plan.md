@@ -138,3 +138,37 @@ Drafting checklist for the session:
 5. Decide whether any existing `fact`-tagged question from section 6 is retained verbatim, rewritten, or replaced — defer the call until the new wording exists to compare against.
 
 No code is changed in this task. When the wording is settled, implementation follows the Technical notes above, scoped to dimension 1 only.
+
+## Dimension 4 — UNCERTAINTY / MISSING INFORMATION (question-writing session)
+
+Status: design task, fourth of the 8 planned dimensions, following the already approved Dimensions 1–3. Not yet implemented — we write the questions together before any code changes. The app and all current functionality stay untouched until the question set is agreed.
+
+Core distinction for this dimension: clarity does not mean having an answer. Sometimes the clearest conclusion is recognizing what is not known yet. A person can be clear *because* they have accurately located the edge of their certainty, not because they have filled it in.
+
+Purpose of this dimension: test whether the person can (a) identify what information is missing in the situation, (b) distinguish genuine uncertainty from certainty — tell apart what they do not know from what they do, and (c) recognize what additional information would actually resolve the uncertainty, as opposed to information that would merely feel reassuring. The instrument should surface whether someone treats an open question as a flaw to close, or as a fact about the situation to hold accurately.
+
+Separation from the adjacent dimensions (guard against leakage while drafting):
+
+- From Dimension 1 (fact vs interpretation): Dim 1 asks whether a person can separate what happened from the meaning they assigned to it. Dim 4 is not about meaning-vs-occurrence; it is about the presence or absence of information itself — what is simply not there yet. An item that asks "is this my reading or what actually happened?" belongs to Dim 1; an item that asks "can I name what I still don't have" belongs to Dim 4.
+- From Dimension 2 (known vs felt/assumed): Dim 2 marks the boundary of one's own information — where knowing stops and feeling/assuming begins, held as an internal state. Dim 4 goes one step further: it asks the person to actively inventory the gap, distinguish its kind (resolvable vs not), and name what would close it. Dim 2 is "do I know where my knowledge ends"; Dim 4 is "can I say what is missing and what would change it." Avoid writing Dim 4 items that collapse back into a felt-vs-known self-check.
+- From Dimension 3 (observation vs reaction): Dim 3 tests whether the account of the situation is independent of the person's response to it. Dim 4 is agnostic to the emotional reaction; it concerns the information landscape, not whether the telling is contaminated by feeling. Do not write items that conflate "I don't know" with "I'm upset about not knowing."
+
+Design constraints for the questions (to be drafted in the session):
+
+- Plain, non-diagnostic language. No clinical terminology, no correct-answer cues. "Uncertainty" and "missing information" are working labels for the design — the user-facing wording stays in the existing plain register.
+- Each item isolates the identify-the-gap / certainty-vs-uncertainty / what-would-resolve-it distinction and does not pull in fact-vs-interpretation, known-vs-felt, or observation-vs-reaction.
+- Agreement scale 1–5 stays as-is. An item is written so that agreement consistently points one way on the dimension (no mixed-direction wording); reverse scoring only applies if the statement is phrased so that agreement means *less* clarity (e.g. an item worded as "I already know everything I need" would be reverse-scored, because comfort-with-closure can be the opposite of accurately held uncertainty). Direction to settle per item in the session.
+- Wording must not hand the user the "right" reading. The question should make the gap-nameable, not announce that naming gaps is the goal. Avoid items like "I cannot identify what I don't know" (that names the failure); prefer items that ask the person to locate the open edge in their own terms.
+- A genuine Dim 4 item should distinguish *resolvable* uncertainty (a specific missing piece that, if known, would change the reading) from *irreducible* uncertainty (no obtainable information would settle it). The strongest items touch whether the person can tell which kind they are sitting in. Keep this as a drafting aim, not a rigid rule on every item.
+- Need a small set: one general (situation-agnostic) item plus branch-specific focused items for the branches where this dimension distorts most. Per the table in section 2, `unknown` is a focused dimension for **decision**, **direction**, and **timing** — target ~1 general + 3 focused. Exact count to settle in the session.
+- Each item gets the existing `note` (steadying line) and a `mismatchSource` (what a low score may point at, never a diagnosis).
+
+Drafting checklist for the session:
+
+1. Agree the exact certainty-vs-uncertainty and resolvable-vs-irreducible distinctions, each in one sentence.
+2. Write candidate general item; check it does not leak into Dim 1, 2, or 3.
+3. Write 3 focused items (decision, direction, timing); check each is the same dimension in branch language, not a new one.
+4. Check direction of scoring and mark `reverse` where needed — watch especially for comfort-with-closure wording.
+5. Decide whether any existing `unknown`-tagged question from section 6 is retained verbatim, rewritten, or replaced — `g5` ("what I'd need to be more certain"), the rewritten `d1` (toward what is unnamed), and `t2`/`t3` (what changes if I wait / act) are the candidates to compare against. Defer the call until the new wording exists.
+
+No code is changed in this task. When the wording is settled, implementation follows the Technical notes above, scoped to dimension 4 only.
