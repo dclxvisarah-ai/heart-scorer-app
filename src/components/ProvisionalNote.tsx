@@ -7,9 +7,9 @@ export function ProvisionalNote({ className = "" }: { className?: string }) {
     <p
       className={`rounded-xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm leading-relaxed text-olive-soft ${className}`}
     >
-      <span className="font-medium text-foreground">This figure is provisional.</span> It is a
-      working estimate built from your own answers, meant to support reflection. It is not a
-      measurement, a diagnosis, or a verdict — and it does not interpret what the number means.
+      <span className="font-medium text-foreground">A reflection tool.</span> The evaluated figure
+      is built from your own answers and is meant to support reflection. It is not a measurement, a
+      diagnosis, or a verdict — and it does not interpret what the number means.
     </p>
   );
 }
