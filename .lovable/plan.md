@@ -139,6 +139,60 @@ Drafting checklist for the session:
 
 No code is changed in this task. When the wording is settled, implementation follows the Technical notes above, scoped to dimension 1 only.
 
+## Dimension 2 — KNOWN vs FELT / ASSUMED (approved wording)
+
+Status: design task, second of the 8 planned dimensions. Wording approved — recorded here verbatim for the permanent plan. Not yet implemented; no code changes until the full question set is agreed.
+
+Core distinction: What I actually know vs. what I feel, suspect, assume, or believe. The dimension tests whether a person can mark the boundary inside their own information — tell apart what they hold because they have it, from what they hold because it feels right, fits a suspicion, or follows a belief. It is an internal-state check: where does knowing stop and assuming begin, as the person sits with the situation.
+
+Approved questions (agreement scale 1–5; agreement = more clarity unless an item is later marked `reverse`):
+
+- General: "How clearly can you distinguish what you actually know from what you feel, assume, or believe?"
+- Relationship (focused): "How clearly can you distinguish what you actually know about the other person from what you feel or assume about them?"
+- Pattern (focused): "How clearly can you distinguish what you actually know about a recurring situation from what you suspect or believe is causing it?"
+- Decision (focused): "How clearly can you distinguish what you actually know about your situation from what you think might happen next?"
+
+Separation from adjacent dimensions (guard against leakage during implementation):
+
+- From Dimension 1 (fact vs interpretation): Dim 1 separates what happened from the meaning assigned to it. Dim 2 is not about occurrence-vs-meaning; it is about the source of a held claim — know vs feel/assume — regardless of whether the claim is a fact or an interpretation. "Is this what took place or my reading of it" is Dim 1; "is this something I know or something I assume" is Dim 2.
+- From Dimension 3 (observation vs reaction): Dim 3 asks whether the account is independent of the person's response to it. Dim 2 is agnostic to reaction; it concerns the epistemic status of what is held, not whether feeling has shaped the telling. Do not write Dim 2 items that collapse into "am I reacting or observing."
+- From Dimension 4 (uncertainty / missing information): Dim 2 marks where one's knowledge ends (an internal boundary). Dim 4 goes further to inventory the gap, distinguish resolvable from irreducible uncertainty, and name what would close it. Dim 2 is "do I know where my knowing stops"; Dim 4 is "can I say what is missing and what would change it." Keep the boundary-check items in Dim 2 and the gap-resolution items in Dim 4.
+
+Design constraints (carried from the shared rules; apply when these items are wired in):
+
+- Plain, non-diagnostic register; no correct-answer cues.
+- One dimension per item; no leakage into fact-vs-interpretation, observation-vs-reaction, or uncertainty.
+- Each item keeps the existing `note` (steadying line) and a `mismatchSource` (what a low score may point at, never a diagnosis).
+- Focused branches for this dimension per the table in section 2: **relationship**, **pattern**, and **decision** (`known` appears as a focused dimension for those three).
+
+## Dimension 3 — OBSERVATION vs REACTION (approved wording)
+
+Status: design task, third of the 8 planned dimensions. Wording approved — recorded here verbatim for the permanent plan. Not yet implemented; no code changes until the full question set is agreed.
+
+Core distinction: What I can observe vs. how I am responding to what I observe. The dimension tests whether a person's account of the situation stands independent of their response to it — whether they can hold "this is happening" separate from "this is how I am responding to what is happening." A clear reading can describe the situation without the description being shaped by the reaction to it.
+
+Preserved principle for this dimension: "This is happening" vs. "This is how I am responding to what is happening."
+
+Approved questions (agreement scale 1–5; agreement = more clarity unless an item is later marked `reverse`):
+
+- General: "How clearly can you separate what you are observing from how you are reacting to it?"
+- Relationship (focused): "How clearly can you separate what you are observing in the other person from how their behavior is making you react?"
+- Pattern (focused): "How clearly can you separate what you are observing in a recurring situation from your immediate reaction to the pattern?"
+- Decision (focused): "How clearly can you separate what you are observing about your choices from your reaction to having to make a decision?"
+
+Separation from adjacent dimensions (guard against leakage during implementation):
+
+- From Dimension 1 (fact vs interpretation): Dim 1 separates occurrence from assigned meaning. Dim 3 is not about meaning; it is about whether the telling is contaminated by the teller's response. "Is this what happened or my conclusion" is Dim 1; "is this what I see or what my reaction is doing with what I see" is Dim 3.
+- From Dimension 2 (known vs felt/assumed): Dim 2 concerns the source of a held claim (know vs assume). Dim 3 concerns whether the account is shaped by reaction, regardless of whether the held content is known or assumed. Keep the two distinct: a person can know something and still let reaction distort how they report it.
+- From Dimension 4 (uncertainty / missing information): Dim 3 is about reaction contaminating observation; Dim 4 is about the information landscape and what is missing. Do not conflate "I'm reacting" with "I don't know."
+
+Design constraints (carried from the shared rules; apply when these items are wired in):
+
+- Plain, non-diagnostic register; no correct-answer cues.
+- One dimension per item; no leakage into fact-vs-interpretation, known-vs-felt, or uncertainty.
+- Each item keeps the existing `note` (steadying line) and a `mismatchSource` (what a low score may point at, never a diagnosis).
+- Focused branches for this dimension per the table in section 2: **relationship**, **pattern**, and **decision** (`observe` appears as a focused dimension for those three).
+
 ## Dimension 4 — UNCERTAINTY / MISSING INFORMATION (question-writing session)
 
 Status: design task, fourth of the 8 planned dimensions, following the already approved Dimensions 1–3. Not yet implemented — we write the questions together before any code changes. The app and all current functionality stay untouched until the question set is agreed.
