@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReadingsRouteImport } from './routes/readings'
 import { Route as Vol2RouteImport } from './routes/vol2'
 
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReadingsRoute = ReadingsRouteImport.update({
   id: '/readings',
   path: '/readings',
@@ -24,33 +30,44 @@ const Vol2Route = Vol2RouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/readings': typeof ReadingsRoute
   '/vol2': typeof Vol2Route
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/readings': typeof ReadingsRoute
   '/vol2': typeof Vol2Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/readings': typeof ReadingsRoute
   '/vol2': typeof Vol2Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/readings' | '/vol2'
+  fullPaths: '/' | '/readings' | '/vol2'
   fileRoutesByTo: FileRoutesByTo
-  to: '/readings' | '/vol2'
-  id: '__root__' | '/readings' | '/vol2'
+  to: '/' | '/readings' | '/vol2'
+  id: '__root__' | '/' | '/readings' | '/vol2'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   ReadingsRoute: typeof ReadingsRoute
   Vol2Route: typeof Vol2Route
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/readings': {
       id: '/readings'
       path: '/readings'
@@ -69,6 +86,7 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   ReadingsRoute: ReadingsRoute,
   Vol2Route: Vol2Route,
 }
