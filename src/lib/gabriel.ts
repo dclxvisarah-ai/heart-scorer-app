@@ -868,8 +868,9 @@ export function evaluatePattern(sequence: Question[], answers: AnswerMap): Patte
       tallies,
       contributions: [],
       coherent: false,
+      contested: tallies.filter((t) => t.weight > 0).slice(0, 3).map((t) => t.n),
       reasoning:
-        "Your answers touched several dimensions without settling into one shape. That is not a wrong set of answers — there just isn't enough signal yet to name a single number for this situation.",
+        "Your answers are pointing in more than one direction at once. That is not a wrong set of answers — there just isn't enough separation yet to tell one pattern from the others in this situation.",
     };
   }
 
@@ -890,6 +891,7 @@ export function evaluatePattern(sequence: Question[], answers: AnswerMap): Patte
     tallies,
     contributions,
     coherent: true,
+    contested: [],
     reasoning,
   };
 }
