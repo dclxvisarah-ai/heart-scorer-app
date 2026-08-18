@@ -2186,3 +2186,136 @@ Companion qualifiers, also internal: `located` / `unlocated`, `load-seen` / `loa
 Philosophy check: no wrong answers, no wrong number, no diagnosis, no permanent identity, no averaging. Oscillation is a shape, not a shortcoming, and the number still emerges only from the whole configuration, interpreted through Sarah's established 1–9 meanings once that source is available.
 
 No numbers assigned. No production code, questions, scoring, or UI changed in this task.
+
+---
+
+## Milestone 13 — THE REAL 1–9 MEANING MAP (blocked on source; structure ready)
+
+### Source inspection — what I actually found
+
+I searched the whole project before writing anything here:
+
+- **Upload mounts:** `/mnt/user-uploads/` and `/tmp/user-uploads/` do not exist in this sandbox. No uploaded files are reachable.
+- **Repository:** the only files mentioning Gabriel's Number or clarity are the app's own generated sources — `src/lib/evaluator.ts`, `src/lib/history.ts`, `src/routes/index.tsx`, `src/routes/history.tsx`, `src/components/*`, `src/styles.css`. All contain the legacy 1–5 evaluator, none contain 1–9 meanings.
+- **Full-text search** for "pythagor", "tree of life", and "angel number" across the project returns **zero matches**.
+- **No `src/data/`** directory and no content/source folder exists.
+- **Chat history search** for the 1–9 meanings returns only our own design discussions — the meanings have never arrived in a readable form in this conversation.
+
+**Conclusion: the authoritative 1–9 Pythagorean source is not present in this project.** Per your instruction, every meaning below is marked **SOURCE NEEDED**. I have not filled a single cell from general numerology knowledge, and I have not paraphrased, modernized, or approximated anything.
+
+**To unblock:** paste the 1–9 meanings directly into chat as text (most reliable), or re-upload the source file and confirm the filename. If the meanings live in a document format, pasting the text is still safest — earlier upload attempts in this conversation did not reach the sandbox.
+
+### What this milestone delivers instead
+
+Everything that does **not** depend on the meanings is complete and reviewable below: the per-number configuration slots, overlaps, discriminating evidence, and Undetermined conditions. When the source text arrives, the work is a transcription into the "Source-derived meaning" column, followed by one review pass to check that each meaning is genuinely compatible with the configuration slotted to it — and where it is not, **the configuration gets revised, not the meaning.**
+
+### The map — configuration slots awaiting meanings
+
+Numbers are unordered configuration labels, not a ranking.
+
+**Number 1** · Source-derived meaning: **SOURCE NEEDED**
+- Plausible configuration: read not yet formed — 1 `fused`/`insufficient`, 2 `insufficient`, 8 `insufficient`, no overclaim on 4.
+- Overlaps: 2, 4, 7.
+- Discriminating evidence: whether a stance exists at all; whether an unknown is nameable.
+- Boundary question: *"Is your read on this something you'd defend, or are you holding it loosely?"*
+- Undetermined if: a single "I don't know" is the only evidence — unformedness must show across 1, 2 **and** 8.
+
+**Number 2** · Source-derived meaning: **SOURCE NEEDED**
+- Plausible configuration: conclusion arrived early and defended — 1 `fused`/`partly`, 8 `held firm`, D–S `self over demonstrated`.
+- Overlaps: 1, 6, 3.
+- Discriminating evidence: demonstrated fusion (not confidence); firmness under a differing view.
+- Boundary question: *"If someone disagreed, would you want to explain first or hear theirs first?"*
+- Undetermined if: confidence is present but no demonstrated fusion and no firm 8.
+
+**Number 3** · Source-derived meaning: **SOURCE NEEDED**
+- Plausible configuration: observation available but the response is doing the telling — 3 `reaction-led`, 1 `partly separated`, 5 often `heavy + unseen`.
+- Overlaps: 6, 2, 8.
+- Discriminating evidence: whether the *language* of the account is response-led; whether load is seen.
+- Boundary question: *"Did the situation change, or did how it feels change?"*
+- Undetermined if: distress is the only evidence. Load alone can never place a number here.
+
+**Number 4** · Source-derived meaning: **SOURCE NEEDED**
+- Plausible configuration: ground re-covered without new content — 6 `repeating`, 7 untouched areas, 4 `located, no resolver`; two-pass state `unresolved`.
+- Overlaps: 5, 7, 6.
+- Discriminating evidence: content unchanged across the two passes (demonstrated, not self-described).
+- Boundary question: *"Is the part you can't see missing, or just not looked at?"*
+- Undetermined if: the person merely revisited the topic; without two-pass capture this cannot be read.
+
+**Number 5** · Source-derived meaning: **SOURCE NEEDED**
+- Plausible configuration: real movement, partial coverage — 6 `moving`/`iterating`, 7 `several untouched`.
+- Overlaps: 4, 7, 9.
+- Discriminating evidence: coverage breadth; whether content developed between passes.
+- Boundary question: *"Have you gone over this with anyone out loud?"*
+- Undetermined if: movement is present but coverage was never probed.
+
+**Number 6** · Source-derived meaning: **SOURCE NEEDED**
+- Plausible configuration: mixed profile, several dimensions `partly`, 8 `open but unmoved`, no named configuration dominant.
+- Overlaps: potentially all — this is the catch-all risk.
+- Discriminating evidence: whichever probe separates the strongest *named* competitor.
+- Boundary question: borrowed from the leading named candidate; 6 has none of its own by design.
+- Undetermined if: any named configuration fits. **Locked precedence: named configurations beat 6, always.**
+
+**Number 7** · Source-derived meaning: **SOURCE NEEDED**
+- Plausible configuration: grounded in what is not known — 4 `located + resolver named` (**hard requirement**, per the Milestone 10 fix), 1 `separated`, 2 `separated`.
+- Overlaps: 9, 1, 8.
+- Discriminating evidence: a named resolver sitting on top of intact discrimination.
+- Boundary question: *"Is the part you can't settle missing information, or is it something only time answers?"*
+- Undetermined if: a resolver is named while 1/2 remain `fused`.
+
+**Number 8** · Source-derived meaning: **SOURCE NEEDED**
+- Plausible configuration: discrimination holding under weight — 5 `heavy + seen` (coherent), 1/2 `separated`, 7 `full coverage`, two-pass `stable-and-articulated`.
+- Overlaps: 7, 9, 3.
+- Discriminating evidence: load coherence **plus** full coverage; absence of a required resolver distinguishes from 7.
+- Boundary question: *"How much of the weight of this is in view to you right now?"*
+- Undetermined if: load is heavy but incoherent and 1/2 are not intact. Heavy load is never a demotion.
+
+**Number 9** · Source-derived meaning: **SOURCE NEEDED**
+- Plausible configuration: integrated across the board — 1 `separated`, 2 `separated`, 6 `iterating`, 7 `full coverage`, 8 `updated on evidence`, two-pass `movement-with-new-content` or `movement-within-same-conclusion`.
+- Overlaps: 7, 8, 5.
+- Discriminating evidence: demonstrated movement in content between passes.
+- Boundary question: *"Did anything shift while you were answering these?"*
+- Undetermined if: integration is self-reported rather than demonstrated, or any listed dimension has a gap. **9 is not the top, the goal, or the reward.**
+
+### Stress test against the map (structure only — meanings unavailable)
+
+Each case gives the candidate overlap and the minimum extra evidence. Because the meanings are absent, **no case is resolved to a number** — that would require asserting a meaning I do not have.
+
+**A) High load + high clarity.** Candidates 8, 9, 7. Minimum evidence: load coherence, then coverage, then whether content moved between passes.
+
+**B) Calm + poor clarity.** Candidates 2, 3, 6, 1. Minimum evidence: is a stance formed and defended (2), is the account response-led despite the calm (3). Standing item-design fix: the `[3]` probe must detect reaction-led *language*, not heat.
+
+**C) Honest uncertainty + strong reasoning.** Candidates 7, 9, 1. Minimum evidence: 1/2 separation rules 1 out; a named resolver plus a coverage gap points at 7 rather than 9.
+
+**D) Extreme confidence + assumption-heavy.** Candidates 2, 6, 3. Minimum evidence: the explain-first probe; demonstrated fusion outranks the confidence.
+
+**E) Iteration vs looping.** Candidates 4, 5, 9. Minimum evidence: the two-pass content comparison — nothing else can separate these.
+
+**F) Avoidance + otherwise strong.** Candidates 5, 7, 8. Minimum evidence: count of untouched areas, plus whether 7's required resolver is named.
+
+**G) High revisability.** Candidates 9, 8, plus the `oscillating` state. Minimum evidence: was the update caused by something nameable. `oscillating` still has no owning configuration — open item.
+
+**H) Going well, calm feels unfamiliar.** Candidates 7, 1, 9, or Undetermined. Minimum evidence: is there a locatable unknown with a resolver, or is the read genuinely unformed. Pass 1 options for this doorway must include stances about the discomfort itself.
+
+**I) "Want a drink, don't know why."** Candidates open — correctly so. Minimum evidence: whether the person points at something they're trying not to experience (their call, never inferred), then normal ladder.
+
+**J) "Take a Chance", minimal context.** Candidates all nine plus Undetermined, honestly. Minimum evidence: one concrete piece of the situation. This pathway will legitimately return Undetermined more often, by design.
+
+### The 3–5 highest-value boundary questions in the whole system
+
+Ranked by how many overlapping pairs each one separates. All are natural user-facing language.
+
+1. **"Did anything shift while you were answering these?"** — splits 9 from 8 and 7, and feeds 4 vs 5. The single highest-value item in the system.
+2. **"Is the part you can't settle missing information, or is it something only time answers?"** — splits 7 from 9 and 1, and separates located from unlocated uncertainty everywhere.
+3. **"If someone disagreed, would you want to explain first or hear theirs first?"** — splits 2 from 6, 1, and 9, and exposes self-over-demonstrated confidence.
+4. **"How much of the weight of this is in view to you right now?"** — splits 8 from 3 and 7, and is the only load item that never functions as a penalty.
+5. **"When it moved — was there something new in front of you, or was it more that sitting with the first answer got harder?"** — splits evidence-driven revision from discomfort-driven switching, which is what most of the oscillation ambiguity turns on.
+
+### Open items before the number engine can be built
+
+1. **The 1–9 source meanings** — the hard blocker. Everything else is ready.
+2. `oscillating` needs an owning configuration or an explicit cautious-result home (carried from Milestones 10–12).
+3. Two-pass account capture must be implemented; 4/5/9 are unreadable without it.
+4. The `[3]` probe must not depend on emotional intensity.
+5. Pass 1 option sets must be authored per doorway, including stances about the person's own reaction.
+
+No meanings invented. No production code, questions, scoring, or UI changed in this task.
