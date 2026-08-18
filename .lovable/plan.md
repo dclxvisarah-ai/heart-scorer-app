@@ -1895,4 +1895,32 @@ For each case: the initially overlapping candidates, and the follow-up evidence 
 
 Plus the standing prerequisites: the six definitional fixes from the Phase 2C stress test, and **the uploaded 1–9 source text**, without which the meaning column stays `[SOURCE REQUIRED]` and the app must either ship the number meaning-free or not ship the meaning layer.
 
+### The reusable decision rule (plain English, no math)
+
+Read in order, every run:
+
+1. **The context never determines the number.** What the person brought — a text, a drink, a decision, "take a chance" — supplies the material to reason about and nothing else. Two people entering the same doorway can land anywhere.
+2. **No single answer determines the number.** One tap, one "I don't know," one strong or weak response is never enough on its own.
+3. **The number comes from a configuration.** Several dimensions have to line up together in a recognizable shape before a number is even a candidate.
+4. **Overlap is normal, not a problem.** Most profiles will fit two or three shapes at first. That is expected and is not a sign the instrument failed.
+5. **Ask a boundary question only when it is needed to separate the leading candidates** — at most one, chosen to split the top two, and never a question about how confident the person feels.
+6. **Weight, not knowing, locating an unknown, and changing one's mind never lower the reading.** They are context or strength depending on the shape they sit in.
+7. **What was demonstrated outranks what was claimed.** If the two differ, the demonstrated structure decides, and the difference is named kindly rather than scored.
+8. **Stop as soon as one established meaning is clearly the best-supported reading of the whole pattern.** Not the highest, not the nicest — the best supported.
+9. **If nothing is clearly best supported, say so.** Return Undetermined, or name the two shapes it sits between, and point at what would make it readable. Never invent a number to complete the experience.
+
+### Number pairs still structurally indistinguishable with the current eight dimensions
+
+These must be resolved before the number engine is implemented.
+
+| Pair | Why they collapse | Proposed resolution |
+| --- | --- | --- |
+| **7 vs 8** | Both admit intact fact/assumption separation and tolerate one untouched area; the split currently rests on load coherence alone, which is a single dimension — a violation of the no-single-dimension rule. | Make a located unknown **with a named resolver** a hard requirement for 7 and optional for 8. |
+| **8 vs 9** | Both require intact separation and full coverage; separated only by whether the view actually moved on evidence. Without a genuine two-pass capture, that difference is invisible. | Two-pass account capture becomes mandatory; 9 additionally requires observed movement in content, not just openness. |
+| **4 vs 5** | Both involve going back over the same ground; repetition vs iteration cannot be told apart from self-report. | Same two-pass capture: unchanged content = 4, changed content = 5. |
+| **2 vs 6** | A confidently held but assumption-fused read and a generally mixed profile can present identically when coverage is thin. | Named-configuration precedence already favors 2; add the requirement that 6 is only reachable after 2's boundary question has been asked and answered. |
+| **"revises without evidence" — unowned** | Not a pair but a hole: this profile matches no configuration and must not be swept into 6. | Assign it a configuration explicitly, or declare it a standing cautious-result / Undetermined case. |
+
+Everything else in the matrix separates on at least two dimensions plus a qualifier.
+
 No production code, questions, scoring, or UI changed in this task.
