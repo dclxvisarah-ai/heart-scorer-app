@@ -9,6 +9,7 @@ import {
   NUMBERS,
   buildSequence,
   evaluatePattern,
+  getDeeperProbe,
   getDoorway,
   type AnswerMap,
   type Question,
