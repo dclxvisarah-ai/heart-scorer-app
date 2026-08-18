@@ -10,18 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as HistoryRouteImport } from './routes/history'
 import { Route as ReadingsRouteImport } from './routes/readings'
-import { Route as Vol2RouteImport } from './routes/vol2'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HistoryRoute = HistoryRouteImport.update({
-  id: '/history',
-  path: '/history',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReadingsRoute = ReadingsRouteImport.update({
@@ -29,44 +22,31 @@ const ReadingsRoute = ReadingsRouteImport.update({
   path: '/readings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Vol2Route = Vol2RouteImport.update({
-  id: '/vol2',
-  path: '/vol2',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/history': typeof HistoryRoute
   '/readings': typeof ReadingsRoute
-  '/vol2': typeof Vol2Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/history': typeof HistoryRoute
   '/readings': typeof ReadingsRoute
-  '/vol2': typeof Vol2Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/history': typeof HistoryRoute
   '/readings': typeof ReadingsRoute
-  '/vol2': typeof Vol2Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/history' | '/readings' | '/vol2'
+  fullPaths: '/' | '/readings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/history' | '/readings' | '/vol2'
-  id: '__root__' | '/' | '/history' | '/readings' | '/vol2'
+  to: '/' | '/readings'
+  id: '__root__' | '/' | '/readings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  HistoryRoute: typeof HistoryRoute
   ReadingsRoute: typeof ReadingsRoute
-  Vol2Route: typeof Vol2Route
 }
 
 declare module '@tanstack/react-router' {
@@ -78,13 +58,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/history': {
-      id: '/history'
-      path: '/history'
-      fullPath: '/history'
-      preLoaderRoute: typeof HistoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/readings': {
       id: '/readings'
       path: '/readings'
@@ -92,21 +65,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReadingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/vol2': {
-      id: '/vol2'
-      path: '/vol2'
-      fullPath: '/vol2'
-      preLoaderRoute: typeof Vol2RouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  HistoryRoute: HistoryRoute,
   ReadingsRoute: ReadingsRoute,
-  Vol2Route: Vol2Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
