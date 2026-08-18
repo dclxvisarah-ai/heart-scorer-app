@@ -53,7 +53,9 @@ export function ClarityDial({
   return (
     <div className="flex flex-col items-center">
       <div className={`relative ${px}`}>
-        <svg viewBox="0 0 128 128" className="h-full w-full -rotate-[120deg]">
+        {/* Rotated so the 120deg opening in the arc is centred at the bottom. */}
+        <svg viewBox="0 0 128 128" className="h-full w-full rotate-[150deg]">
+
           <circle
             cx="64"
             cy="64"
