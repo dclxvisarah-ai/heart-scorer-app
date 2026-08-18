@@ -909,3 +909,163 @@ Across all three: identical eight dimensions, identical classification, entirely
 5. Whether optional brief text is stored in local history alongside the pattern.
 
 No code, questions, scoring, or UI changed in this task.
+
+---
+
+## Milestone 4 — CONTEXT DOORWAYS (design only, no production code)
+
+Revision to the Milestone 3 opening. The opening is no longer a bare words box: it is a short chain of small, natural context branches that act as **a doorway into the deeper framework**. Two taps and, optionally, a handful of the person's own words — then the reveal block begins.
+
+### Locked design principles for the doorway layer
+
+- The opening context branch is **not scored** and does **not predetermine a number**.
+- It is a doorway into a deeper framework for clarity — nothing more.
+- Branches are short, natural, human, sometimes playful. Never a clinical exam.
+- **"I don't know" is always a legitimate answer** and is never treated as poor clarity. Every branch list ends with an honest-unknown option and a "none of these — let me explain" escape.
+- The same starting prompt can lead to **any of the nine numbers**, depending on the responses underneath it.
+- The deeper questions reveal the eight dimensions **indirectly**. The user never sees a dimension checklist, dimension names, or per-dimension scores.
+- **No required long-form writing.** Mostly taps; optional short text only where it genuinely adds signal, never as a gate to the result.
+- No right/wrong answer, no good/bad number, no pressure toward 9.
+- Final result is an emergent **1–9** or **Undetermined**.
+- Established number meanings are interpretive lenses — not diagnoses, predictions, or permanent labels.
+
+### Shape of the doorway
+
+```text
+Level 0  opening intent          (tap a card, or type your own line)
+Level 1  human follow-up         "Okay. What's underneath that?"  → 6–9 concise taps
+Level 2  one level deeper        branch-specific taps, still topic/context language
+   ↓     (optional: a few of your own words — skippable)
+Core reveal block  →  adaptive condition block  →  stance close  →  1–9 / Undetermined
+```
+
+Rules for the chain:
+- Level 1 and Level 2 are **topic and context only**. They ask *what this is about*, never *how well you are thinking about it*.
+- The transition happens at the first reveal task, where the person begins **doing** something (sorting, splitting, choosing a telling) instead of describing a topic.
+- Level 2 output feeds only the **framing** of the reveal tasks — which situation lines get sorted, which unknowns are offered. It never selects, weights, or excludes a number.
+- Max two levels. If Level 2 is "I don't know", the app proceeds anyway with generic-but-honest framing; unknown is a legitimate doorway.
+
+### Context Doorways — six entry points
+
+**1. "I don't know what the hell to do today."**
+
+Follow-up: *"Okay. What's underneath that?"*
+- I'm trying not to drink/use
+- I'm avoiding something I need to deal with
+- I have a conversation I don't want to have
+- I don't know what I want anymore
+- I have a decision hanging over me
+- I feel restless and need something to do
+- Something happened and I can't stop thinking about it
+- Honestly, I have no idea
+- None of these — let me explain
+
+Level 2, if "I'm avoiding something": *"Any sense what kind of thing?"* — a heavy conversation · a responsibility · a decision · a feeling · a person · something I know I need to change · I don't actually know what I'm avoiding.
+
+Transition into the dimensions: the named thing supplies the lines for the sort task (1 and 2), the two tellings (3), and the unknown list (4). Restlessness or "can't stop thinking" flags 5 and 6 for the adaptive block. "I don't actually know what I'm avoiding" is treated as *usable information*, and the coverage probe (7) simply offers the parts of the day and notes what never gets touched.
+
+**2. "Should I text them?"**
+
+Follow-up: *"What's the pull here?"*
+- I want to know where I stand
+- I said something I regret
+- They went quiet and I don't know why
+- I miss them
+- I want to fix it now, before I lose my nerve
+- I'm bored and they're the person I reach for
+- I don't want to text, I want to stop wanting to
+- No idea, honestly
+- None of these — let me explain
+
+Level 2, if "They went quiet": *"How long are we talking?"* — hours · a day or two · longer than usual for us · they've never gone quiet before · I've lost track.
+
+Transition: the silence supplies sortable lines ("it's been six hours" / "they're annoyed with me"), the two tellings for 3, and the unknowns for 4 (whether they've been busy; what the last message actually said). Then 6 (has the read moved or just been re-said) and 8 (re-show their own words).
+
+**3. "I'm feeling lucky — should I gamble?"**
+
+Follow-up: *"Where's the luck coming from?"* — no judgment on the premise; the lens is the reasoning, not the activity.
+- I've been winning
+- I'm due a win
+- Something good happened today
+- I want the rush
+- I want to get something back
+- I have spare money and nothing on
+- It's a mate's thing, not really my idea
+- Couldn't tell you
+- None of these — let me explain
+
+Level 2, if "I'm due a win": *"What's the run been like?"* — losing lately · up and down · I've stopped counting · I'd rather not look · I know exactly, to the penny.
+
+Transition: "I'm on a run" versus "I've won twice" is the sort task's live edge (1, 2). The unknown list (4) offers odds and the losing case; whether the losing case ever gets tapped feeds 7. "I want the rush" routes load coherence (5). Cleanly separating the feeling from the facts and still choosing to play is a high-coverage pattern, not a low one.
+
+**4. "Should I make this big decision?"**
+
+Follow-up: *"What makes it big?"*
+- It's hard to undo
+- Other people are affected
+- Money
+- It changes where I live or work
+- It's been hanging over me for ages
+- Everyone has an opinion about it
+- It's not big to anyone else, only me
+- I'm not sure why it feels big
+- None of these — let me explain
+
+Level 2, if "It's been hanging over me for ages": *"What's happened in that time?"* — nothing's changed · I keep changing my mind · I've decided and un-decided · I've been gathering information · I've been not looking at it · I couldn't say.
+
+Transition: the stakes supply the lines. "Hanging over me for ages" is a movement flag → probe 6 hard (did the account change across passes, or is it the same conclusion in new words) and 5 coherence (is the weight visible to them). Coverage (7) checks whether one side of the decision is ever tapped.
+
+**5. "Something's off and I can't name it."**
+
+Follow-up: *"Where do you notice it?"*
+- With one particular person
+- At work
+- In my body
+- When I'm on my own
+- When I'm around family
+- First thing in the morning
+- It follows me everywhere
+- I only notice it afterwards
+- None of these — let me explain
+
+Level 2, if "In my body": *"What does it do?"* — tight chest · can't settle · tired but wired · nothing I can point to · comes and goes · don't want to look at it too closely.
+
+Transition: an unnamed thing is fertile ground for 4 (naming what is missing and what would settle it) and for 1 and 2 (which parts are observable and which are the read). Uncertainty here is not a deficit — a person who accurately locates the edge of what they know can land on a strong pattern. "I only notice it afterwards" routes 3 and 6.
+
+**6. "I keep doing the same thing again and again."**
+
+Follow-up: *"What's the loop?"*
+- Same argument
+- Same choice, different situation
+- Same person, different version
+- I start things and stop
+- I promise myself and don't follow through
+- I go quiet on people
+- I overexplain
+- It's a pattern but I can't see the shape of it
+- None of these — let me explain
+
+Level 2, if "Same choice, different situation": *"What usually happens right before?"* — I get a feeling · someone says something · I get tired · I get bored · I don't know, it's just there · I've never looked at that part.
+
+Transition: this doorway is deliberately *not* wired to a repetition number. Recognising a loop is often the strongest thing in the room. 6 is measured by whether the account changes across passes, not by whether the person calls themselves repetitive; 7 checks whether the moment-before is ever examined; 8 re-shows their own words.
+
+**7. "Someone said something and I can't let it go."** *(bonus entry point)*
+
+Follow-up: *"What's stuck?"* — what they said · how they said it · what I think they meant · what I didn't say back · that they might be right · that it landed on something old · I'm not sure what's stuck · none of these.
+
+Transition: strong material for 1 and 3 — the said thing versus the meaning assigned to it, the event versus the reaction to it. Load (5) is context here, not a penalty.
+
+### Guarantees this section must preserve
+
+- **No branch hard-codes a destination number.** Every Level 1 / Level 2 combination must leave all nine patterns and Undetermined reachable. Any branch that can only produce one pattern is a bug in the branch, not a feature.
+- Branch selections are stored as **context** and shown back with the result as context, never cited as evidence for the number.
+- Honest-unknown taps are recorded as legitimate answers and are never counted as low clarity anywhere in classification.
+- Copy tone check for every branch list: could a person read this on a bad day without feeling assessed? If not, rewrite it.
+
+### Open items added by this milestone
+
+1. Where the sortable lines come from once a branch is known — a small library of situation templates keyed to Level 2, or generated from optional short text. (Extends Milestone 3 open item 3.)
+2. Whether typed free-text openings get a lightweight mapping into the nearest doorway, or their own generic framing.
+3. Whether "none of these — let me explain" opens short text (skippable) or a second, wider tap list.
+
+No production code, questions, scoring, or UI changed in this task.
