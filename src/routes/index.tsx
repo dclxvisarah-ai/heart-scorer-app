@@ -133,6 +133,7 @@ function GabrielsNumberPage() {
 
 
   const current = sequence[index];
+  const nextProbe = result && !result.primary ? getDeeperProbe(result.contested, deeperIds) : undefined;
 
   return (
     <main className="paper min-h-screen">
