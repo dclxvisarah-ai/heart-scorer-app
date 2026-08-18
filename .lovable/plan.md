@@ -793,3 +793,119 @@ Revision is necessary but **not** a rewrite: the nine configurations survive. Re
 8. What happens when a profile matches no pattern, or two equally? Is there an explicit "no clean pattern" outcome, and what does the reflection say then?
 
 **Status: REVISE — architecture survives the stress test with six required definitional fixes and one gap to close.** No code, questions, scoring, or UI changed in this task.
+
+## Milestone 3 — PRODUCT DIRECTION LOCKED + FIRST ADAPTIVE FLOW SPEC (design only)
+
+No production code, UI, questions, or scoring changed in this task. This is the design to review before coding.
+
+### Locked product direction
+
+Gabriel's Number is a **psychologically grounded, reality-based reflection / decision lens**. It is not a personality quiz, not a correctness test, and not a conventional score.
+
+- Any real-life question is welcome, casual or heavy: "I don't know what to do today", "Should I text them?", "I'm feeling lucky — should I gamble?", "Should I make this big decision?" The system **does not judge the premise** and never advises for or against it.
+- There are **no right or wrong answers and no good or bad numbers.** No number is better than another; the app never pushes anyone toward 9.
+- The result is an **emergent 1–9 number** from the person's actual response pattern, or **Undetermined**.
+- **Undetermined is not failure.** It means the available input does not support a defensible pattern yet. It is offered warmly, with what would make a reading possible — never as an error state.
+- The same starting question can produce different numbers for different people, because the number comes from the response pattern, not the topic.
+- The final result presents the **established psychological meaning** of that number as a reflection lens — not a diagnosis, verdict, prediction, or a claim the person "has" that number permanently. Today's number is today's.
+- **Sarah's established 1–9 meanings and the Tree of Life / Pythagorean framework are preserved as the symbolic/psychological interpretive layer.** They are not invented, replaced, or paraphrased by this project. (Open item: those source files have not yet been received in a readable form — see Open items.)
+- Tone: playful, intriguing, human. The reasoning underneath stays rigorous. It must not look like a clinical examination.
+
+### Interaction constraints (hard)
+
+- **Taps and choices first.** No required paragraphs, no psychological essays. Optional brief text only where it genuinely adds signal — and never as a gate to the result.
+- **Short.** Target 8–12 interactions after the opening, most of them a single tap.
+- **The eight dimensions are never displayed as a checklist.** No dimension names, no progress bar labelled with clinical terms, no per-dimension scores shown.
+- **Reveal, don't interrogate.** At least some items make the person *do* something whose structure is informative, rather than rate themselves.
+
+### Stress-test findings carried into this spec
+
+Emotional load is context, never a penalty. Honest uncertainty can be highly clear. Reconsideration and revisability are never weaknesses. Looping and genuine iteration must be distinguished by whether the account *changed*, not by whether the person revisited. Pattern 6 may not act as a catch-all (named single-dimension patterns take precedence). Self-reported confidence never overrides demonstrated response structure — where the two disagree, the demonstrated structure classifies and the gap is named neutrally in the reflection.
+
+### The adaptive flow — shape
+
+```text
+Opening (words, context only, not scored)
+        │
+        ├─ intent capture: what is this about, in your words / a tap
+        └─ starting-state words: where you're starting from
+        │
+Core reveal block  (fixed, 4 interactions — every run gets these)
+        │  sort task        → reveals 1 Fact vs Interpretation
+        │  split task       → reveals 2 Known vs Felt/Assumed
+        │  account task     → reveals 3 Observation vs Reaction
+        │  gap task         → reveals 4 Uncertainty (unknowns + what would settle)
+        │
+Adaptive condition block  (3–5 interactions, selected by what the core showed)
+        │  chosen from: 5 load  ·  6 movement  ·  7 coverage
+        │
+Stance close  (2 interactions)
+        │  re-show opening words → "where does it sit now?"  → reveals 8
+        │
+Pattern classification  →  1–9  or  Undetermined
+        │
+Result: number + plain reflection + opening words shown as context
+        │
+        └─ established meaning of that number as a reflection lens
+```
+
+**Adaptivity rule (the part that must not predetermine the number):** branching selects *which condition dimensions get probed and with which scenario framing*, never which number is available. Every one of the nine patterns must remain reachable from every branch. Concretely: the branch is chosen by the *shape* of the core block (e.g. core strong → probe 6 and 7 harder, because movement and coverage are what would differentiate; core uneven → probe the specific weak discrimination again in a different framing to check it wasn't a wording artefact; load visibly present in the opening words → probe 5 coherence). Branching changes resolution, not destination.
+
+**Undetermined triggers:** fewer than the required core interactions completed; core tasks answered in a way that carries no structure (all-same taps, contradictory sorts); or two or more patterns tie with no resolving evidence. The copy names what would help — "one more pass on the part about X would make this readable" — and offers a re-run.
+
+### How the eight dimensions are revealed rather than asked
+
+| Dim | Reveal mechanic (tap-based) |
+| --- | --- |
+| 1 Fact vs Interpretation | Sort 5–6 short lines about the person's own situation (auto-generated from their intent, or picked from a scenario) into "this happened" / "this is what I make of it". Structure of the sort is the evidence. |
+| 2 Known vs Felt/Assumed | Same lines, second pass with a different cut: "I could show this to someone" / "this is my read". Disagreement between pass one and pass two is itself signal. |
+| 3 Observation vs Reaction | Present two versions of the same event, one stripped of response language, one with it. Ask which is closer to how they'd tell it. |
+| 4 Uncertainty | Tap the pieces they don't have yet from a short list, then tap which one would actually change their mind. Naming a resolver is the strength; naming none is the finding. |
+| 5 Emotional Load | Two taps: how much this is weighing (load present) and how much of that weight they can see acting on their thinking (load seen). Scored as *coherence*, never as level. |
+| 6 Mental Movement | Ask for their read early, then again later after the sorts. Whether the *content* changed — not whether they revisited — separates iteration from looping. |
+| 7 Avoidance | Offer the parts of the situation as taps and note which are consistently not chosen when they had the chance. Coverage is inferred from what is never touched. |
+| 8 Revisability | Re-show their own opening words and ask where it sits now. Movement against their own baseline, behavioural, not self-rated. |
+
+### Three example starting intents
+
+**Example A — "Should I text them?" (light, relational)**
+
+- Opening: intent tap "a conversation"; starting words: *"restless, keep picking up my phone."*
+- 1: sort lines like "they read it and haven't replied" / "they're annoyed with me" / "it's been six hours" → fact vs interpretation.
+- 2: second cut on the same lines — which could be shown to someone else.
+- 3: two tellings of the six-hour silence, one with response language, one without.
+- 4: tap what's missing (whether they've been busy / what they actually felt about the last message), then tap which one would change the decision.
+- Adaptive: opening words showed restlessness → probe **5** coherence and **6** (has the read moved since the first tap, or just been re-said).
+- 8: re-show *"restless, keep picking up my phone"* → where does it sit now.
+- Outcome space: a person who sorts cleanly, names a resolver and moves → one pattern. A person who sorts interpretation as fact and holds firm → a different one. **Same opening question, different numbers.**
+
+**Example B — "I'm feeling lucky, should I gamble?" (casual, no premise judgment)**
+
+- The app does not advise on gambling and does not moralize. The lens is the reasoning, not the activity.
+- 1: sort "I've won the last two times" / "I'm on a run" / "I have £X spare" → fact vs interpretation. The "on a run" line is where the structure shows.
+- 2: which of these could be shown to someone.
+- 3: telling it with the feeling in vs out.
+- 4: what's unknown (odds, what they'd do if it went the other way) and what would change the decision.
+- Adaptive: if the core shows strong structure → probe **7** (is the losing case ever tapped?) and **6**. If core shows fusion → re-probe **1** in a second framing before concluding.
+- 8: re-show *"feeling lucky"* → where does it sit now.
+- Outcome space: "feeling lucky" is not automatically low clarity. Someone who cleanly separates the feeling from the facts, names the unknowns, and can still say "and I want to anyway" is a *high-coverage* pattern. Someone who can't tell the run from the odds is a different pattern. Neither is judged for gambling.
+
+**Example C — "Should I make this big decision?" (weighty, high load)**
+
+- Opening words likely carry load: *"heavy, and I've been going round it for weeks."*
+- 1–4 as above, framed on their own decision.
+- Adaptive: "going round it for weeks" is a movement flag → probe **6** hard (did the account change across passes, or is it the same conclusion in new words) and **5** coherence (is the weight visible to them). Then **7** if a part of the decision is never tapped.
+- 8: re-show their words → movement.
+- Outcome space: high load with the load clearly seen and discriminations holding is a *strong* pattern, not a penalized one. Weeks of circling with intact coverage is the movement pattern, not a low-clarity verdict.
+
+Across all three: identical eight dimensions, identical classification, entirely different surface language — and no branch that can only produce one number.
+
+### Open items before coding
+
+1. **Sarah's 1–9 meanings source is still needed.** The Pythagorean / Tree-of-Life file has not been received in readable form in this project; nothing can map digits to meanings until it is supplied. Until then the app must ship the number meaning-free or not ship the meaning layer.
+2. The six definitional fixes from the stress test (load coherence, Pattern 6 precedence, D–S bounds, 7/8/9 decision order, unordered labels, widened Pattern 2) are prerequisites for classification.
+3. Where do the sortable lines come from for a free-text intent — generated, or drawn from a small library of situation templates keyed to the intent tap?
+4. Exact Undetermined thresholds.
+5. Whether optional brief text is stored in local history alongside the pattern.
+
+No code, questions, scoring, or UI changed in this task.
