@@ -113,3 +113,28 @@ New questions needed: one general item each for `observe`, `pattern`, `revise`, 
 - `src/routes/index.tsx`: general block loops 8 instead of 5, focused 5 instead of 4 — the existing per-question card handles both. One new stage card for the second by-feel reading.
 - Mismatch-source selection switches from "3 lowest answers" to "lowest-scoring dimensions", which stops the list from showing three near-duplicate questions.
 - No changes to design tokens, components, footer, or the non-diagnostic framing.
+
+## Dimension 1 — FACT vs INTERPRETATION (question-writing session)
+
+Status: design task, first of the 8 planned dimensions. Not yet implemented — we write the questions together before any code changes. The remaining 7 dimensions are developed later, one at a time, in the same way. The app and all current functionality stay untouched until the question set is agreed.
+
+Purpose of this dimension: test whether the user can distinguish observable information — what happened, what was said, what is there — from the meaning, explanation, motive, or conclusion they have assigned to it. The instrument should surface whether a person is holding an interpretation as if it were a fact, without telling them which is which.
+
+Design constraints for the questions (to be drafted in the session):
+
+- Plain, non-diagnostic language. No clinical terminology, no correct-answer cues.
+- Each item isolates the fact/interpretation distinction and does not also pull in known-vs-assumed, emotional load, or reaction — those are separate dimensions.
+- Agreement scale 1–5 stays as-is. An item is written so that agreement consistently points one way on the dimension (no mixed-direction wording); reverse scoring only applies if the statement is phrased so that agreement means *less* clarity.
+- Wording must not hand the user the "right" reading. The question should make the distinction doable, not announce it. Avoid items like "I am confusing my interpretation with the facts" (that names the failure); prefer items that ask the person to hold the two apart in their own terms.
+- Need a small set: one general (situation-agnostic) item plus branch-specific focused items for the branches where this dimension distorts most (relationship, pattern, and decision per the table in section 2). Exact count to settle in the session — target ~1 general + 3 focused for this dimension.
+- Each item gets the existing `note` (steadying line) and a `mismatchSource` (what a low score may point at, never a diagnosis).
+
+Drafting checklist for the session:
+
+1. Agree the exact observable-vs-assigned distinction in one sentence.
+2. Write candidate general item; check it does not leak into other dimensions.
+3. Write 3 focused items (relationship, pattern, decision); check each is the same dimension in branch language, not a new one.
+4. Check direction of scoring and mark `reverse` where needed.
+5. Decide whether any existing `fact`-tagged question from section 6 is retained verbatim, rewritten, or replaced — defer the call until the new wording exists to compare against.
+
+No code is changed in this task. When the wording is settled, implementation follows the Technical notes above, scoped to dimension 1 only.
