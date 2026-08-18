@@ -455,6 +455,7 @@ function QuestionStage({
   onExitBack: () => void;
 }) {
   const question = questions[index];
+  if (!question) return null;
   const value = answers[question.id];
   const isLast = index === questions.length - 1;
 
