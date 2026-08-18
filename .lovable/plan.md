@@ -2059,3 +2059,130 @@ Non-negotiables baked into these definitions:
 4. **Pass 1's optional free line must stay optional** and must never be required to reach a result — content comparison degrades gracefully to reason-tap comparison when it is absent.
 
 No numbers assigned. No production code, questions, scoring, or UI changed in this task.
+
+---
+
+## Milestone 12 — OSCILLATION WITHIN THE 1–9 ARCHITECTURE (design only)
+
+No tenth number. No "unstable" verdict. Repeated mind-changing is an **observable response pattern** that can appear inside several established configurations; the design task is to find out *what the changing is made of*.
+
+**Source constraint restated:** the established 1–9 meanings are still not present in this project. Every meaning cell below reads **SOURCE NEEDED**. The overlap columns describe which *configurations* (as defined in Milestone 10) a category can sit inside; attaching Sarah's meanings is a later transcription step.
+
+### 1) Observable categories of change
+
+| Category | What is observed |
+| --- | --- |
+| `revised-with-evidence` | View changed, and the person can name the information or reframe that moved it |
+| `clearer-without-changing` | Conclusion held; the reasons behind it developed between passes |
+| `unresolved-looping` | Same conclusion, same reasons, and the unknown is still neither resolved nor locatable |
+| `switching-without-new-evidence` | Direction changed one or more times with nothing new named as the cause |
+| `avoidance-through-deciding` | Each new decision arrives right as a specific part of the situation comes into view; deciding functions as a way past it |
+| `emotionally-reactive-change` | Change tracks a shift in feeling rather than in content, and the person says so |
+| `genuine-exploration` | Multiple positions held on purpose, openly, without needing to land yet |
+| `stable-uncertainty` | "I don't know" before and after, with the unknown nameable |
+
+`genuine-exploration` and `switching-without-new-evidence` look identical from the outside and are separated only by the boundary questions in §3. That separation is the heart of this milestone.
+
+### 2) Dimensions informed, and configuration overlap
+
+| Category | Dimensions informed | Possible configuration overlap | Established meaning |
+| --- | --- | --- | --- |
+| `revised-with-evidence` | 8 `updated on evidence`, 6 `iterating`, often 2 `separated` | 9, 7, 5 | SOURCE NEEDED |
+| `clearer-without-changing` | 6 `moving`, 8 `open but unmoved`, 1 `separated` | 8, 9, 2 | SOURCE NEEDED |
+| `unresolved-looping` | 6 `repeating`, 4 `located, no resolver` / `not located` | 4, 5 | SOURCE NEEDED |
+| `switching-without-new-evidence` | 8 `unstable`, 6 `repeating` at content level, 4 `not located` | 4, 6, 3 | SOURCE NEEDED |
+| `avoidance-through-deciding` | 7 `one/several untouched`, 6 `repeating`, 5 often `heavy + unseen` | 5, 4, 3 | SOURCE NEEDED |
+| `emotionally-reactive-change` | 3 `reaction-led`, 5 coherence, 8 `unstable` | 3, 8 | SOURCE NEEDED |
+| `genuine-exploration` | 6 `iterating`, 8 `open but unmoved` or `updated`, 7 `full coverage` | 9, 7, 5 | SOURCE NEEDED |
+| `stable-uncertainty` | 4 `located + resolver named`, 8 `open but unmoved`, 1/2 often `separated` | 7, 1, 9 | SOURCE NEEDED |
+
+Note that `revised-with-evidence`, `genuine-exploration`, and `stable-uncertainty` all overlap *strong* configurations. Changing your mind a lot is not, in this architecture, a mark against anyone.
+
+### 3) Boundary questions
+
+Used only when needed. Each is written so that neither answer is the preferable one, and none names a category.
+
+**Learned something vs. became uncomfortable**
+> When it moved — was there something new in front of you, or was it more that sitting with the first answer got harder?
+> Something new · Sitting with it got harder · Both · Not sure
+
+**Exploration vs. switching**
+> Are you trying these on, or looking for one that sticks?
+> Trying them on · Looking for one that sticks · I don't know
+
+**Deciding vs. avoiding through deciding**
+> Does deciding make the rest of it easier to look at, or less necessary to look at?
+> Easier · Less necessary · Not sure
+
+**Feeling vs. content**
+> Did the situation change, or did how it feels change?
+> The situation · How it feels · Both
+
+**Locating the unknown**
+> Is the part you can't settle missing information, or is it something only time answers?
+> Missing information · Only time · Something else · I don't know
+
+Every one of these has "I don't know" or "Not sure" available, and that answer is recorded as legitimate — it never defaults to the less flattering reading.
+
+### 4) How oscillation contributes to a number
+
+Oscillation is **never sufficient and never decisive**. Rules:
+
+- A change category is admitted as evidence only alongside at least two other dimensions and one qualifier — the same standard as everything else in Milestone 10.
+- The same category lands in different configurations depending on its company. `switching-without-new-evidence` with intact 1/2 separation and full coverage reads as exploration under pressure; the same category with 1 `fused` and areas untouched reads very differently. The category does not carry a fixed destination.
+- Frequency of change carries no weight of its own. Three changes with evidence is `revised-with-evidence`, not three times worse than one.
+- Oscillation can never move a reading *downward*, because the architecture has no downward. It can only make one configuration a better description than another.
+- It may never, by itself, produce Undetermined either — thin evidence does that, not changeability.
+
+### 5) Stress test
+
+**Changes mind 3 times after genuinely new evidence.** → `revised-with-evidence` each time; each change has a named cause. Feeds 8 `updated on evidence`, 6 `iterating`. Overlaps 9, 7, 5; separated by coverage and load coherence. **Frequency is irrelevant here** and the architecture correctly says so.
+
+**Changes mind 3 times with no new evidence.** → `switching-without-new-evidence`. Boundary question "trying these on / looking for one that sticks" decides between `genuine-exploration` and this. If "looking for one that sticks," check the deciding-vs-avoiding probe next; if that reads "less necessary," it becomes `avoidance-through-deciding`. Overlaps 4, 6, 3. **This is the configuration Milestones 10 and 11 flagged as unowned — it now has a defined evidence path, and the remaining decision is which configuration claims it, not whether it is a fault.**
+
+**Changes mind because they noticed an assumption.** → `revised-with-evidence` with the assumption attribution. Feeds 2 `separated` directly. Strong overlap with 9 and 7. **No boundary question needed** — the attribution is already specific.
+
+**Stays with uncertainty.** → `stable-uncertainty` if the locating probe finds the unknown; `unresolved-looping` if it does not, and only then. Overlaps 7 and 1. **Staying with not-knowing is treated as a coherent stance**, per the locked principle.
+
+**Reaches a decision, then revisits it after new information.** → `revised-with-evidence`, and specifically the healthiest version of it: a stance was taken and updated on cause. Feeds 8 `updated on evidence` and 6 `iterating`. Overlaps 9, 8. **Revisiting a decision is not instability** and the architecture must never read it as such.
+
+**Emotionally distressed, reasoning coherent.** → Load is read as 5 `heavy + seen` if the person can see the weight. If the changes track content, `revised-with-evidence` or `clearer-without-changing`; only if they track feeling and the person says so is it `emotionally-reactive-change`. Overlaps 8 strongly. **Distress must not select the reactive category by default** — the "situation vs. how it feels" probe is required before that label is assigned. Flagged as a hard rule.
+
+### 6) When to ask one more, and when to stop
+
+**Ask exactly one more discriminator when:**
+- Two categories remain and a listed boundary question would separate them (most often exploration vs. switching, or learned vs. uncomfortable).
+- Distress is present and it is not yet known whether the changes track feeling or content — this probe is mandatory before `emotionally-reactive-change`.
+- A change is recorded with "not sure" as its cause and one probe could locate it.
+
+**Stop and return Undetermined when:**
+- Pass 2 was abandoned or Pass 1 offered no stance to compare.
+- Two categories remain after the one permitted probe and no further probe would separate them.
+- Every boundary answer is "I don't know" — honest, and honestly unreadable today.
+- Changes are recorded but no dimension outside the change pattern has usable evidence; oscillation alone cannot carry a result.
+
+Never ask a second discriminator to break a tie, and never resolve a tie by picking the more flattering category.
+
+### Pattern Evidence Vocabulary (internal only)
+
+These strings are engine-internal. **None may ever be shown to a user, logged into user-visible history, or paraphrased into result copy.** User-facing language describes what was observed in the person's own terms, always neutral.
+
+| Term | Meaning |
+| --- | --- |
+| `stable` | Position and reasons held, and the person can say what they know |
+| `revised-with-evidence` | Position changed with a named cause |
+| `clearer-without-changing` | Position held, reasons developed |
+| `unresolved` | Same position, same reasons, unknown neither resolved nor located |
+| `oscillating` | Direction changed with no cause named |
+| `exploratory` | Multiple positions held deliberately and openly |
+| `avoidant` | Coverage gap; deciding or moving on functions as a way past something |
+| `emotionally-reactive` | Change tracks feeling rather than content, by the person's own account |
+| `uncertain` | An unknown is present; pairs with `located` or `unlocated` |
+| `revisable` | Openness demonstrated, whether or not the position moved |
+| `insufficient` | Not enough structure to read |
+
+Companion qualifiers, also internal: `located` / `unlocated`, `load-seen` / `load-unseen`, `demonstrated` / `self-reported`.
+
+Philosophy check: no wrong answers, no wrong number, no diagnosis, no permanent identity, no averaging. Oscillation is a shape, not a shortcoming, and the number still emerges only from the whole configuration, interpreted through Sarah's established 1–9 meanings once that source is available.
+
+No numbers assigned. No production code, questions, scoring, or UI changed in this task.
