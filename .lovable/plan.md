@@ -363,7 +363,7 @@ Architecture/reasoning pass only. No implementation, no question edits, no scori
 - "I don't know" is not automatically low clarity.
 - Reconsidering is not automatically low clarity.
 - The number emerges from the *pattern* of responses, not from their average.
-- Initial (by-feel) number vs evaluated number stays the centrepiece.
+- ~~Initial (by-feel) number vs evaluated number stays the centrepiece.~~ **Revised (see Phase 2D):** the opening self-selected numeric reading is removed. The opening is now a brief *word-based* "where am I starting from?" baseline — context only, never scored, never a 1–5 or 1–9 number. The number emerges only after the response pattern is evaluated. The comparison that stays central is **word-based starting state → emergent evaluated number**, not two self-selected numbers.
 
 ### 1. What each dimension contributes
 
@@ -492,5 +492,55 @@ The final result is **the number plus a concise reflection** describing the obse
 2. Write the first scenario set (starting from the Dimension 1 message-read example) and the structural rules that evaluate a response.
 3. Draft candidate patterns for Numbers 1–9 as dimension configurations, meaning-free.
 4. Run the seven edge cases against those patterns and revise until each lands distinctly.
+
+No code, questions, scoring, or UI changed in this task.
+
+## Phase 2D — WORD-BASED PRE-READING & END-TO-END FLOW (new phase, design only)
+
+Recorded as the next design decision. No code changes.
+
+### Origin decision being recorded
+
+The app is **not a personality quiz**, and the instrument's real-life origin was a trauma-informed daily self-reflection process: the person completed exercises, wrote honest summaries, received insight/feedback, and only *after* the full process asked "what is my number today?" In the original case the number 9 emerged from the evaluated pattern, not from a self-selected score.
+
+Consequence: the opening self-selected **numeric** Clarity Tracker does not survive. It must not remain as a 1–5 or 1–9 self-selection. It is replaced by a brief **word-based** "where am I starting from?" self-description that captures the person's starting state *before* answering — context/baseline only, never a scored input, never another personality/state scale.
+
+### The word-based opening — what it captures, what it must not become
+
+It is a *baseline*, not a *measurement*. It records how the person describes where they are starting from, in their own words, so the emergent number can later be read against that starting point. It must not collapse into a Likert state scale.
+
+What it should capture (short, optional, free or lightly-structured text — a few prompts, not a grid):
+
+- **What the situation is** — one plain line about what this run is about (a decision, a conversation, a pattern, a direction, timing).
+- **Where I am starting from** — the person's own short description of their current state in their own words (e.g. "tight and sure", "foggy and tired", "I've been over this a hundred times"). Plain language, no number.
+- **What I'd point to if asked why** — one line, optional, naming the thing that is driving the current reading. This is context, not evidence.
+
+What it must **not** do:
+
+- Produce or imply a number. No 1–5, no 1–9, no slider, no band.
+- Be scored, weighted, or fed into the 1–9 derivation in any way. It is printed alongside the result as the starting point the number is read against.
+- Become a second instrument. It is a few words of context, not a parallel state inventory. If it grows past a short baseline it has failed.
+- Diagnose. The starting-state words are the person's; the system paraphrases nothing clinical from them.
+
+The opening words are reported back at the end ("You started here: …") so the emergent number is always read in context — this is the descendant of the old Clarity Gap's intent (compare where you started to where the pattern lands), but without a self-selected number on the starting side.
+
+### End-to-end flow (locked as the target flow; not yet implemented)
+
+1. **Word-based "where am I starting from?"** — the short baseline above. No number.
+2. **Honest responses to the instrument** — Dimensions 1–8, including scenario/task-based demonstrations where appropriate *plus* self-perception ratings for the same territory. Demonstrated structure and self-perception are both kept and never merged (per Phase 2C).
+3. **System identifies the overall response pattern** across Dimensions 1–8 — pattern shape, not average.
+4. **System returns the emergent 1–9 number** — classification of the pattern, meaning-free until Phase 2E.
+5. **System gives a concise pattern reflection** — which dimensions characterized the pattern, the conditions the reading was taken under (including load, drawn from the opening baseline where relevant), and the non-diagnostic reading of the gap between starting state and emergent number. The reflection carries the interpretation so the digit does not have to.
+6. **Map established 1–9 meanings to the result** — *only after* the number architecture is defensible (Phase 2E). Tree of Life / angel-number mapping stays deferred and is explicitly out of scope until then.
+
+### What this changes in earlier plan text (reconciliation, no code)
+
+- The "initial by-feel 1–5 reading" referenced in §4 (Revisability), §5 (Clarity Gap), and the principle list is **superseded**. Where earlier text treats two self-selected numbers being compared, read it now as **starting-state-words ↔ emergent number**. The behavioural *second* reading for Revisability is preserved in spirit: instead of re-asking a by-feel *number* post-reveal, the person is re-shown their opening words and asked "having answered, where does it sit now?" — movement is still behavioural, still not a self-report, but expressed against the word baseline rather than a number. This is the one place the opening words are re-engaged; they are still not scored.
+- The Clarity Gap's arithmetic form (§5) was already rejected with §4. Its *intent* — read the result against where the person started — survives in plain language via the opening-baseline report and the pattern reflection.
+
+### Still deferred / out of scope
+
+- Tree of Life / angel-number meanings — Phase 2E only, after number architecture is defensible.
+- Any implementation: questions, scenarios, opening-baseline UI, scoring, number, reflection UI all stay as they are until the flow above is agreed.
 
 No code, questions, scoring, or UI changed in this task.
