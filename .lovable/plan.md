@@ -1620,3 +1620,141 @@ A small borrow from (B) and (C): the result reading can use the "a reading, not 
 - No assignment or redesign of the 1–9 meanings — those remain the later interpretive layer, still awaited in readable form.
 
 No production code, questions, scoring, or UI changed in this task.
+
+---
+
+## Milestone 9 — CLARITY CONTRACT + OPENING SCREEN: FINAL SPEC (design only, no production code)
+
+This milestone finalizes the opening experience into a concrete build specification. It supersedes the three candidate drafts in Milestone 8 — the recommended candidate (A, direct/curious) is locked here as the production opening, expanded with the full doorway list and the transition into the Depth Ladder.
+
+### The core function, preserved
+
+The original instrument was called "Clarity Tracker." That name does not remain, but its job does: **helping someone determine whether they actually know what they're talking about — whether they're seeing what's really there, especially when discomfort, anxiety, or stress could be distorting the view.** Gabriel's Number carries that function forward. The opening screen is the first place this promise is felt, before a single question is asked.
+
+### The opening screen — locked copy
+
+**Headline (H1, Fraunces):**
+> What are you actually seeing right now?
+
+**Subline (Inter, muted):**
+> Answer a few honest questions. A number will come out the other side — not a verdict, just a lens for how you're seeing it today.
+
+**The Clarity Contract** — shown as a short, warm passage directly under the subline, not a disclaimer wall. Collapsible after first read; always reachable from a small footer link. Locked wording:
+
+> This isn't a test. There's nothing to get right.
+> No number is better than another — and "I don't know" is a real answer, often a useful one.
+> Honest beats confident, every time.
+> This won't tell you what to do. It shows you the shape of how you're seeing it — and a number to hold that shape, just for today.
+> It's not a diagnosis, not a label, not who you are. Today's number is today's.
+
+**Tone rules for the contract.** Warm, intriguing, brief. No clinical language. No "by using this app you agree." No numbering. It reads like someone telling you what this is, not like terms of service. The safety is in the tone as much as the words.
+
+### Opening doorway choices — locked list
+
+Presented as a vertical stack of tappable cards, each a single line. Order matters: the ordinary-but-lost entries come first (most people arrive there), the heavier ones in the middle, the curious/light ones at the end so the screen doesn't lead with "I'm fine, just curious" and skip the real doorways.
+
+1. **I don't know what the hell to do today.**
+2. **Something feels off.**
+3. **I have a big decision to make.**
+4. **Should I text them?**
+5. **I feel like I want a drink, and I don't know why.**
+6. **Everything is going really well… and I'm not used to that.**
+7. **I feel confident, but I want to make sure I'm actually seeing this clearly.**
+8. **I can't stop thinking about something.**
+9. **Take a Chance.**
+10. **I'm just curious what my number is today.**
+11. **Something else.**
+
+**Design rules for the doorway cards.**
+- Each card is one tap. No multi-select. No required text.
+- "Something else" opens a single optional text line (skippable) and then routes into a generic-but-honest framing of the Depth Ladder — it does not dead-end.
+- "I'm just curious what my number is today" is a legitimate doorway, not a lesser one. It routes into a lighter framing of the same ladder. A person who arrives curious and then reveals a real pattern gets a real reading; a person who stays light gets Undetermined, delivered warmly. Curiosity is not penalized.
+- No card implies a number. No card is marked "heavy" or "light" visually. The visual weight of every card is identical — the content does the differentiation, not the styling.
+
+### "Take a Chance" — definition
+
+**"Take a Chance" is a playful, open-ended reading pathway — not random divination.** It gathers a small amount of context and then reveals a pattern-based number through the same Depth Ladder as every other doorway.
+
+- On tap, a light, inviting follow-up: *"Alright. What are you taking a chance on?"* with a few taps: something I want to do · something I want to say · something I want to stop · something I want to start · a feeling I want to follow · honestly, I don't know yet · none of these — let me explain.
+- From there it enters the normal Depth Ladder, framed on whatever was named.
+- **"Psychological Tarot" may be used as a marketing/descriptive concept** for the app's overall feel (a reading, not a rule; a number that emerges from your own pattern). It must **not** imply literal tarot, card draws, fortune-telling, prediction, or mystical divination. There are no cards, no spreads, no "the universe is telling you." The only thing that is "read" is the shape of the person's own responses.
+- The playful register is in the invitation language, not in the classification. The underlying evidence-gathering and pattern logic is identical to every other doorway.
+
+### The five new doorways — where they route
+
+Each of the new entries (5, 6, 7, 9, 10) connects to an existing or extended Depth Ladder pathway. None of them hard-codes a number.
+
+| Doorway | Level 1 follow-up | Routes into |
+| --- | --- | --- |
+| 5 — "I feel like I want a drink, and I don't know why." | *"What's the pull, do you think?"* — genuine enjoyment · celebrating · habit · trying not to feel something · trying not to think about something · honestly, I don't know · none of these | The **"What am I trying not to experience right now?"** cross-cutting pathway (Milestone 7) if they point at a "trying not to"; otherwise the normal ladder, taken at face value. Never reframes an honest "I enjoy it" as denial. |
+| 6 — "Everything is going really well… and I'm not used to that." | *"What's underneath that 'not used to it'?"* — waiting for it to fall apart · I don't trust it · I don't know how to be in it · I'm bracing · nothing, it's just unusual · honestly, I don't know · none of these | Normal ladder. The "bracing / waiting for it to fall apart" response is rich material for `[4]` (what would you need to know to settle into it) and `[7]` (what part of the good thing is not being looked at). Going well is not automatically high clarity; being unable to rest in it is not automatically low clarity. |
+| 7 — "I feel confident, but I want to make sure I'm actually seeing this clearly." | *"What makes you want to double-check?"* — it matters too much to get wrong · I've been wrong before, feeling just like this · someone disagrees with me · I can't tell if it's clarity or just momentum · I just want to be sure · honestly, nothing, I'm just being careful · none of these | Normal ladder, with the demonstrated-vs-self-perception distinction active from the start. This doorway explicitly invites the case where self-reported confidence is high — the sort task `[1]`/`[2]` and the gap task `[4]` are what distinguish confident-and-clear from confident-and-assumption-heavy. |
+| 9 — "Take a Chance." | *"What are you taking a chance on?"* (see above) | Normal ladder, lighter framing. |
+| 10 — "I'm just curious what my number is today." | *"Curious is a fine place to start. Anything on your mind, or shall we see what comes up?"* — something's on my mind · not really, just curious · a bit of both · I don't know | If "something's on my mind," a single optional text line (skippable), then the normal ladder framed on it. If "not really, just curious," a lighter, shorter ladder run — still the same dimensions, fewer adaptive probes, and a genuine willingness to return Undetermined. |
+
+### The transition: opening doorway → Depth Ladder
+
+This is the full end-to-end flow, locked as the target experience. No step here is implemented yet — this is the spec to approve before building.
+
+```text
+OPENING SCREEN
+  Headline + subline + Clarity Contract
+  11 doorway cards
+        │  (one tap)
+LEVEL 1 — Surface / context        1 tap
+  A human follow-up in the doorway's own register.
+  "Okay. What's underneath that?" / "What's the pull?" / "What are you taking a chance on?"
+  5–8 concise choices + honest-unknown + "none of these — let me explain"
+        │  (one tap; optional short text if "none of these")
+LEVEL 2 — Clarification            1–2 taps
+  "What exactly is difficult / uncertain / wanted / avoided here?"
+  4–7 concise choices that locate the live edge of the situation.
+  Still topic language. Still not scored. Honest-unknown always available.
+        │  (optional one-line text, skippable)
+LEVEL 3 — Pattern-revealing items  2–5 items, adaptive
+  Opening core (always):
+    SORT  → reveals [1] Fact vs Interpretation, then second cut → [2] Known vs Felt/Assumed
+    GAP   → reveals [4] Uncertainty: tap what's missing → tap which would change your mind
+  Adaptive probes (0–3 more), chosen by what the core showed:
+    [3] Observation vs Reaction · [5] Emotional Load (context only) · [6] Mental Movement · [7] Avoidance
+  Stance close (always, 1 item):
+    Re-show their own opening words → "Where does it sit now?" → reveals [8] Revisability
+        │
+ADAPTIVE STOPPING
+  Stop as soon as one candidate pattern is separated from its nearest competitor
+  by directly observed evidence, and no outstanding probe could flip it.
+  If evidence is too thin or two patterns tie irreducibly → Undetermined.
+        │
+RESULT — the reading
+  1. The number: "Today reads as a 7." (or "Not enough to read yet" for Undetermined)
+  2. The established meaning: Sarah's 1–9 meaning for that number, as a reflection lens.
+  3. The observed pattern: 2–3 plain sentences describing what the responses did,
+     tied to their own material. No dimension names, no per-dimension scores.
+  4. A question to carry forward: one line, not advice, not a task.
+  Plus: their opening words shown back as context (clearly marked as context).
+  Plus: a quiet line — today's number is today's, not a label they now carry.
+```
+
+**Transition rules (hard).**
+- The shift from "describing a topic" to "doing something whose structure is informative" happens at the first SORT item. Before that, everything is context and is never scored. After that, the evidence begins.
+- Level 1 and Level 2 output only changes the **framing** of Level 3 items (which lines get sorted, which unknowns are offered). It never selects, weights, excludes, or biases a number.
+- The doorway, Level 1, and Level 2 selections are stored as context and shown back at the result as context. They are never cited as evidence for the number.
+- "I don't know" at any level is a legitimate answer and is never scored as low clarity. At Level 1/2 it routes forward with generic-but-honest framing; at Level 3 it is recorded as readable information.
+
+### What this milestone does NOT do
+
+- No production code, UI, or scoring implementation.
+- No number-determination algorithm (deferred; the rejected arithmetic average stays rejected).
+- No redesign or invention of Sarah's established 1–9 meanings — preserved as the later interpretive layer, still awaited in readable form.
+- No Tree of Life / Pythagorean mapping beyond using the established meanings as the reflection lens.
+
+### Open items carried forward
+
+1. Sarah's 1–9 meanings source — still needed in readable form before the meaning layer can ship.
+2. The six definitional fixes from the Phase 2C stress test remain prerequisites for classification.
+3. Sort-line library: hand-authored per Level 2 branch, or generated from optional text (open).
+4. Exact Undetermined thresholds (structural checks for "taps carry no structure").
+5. Whether the carry-forward question is generated from the observed pattern or drawn from a small per-number library.
+6. The boundary-probe table needs one named item per competing pair before implementation.
+
+No production code, questions, scoring, or UI changed in this task.
