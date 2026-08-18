@@ -622,7 +622,163 @@ export function buildSequence(
   const remaining = Math.max(2, 6 - sequence.length);
   sequence.push(...CORE_QUESTIONS.slice(0, Math.min(CORE_QUESTIONS.length, remaining)));
 
+  // Deeper probes, asked only when the person chose to go deeper from an
+  // undetermined result. They are appended in the order they were offered.
+  for (const id of deeperIds) {
+    const probe = DEEPER_PROBES.find((p) => p.question.id === id);
+    if (probe) sequence.push(probe.question);
+  }
+
   return sequence;
+}
+
+/* ------------------------------------------------------------------ */
+/* Deeper probes (for the undetermined state)                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * A probe re-asks an underlying psychological question in different words.
+ * `separates` lists the numbers the probe can tell apart, so we can pick
+ * the probe that speaks to whichever numbers are currently tied.
+ */
+export interface DeeperProbe {
+  /** Which numbers this probe helps distinguish. */
+  separates: GNumber[];
+  question: Question;
+}
+
+export const DEEPER_PROBES: DeeperProbe[] = [
+  {
+    separates: [7, 9, 6],
+    question: {
+      id: "deep-feel",
+      prompt: "If you had to name what you don't want to feel right now, which is closest?",
+      note: "Same ground as before, asked another way.",
+      choices: [
+        { id: "a", label: "Restlessness — I want it to move already", evidence: { 7: 4 } },
+        { id: "b", label: "The weight of something I already know I should do", evidence: { 9: 4 } },
+        { id: "c", label: "Being at fault", evidence: { 6: 4 } },
+        { id: "d", label: "Not knowing where I stand", evidence: { 5: 4 } },
+        { id: "e", label: "Still can't name it", evidence: { 1: 2 } },
+      ],
+    },
+  },
+  {
+    separates: [7, 3, 9],
+    question: {
+      id: "deep-distract",
+      prompt: "What would become uncomfortable if you stopped distracting yourself for the next hour?",
+      choices: [
+        { id: "a", label: "The same thought would start circling", evidence: { 3: 4 } },
+        { id: "b", label: "I'd have to just sit in it", evidence: { 7: 4 } },
+        { id: "c", label: "I'd have to actually do the thing", evidence: { 9: 4 } },
+        { id: "d", label: "I'd have to hear someone out", evidence: { 8: 4 } },
+        { id: "e", label: "Nothing much would change", evidence: { 2: 2 } },
+      ],
+    },
+  },
+  {
+    separates: [5, 2],
+    question: {
+      id: "deep-known",
+      prompt: "Of what you've said so far, how much would hold up if someone asked you to show it?",
+      note: "Not a test. Just where the line sits.",
+      choices: [
+        { id: "a", label: "Most of it — I could point to the facts", evidence: { 5: 4 } },
+        { id: "b", label: "Some facts, and a read on someone else", evidence: { 2: 4 } },
+        { id: "c", label: "Mostly what I've concluded from it", evidence: { 3: 4 } },
+        { id: "d", label: "I'd want to check before answering", evidence: { 5: 2, 1: 1 } },
+      ],
+    },
+  },
+  {
+    separates: [8, 2],
+    question: {
+      id: "deep-hear",
+      prompt: "If the other person spoke first and you couldn't reply, what would that be like?",
+      choices: [
+        { id: "a", label: "Hard — I'd be building my answer the whole time", evidence: { 8: 4 } },
+        { id: "b", label: "Useful — I'd probably learn something", evidence: { 8: 3, 2: 1 } },
+        { id: "c", label: "Fine, but I'd still think they're wrong", evidence: { 2: 4 } },
+        { id: "d", label: "There's no one else in this", evidence: { 6: 2, 7: 1 } },
+      ],
+    },
+  },
+  {
+    separates: [4, 9],
+    question: {
+      id: "deep-container",
+      prompt: "If this same thing showed up again next week, what would you already have in place?",
+      choices: [
+        { id: "a", label: "A rule or limit I'd actually keep", evidence: { 4: 4 } },
+        { id: "b", label: "One small step I know how to take", evidence: { 9: 4 } },
+        { id: "c", label: "The same scramble as this time", evidence: { 4: 2, 3: 1 } },
+        { id: "d", label: "No idea yet", evidence: { 1: 2 } },
+      ],
+    },
+  },
+  {
+    separates: [3, 1],
+    question: {
+      id: "deep-recurs",
+      prompt: "Has this shape shown up before, in another setting?",
+      choices: [
+        { id: "a", label: "Yes — I can name where", evidence: { 3: 4 } },
+        { id: "b", label: "Maybe, but it feels different this time", evidence: { 2: 3 } },
+        { id: "c", label: "No — this is new ground", evidence: { 1: 4 } },
+        { id: "d", label: "I haven't looked", evidence: { 1: 2, 7: 1 } },
+      ],
+    },
+  },
+  {
+    separates: [6, 2],
+    question: {
+      id: "deep-part",
+      prompt: "Say your part in one sentence — which version comes out?",
+      note: "Contribution, not verdict.",
+      choices: [
+        { id: "a", label: "\"Here's what I did, and here's what they did\"", evidence: { 2: 4 } },
+        { id: "b", label: "\"This is on me\"", evidence: { 6: 4 } },
+        { id: "c", label: "\"I did one thing I'd do differently\"", evidence: { 6: 3, 9: 1 } },
+        { id: "d", label: "I can't get it to one sentence", evidence: { 1: 2 } },
+      ],
+    },
+  },
+  {
+    separates: [9, 7],
+    question: {
+      id: "deep-step",
+      prompt: "What's the smallest thing you could do about this today?",
+      choices: [
+        { id: "a", label: "Something specific — I can picture it", evidence: { 9: 4 } },
+        { id: "b", label: "Wait, on purpose", evidence: { 7: 4 } },
+        { id: "c", label: "Say one true thing to someone", evidence: { 8: 4 } },
+        { id: "d", label: "Nothing has a shape yet", evidence: { 1: 2 } },
+      ],
+    },
+  },
+];
+
+/**
+ * Picks the probe that best speaks to the numbers currently tied, skipping
+ * any probe already asked. Returns undefined when we've run out — at which
+ * point staying undetermined is the honest outcome.
+ */
+export function getDeeperProbe(
+  contested: GNumber[],
+  askedIds: string[] = [],
+): Question | undefined {
+  let best: DeeperProbe | undefined;
+  let bestScore = -1;
+  for (const probe of DEEPER_PROBES) {
+    if (askedIds.includes(probe.question.id)) continue;
+    const score = probe.separates.filter((n) => contested.includes(n)).length;
+    if (score > bestScore) {
+      bestScore = score;
+      best = probe;
+    }
+  }
+  return best?.question;
 }
 
 /* ------------------------------------------------------------------ */
