@@ -1192,3 +1192,245 @@ Plus: their opening words shown back as context, clearly marked as context. And 
 4. Whether the carry-forward question is generated from the observed pattern or drawn from a small library per number.
 
 No production code, questions, scoring, or UI changed in this task.
+
+---
+
+## Milestone 6 — FIRST-PASS QUESTION LIBRARY (design only, no production code)
+
+Concrete enough to review. Dimension tags in `[brackets]` are **design notes only** and never appear in user-facing copy. No branch implies a number. Every list allows an honest unknown.
+
+Notation: `[1]` Fact vs Interpretation · `[2]` Known vs Felt/Assumed · `[3]` Observation vs Reaction · `[4]` Uncertainty/Missing Info · `[5]` Emotional Load (context only) · `[6]` Mental Movement · `[7]` Avoidance · `[8]` Revisability.
+
+Item types: **SORT** (drag/tap lines into two buckets) · **PICK** (single tap) · **MULTI** (tap any) · **PAIR** (choose between two tellings) · **TEXT?** (optional one line, skippable).
+
+---
+
+### Doorway 1 — "I don't know what the hell to do today."
+
+**Level 1 — "Okay. What's underneath that?"**
+- I'm trying not to drink/use
+- I'm avoiding something I need to deal with
+- I have a conversation I don't want to have
+- I don't know what I want anymore
+- I have a decision hanging over me
+- I feel restless and need something to do
+- Something happened and I can't stop thinking about it
+- Honestly, I have no idea
+- None of these — let me explain
+
+**Level 2 (branch: "I'm avoiding something") — "Any sense what kind of thing?"**
+- A heavy conversation
+- A responsibility
+- A decision
+- A feeling
+- A person
+- Something I know I need to change
+- I don't actually know what I'm avoiding
+
+**Level 3 (2–5, adaptive)**
+1. SORT — *"Which of these is what's actually happened, and which is what you've made of it?"* Lines: "It's been sitting there a week" · "I'm being a coward about it" · "Nobody has asked me about it" · "If I bring it up it'll blow up" · "I keep finding other things to do". `[1]` then a second cut *"Which of these could you show someone else?"* `[2]`
+2. MULTI — *"What don't you have yet?"* → then PICK *"Which one of those would actually change what you do today?"* Options include "nothing would" and "I don't know". `[4]` (the change-your-mind probe)
+3. MULTI — *"Which part of this have you not looked at?"* Options: the timing · the cost of leaving it · the person involved · how I'll feel after · what happens if I never do it · I've looked at all of it · not sure. `[7]` (the avoidance probe; unselected options across earlier screens also feed this)
+4. PICK — *"When you think about it, does it move or does it go round?"* Moves a bit each time · same loop, different words · it moves then snaps back · haven't thought about it enough to say. `[6]` (looping-vs-moving probe) — paired with the system's own check of whether the account changed across passes.
+5. PICK ×2 — *"How much is this sitting on you?"* / *"How much of that can you see acting on your thinking?"* `[5]` context only, read as coherence between the two, never as level.
+
+---
+
+### Doorway 2 — "Should I text them?"
+
+**Level 1 — "What's the pull here?"**
+- I want to know where I stand
+- I said something I regret
+- They went quiet and I don't know why
+- I miss them
+- I want to fix it now, before I lose my nerve
+- I'm bored and they're the person I reach for
+- I don't want to text — I want to stop wanting to
+- No idea, honestly / none of these
+
+**Level 2 (branch: "They went quiet") — "How long are we talking?"**
+- A few hours
+- A day or two
+- Longer than usual for us
+- They've never gone quiet before
+- I've lost track
+- I'd rather not count
+
+**Level 3**
+1. SORT — *"What happened, and what's your read on it?"* Lines: "They read it six hours ago" · "They're annoyed with me" · "They've been busy this week" · "They're pulling away" · "I sent two in a row". `[1]` + second cut `[2]`
+2. PAIR — *"Which is closer to how you'd tell it?"* A: "They haven't replied since this morning." B: "They've left me hanging all day." `[3]`
+3. MULTI/PICK — *"What don't you know yet?"* (whether they've seen it · what the last message landed as · whether something else is going on · nothing, I know exactly) → *"Which one would change whether you send it?"* `[4]`
+4. PICK — *"Have you already written it?"* Written and not sent · written it several times · haven't written anything · I've sent something already · don't want to say. `[6]` `[7]`
+5. STANCE — re-show their own opening words → *"Where does it sit now?"* `[8]` (revisability/listening probe)
+
+---
+
+### Doorway 3 — "I'm feeling lucky / should I gamble?"
+
+No judgment of the premise. The lens is the reasoning, not the activity.
+
+**Level 1 — "Where's the luck coming from?"**
+- I've been winning
+- I'm due a win
+- Something good happened today
+- I want the rush
+- I want to get something back
+- I've got spare money and nothing on
+- It's a mate's thing, not really my idea
+- Couldn't tell you / none of these
+
+**Level 2 (branch: "I'm due a win") — "What's the run actually been like?"**
+- Losing lately
+- Up and down
+- I've stopped counting
+- I'd rather not look
+- I know exactly, to the penny
+- Not sure
+
+**Level 3**
+1. SORT — *"Which of these is a fact and which is a read?"* Lines: "I won the last two" · "I'm on a run" · "It's about to turn" · "I've got £X spare" · "I can stop whenever". `[1]` + second cut `[2]`
+2. MULTI — *"What don't you know here?"* (the actual odds · what I'd do if it went the other way · how much I've put in this month · nothing) → *"Which would change your mind?"* `[4]`
+3. MULTI — *"What haven't you thought about?"* the losing case · the money · what I'd tell someone else in my position · how I'd feel tomorrow · I've thought about all of it. `[7]`
+4. PICK ×2 — *"How much is riding on this for you?"* / *"How clearly can you see that pulling at you?"* `[5]` context only.
+5. PICK — *"If none of the facts changed, would you still want to?"* Yes, and I know that · no · I'd have to think · that's a strange question. `[3]` `[8]` — separating the feeling from the facts and *still* choosing is a coverage finding, not a fault.
+
+---
+
+### Doorway 4 — "I have a huge decision to make."
+
+**Level 1 — "What makes it huge?"**
+- It's hard to undo
+- Other people are affected
+- Money
+- It changes where I live or work
+- It's been hanging over me for ages
+- Everyone has an opinion about it
+- It's not big to anyone else, only me
+- I'm not sure why it feels huge / none of these
+
+**Level 2 (branch: "hanging over me for ages") — "What's happened in that time?"**
+- Nothing's changed
+- I keep changing my mind
+- I've decided and un-decided
+- I've been gathering information
+- I've been not looking at it
+- Couldn't say
+
+**Level 3**
+1. SORT — *"What's known and what's your projection?"* Lines: "The offer expires in two weeks" · "It'll wreck things if I get it wrong" · "Two people have told me to do it" · "I'll regret it either way" · "I can't afford to be wrong". `[1]` `[2]`
+2. MULTI — *"Which options are actually on the table?"* the one I'm leaning toward · the opposite · a third thing · doing nothing for now · I've only really considered one. `[4]` `[7]`
+3. PICK — *"What would have to be true for you to choose the other way?"* I can name it · I sort of know · nothing would · I don't want to answer that. `[4]` `[8]`
+4. PICK — *"Compared to a month ago, has your thinking changed shape or just changed words?"* Changed shape · same shape, new words · gone back and forth · it's newer than a month. `[6]`
+5. PICK ×2 — weight present / weight seen. `[5]`
+
+---
+
+### Doorway 5 — "Something happened and I can't stop thinking about it."
+
+**Level 1 — "What's stuck?"**
+- What they said
+- How they said it
+- What I think they meant
+- What I didn't say back
+- That they might be right
+- That it landed on something old
+- That I can't undo it
+- I'm not sure what's stuck / none of these
+
+**Level 2 (branch: "what I think they meant") — "What kind of meaning are we talking?"**
+- They were having a go at me
+- They don't respect me
+- They've been thinking this a while
+- They didn't mean anything by it
+- It confirmed something I already feared
+- I honestly can't tell
+
+**Level 3**
+1. SORT — *"Which of these would a camera have caught?"* Lines: "They said it in front of other people" · "They wanted to embarrass me" · "I went quiet after" · "They've thought this for months" · "I laughed it off". `[1]` `[2]`
+2. PAIR — *"Which telling is closer to yours?"* A: "They said X and I stopped talking." B: "They humiliated me and I froze." `[3]`
+3. PICK — *"How many times have you replayed it?"* A few · lost count · I run it and something new shows up each time · I run it and it lands the same each time · not counting. `[6]` — "something new each time" is iteration, not looping.
+4. PICK — *"If they told you what they actually meant, and it wasn't what you think — could you take it in?"* Yes · I'd want to but probably not today · no, I know what they meant · I don't know. `[8]`
+5. PICK ×2 — weight present / weight seen. `[5]` Distress is context. Never a negative signal.
+
+---
+
+### Doorway 6 — "Something feels off and I don't know why."
+
+**Level 1 — "Where do you notice it?"**
+- With one particular person
+- At work
+- In my body
+- When I'm on my own
+- Around family
+- First thing in the morning
+- It follows me everywhere
+- I only notice it afterwards / none of these
+
+**Level 2 (branch: "in my body") — "What does it do?"**
+- Tight chest
+- Can't settle
+- Tired but wired
+- Nothing I can point to
+- Comes and goes
+- I don't want to look at it too closely
+
+**Level 3**
+1. MULTI — *"Which of these is definitely true, and which is a guess?"* (presented as SORT) Lines: "It started around a fortnight ago" · "It's about work" · "I've been sleeping badly" · "Something's coming" · "It goes when I'm busy". `[1]` `[2]`
+2. MULTI — *"What would help you name it?"* a night's sleep · talking to someone · time on my own · one honest look at the thing I suspect · nothing I can think of · I don't know. → PICK *"Which of those would actually settle it?"* `[4]` — naming nothing is a finding, not a failure. Accurately locating the edge of what you know is clarity.
+3. PICK — *"Is there something you already suspect it's about?"* Yes and I've looked at it · yes and I haven't · no · I don't want to say. `[7]`
+4. PICK — *"Does it change when you look at it, or stay the same?"* Changes shape · stays exactly the same · gets bigger then settles · haven't looked directly. `[6]`
+5. STANCE — re-show opening words → *"Where does it sit now?"* `[8]`
+
+---
+
+### Boundary probe library (pattern separation only — no number is assigned)
+
+One or two short items per commonly-confused pair. Used **only** when two candidate readings remain close after the ladder. These probe structure, never symbolism.
+
+| Pair | Probe | Reveals |
+| --- | --- | --- |
+| 1 vs 2 | *"Is your read on this something you'd defend, or something you're still holding loosely?"* Defend it · holding it loosely · haven't formed one · both, depending on the day | `[8]` `[2]` — unformed vs formed-and-held |
+| 2 vs 3 | *"If someone disagreed with your read, what would you want first — to explain, or to hear theirs?"* | `[8]` `[3]` |
+| 3 vs 6 | *"When it comes back to you, does the wording change or the content?"* Wording · content · both · it doesn't come back | `[6]` — re-said vs re-thought |
+| 4 vs 5 | *"Is the part you can't see missing, or just not looked at?"* Missing · not looked at · can't tell the difference | `[4]` vs `[7]` |
+| 5 vs 6 | *"Have you gone over this with anyone out loud?"* Yes, more than once · yes, once · only in my head · deliberately not | `[6]` `[7]` |
+| 6 vs 7 | *"Is there a part of this you'd rather I didn't ask about?"* Yes and I know which · yes and I don't know which · no · maybe | `[7]` |
+| 7 vs 8 | *"How much of the weight of this is in view to you right now?"* All of it · most · I can feel it but not see it · none | `[5]` coherence |
+| 8 vs 9 | *"Did anything shift while you were answering these?"* Yes, something specific · a bit · no · I noticed I was avoiding something | `[8]` behavioural |
+| 2 vs 6 | *"Would you describe yourself as decided, or as circling?"* then compare against whether the account changed across passes | `[6]` vs self-report — demonstrated structure classifies |
+
+Rules: at most **one** boundary probe per run. If it doesn't separate the pair, precedence rules apply; if those don't, the reading names both shapes or returns Undetermined. Never a coin flip.
+
+---
+
+### Reusable vs context-specific — the compact engine
+
+**Reusable across every doorway (write once, ~14 items).** These are structural and topic-agnostic; the only thing that changes is the noun injected from Level 2.
+- The **second cut** on any sort: *"Which of these could you show someone else?"* `[2]`
+- The **resolver** pair: *"What don't you have yet?"* → *"Which of those would change what you do?"* `[4]`
+- The **coverage** probe: *"Which part of this have you not looked at?"* `[7]`
+- The **movement** probe: *"Does it move, or go round?"* / *"Does the wording change or the content?"* `[6]`
+- The **load** pair: weight present / weight seen. `[5]`
+- The **stance close**: re-show their own words → *"Where does it sit now?"* `[8]`
+- The **listening** probe: *"If it turned out not to be what you think, could you take it in?"* `[8]`
+- Every boundary probe in the table above.
+
+**Must be context-specific (the only per-doorway authoring cost).**
+- The **sort lines** for `[1]`. These have to be about *their* situation to be evidence rather than a quiz — 5 lines per Level 2 branch, half observable and half interpretive, matched in length and tone so neither bucket is signposted.
+- The **PAIR tellings** for `[3]` — two versions of the same event, one stripped of response language. Needs the concrete event.
+- The **unknown options** for `[4]` — must name plausible real missing pieces for that situation.
+- Level 1 and Level 2 choice lists themselves.
+
+**Resulting size.** 6 doorways × (1 Level 1 list + ~3 Level 2 lists × 1 sort set + 1 pair + 1 unknown list) ≈ 60–70 authored strings, plus ~14 reusable structural items and 9 boundary probes. Compact enough to hand-author and review; no hundreds of questions.
+
+**Authoring rules for sort lines (so they don't leak the answer).** Match sentence length across buckets. No emotional adjectives in the observable lines and no neutral verbs-only in the interpretive ones. Never use tell-tale markers ("obviously", "clearly") that make interpretation identifiable by style. Include one deliberately borderline line per set — the borderline handling is itself informative.
+
+### Guarantees restated
+
+- No doorway, branch, or item can only produce one number; all nine plus Undetermined stay reachable everywhere.
+- "I don't know" is available on every item and is never scored as low clarity.
+- Emotional load is context. Distress is never a negative signal.
+- Self-report never overrides demonstrated structure; where they diverge, the divergence is named neutrally.
+- The established 1–9 meanings remain the later interpretive layer, unchanged and still awaited in readable form.
+
+No production code, scoring formula, averaging, or number algorithm in this task.
