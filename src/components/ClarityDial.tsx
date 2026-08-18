@@ -114,6 +114,7 @@ export function ClarityDial({ value, onChange, label, tone = "teal" }: ClarityDi
                 type="button"
                 onClick={() => onChange(step)}
                 aria-pressed={active}
+                aria-label={`Clarity ${step}`}
                 className={[
                   "numeral h-12 w-12 rounded-full border text-lg transition-colors",
                   active
