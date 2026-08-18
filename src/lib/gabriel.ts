@@ -124,8 +124,14 @@ export interface Choice {
   id: string;
   label: string;
   evidence: Evidence;
-  /** If set, asking this choice opens a follow-up question by id. */
+  /** If set, choosing this opens a follow-up question by id. */
   followUp?: string;
+  /**
+   * Marks an answer that actually suggests avoidance or discomfort. The
+   * universal "what are you trying not to experience" question is only asked
+   * when the person's own answers point that way — never by default.
+   */
+  avoids?: boolean;
 }
 
 export interface Question {
@@ -141,8 +147,11 @@ export interface Doorway {
   sub: string;
   /** Doorway-specific questions, asked in order. */
   questions: Question[];
-  /** Whether the universal "trying not to experience" branch is asked. */
-  universal: boolean;
+  /**
+   * When the universal "trying not to experience" branch is asked:
+   * "ifAvoidance" (default posture), "always", or "never".
+   */
+  universal: "always" | "ifAvoidance" | "never";
 }
 
 /* ------------------------------------------------------------------ */
