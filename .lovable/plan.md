@@ -1069,3 +1069,126 @@ Transition: strong material for 1 and 3 — the said thing versus the meaning as
 3. Whether "none of these — let me explain" opens short text (skippable) or a second, wider tap list.
 
 No production code, questions, scoring, or UI changed in this task.
+
+---
+
+## Milestone 5 — THE DEPTH LADDER (design only, no production code)
+
+How a short contextual branch becomes evidence about the eight dimensions without feeling like an examination. This milestone covers the **experience and evidence-gathering architecture** only. It does not implement or redesign the number-determination algorithm, and it does not touch Sarah's established 1–9 meanings.
+
+### The principle
+
+Collect **just enough evidence to distinguish the current response pattern** — not a life story. The ladder gets shorter when the pattern is already clear and longer only where two patterns genuinely compete. Most runs should be 8–12 taps end to end, including the doorway.
+
+```text
+LEVEL 1  Context      2 taps        what brought you here, what kind of situation
+LEVEL 2  Clarification 1–2 taps     what exactly is hard / unknown / wanted / avoided
+LEVEL 3  Reveal        2–5 items    adaptively selected dimension probes
+         ↓             stop as soon as the pattern is distinguishable
+Result   number + meaning + observed pattern + a question to carry
+```
+
+### LEVEL 1 — Surface / context
+
+Purpose: give the person a doorway in their own language, and give the system a topic to build concrete items from. Never scored.
+
+- Interaction: the Context Doorways chain from Milestone 4 — an opening intent (tap a card or type a line), then one human follow-up ("Okay. What's underneath that?").
+- Output: a context label plus, optionally, a few of the person's own words. Words are shown back later as context, never cited as evidence for the number.
+- Honest-unknown is always available and is never treated as poor clarity.
+
+### LEVEL 2 — Clarification
+
+Purpose: locate the **live edge** of the situation, so Level 3 items are about something real rather than generic. Still topic language, still not scored.
+
+One or two taps, drawn from the branch:
+- *"What's the difficult part?"* — deciding · saying it · not knowing · waiting · how I'll feel after · that I already know and haven't acted · I couldn't say.
+- *"What would you want out of this?"* — to decide · to stop thinking about it · to know where I stand · to feel less heavy · to not do the same thing again · not sure yet.
+- Optional short text, skippable, one line max: *"anything you want to add?"*
+
+Level 2 output determines the **framing** of Level 3 — which situation lines get sorted, which unknowns are offered, which parts are available to tap. It never selects, excludes, weights, or biases a number.
+
+### LEVEL 3 — Pattern-revealing items (2–5, adaptive)
+
+The app **does not probe all eight dimensions every time.** It opens with a small fixed core, then adds probes only where they would change the classification.
+
+**Opening core (always, 2 items).** These two carry the most discriminating structure per tap:
+- **Sort item → reveals 1 and 2 together.** 5–6 short lines about their own situation, sorted into "this happened" / "this is what I make of it". A second, lighter cut on the same lines ("could you show this to someone?") separates 2 from 1 without a new screen.
+- **Gap item → reveals 4.** Tap the pieces you don't have yet, then tap which one would actually change your mind. Naming a resolver is the strength; naming none is the finding, not a failure.
+
+**Adaptive probes (0–3 more), selected by what the core showed:**
+
+| If the core shows | Add | Why |
+| --- | --- | --- |
+| Clean sort, resolver named | 6 movement, then 7 coverage | Nothing weak to re-test; what separates the strong patterns is whether the account moves and whether anything is being steered around. |
+| Interpretation sorted as fact | 1 again in a different framing, then 3 | Rule out a wording artefact before concluding fusion; then check whether reaction is doing the work. |
+| Load visible in Level 1/2 words | 5 coherence (two taps: weight present / weight seen) | Load is context. The signal is coherence between the two taps, never the level. |
+| "Going round it for weeks", repetition language | 6 | Looping vs genuine iteration is decided by whether the *content* changed across passes, not by whether they revisited. |
+| A part of the situation never tapped | 7 | Coverage is inferred from what is consistently not chosen when it was available. |
+| Two patterns still tied | the single probe that separates them | See ambiguity handling below. |
+
+**Stance close (always, 1 item) → reveals 8.** Re-show their own opening words: *"Having gone through that — where does it sit now?"* Movement against their own baseline, behavioural rather than self-rated. Reconsideration is never penalized; refusing to move is not rewarded.
+
+**Hard limits.** Max 5 Level 3 items. Never two probes of the same dimension without a change of framing. Never a screen that names a dimension.
+
+### Adaptive stopping — what is sufficient evidence
+
+Sufficient to produce a number when **all** of these hold:
+1. The core sort and the gap item are both completed with internally consistent structure (not all-same taps, not self-contradictory sorts).
+2. The stance close is completed.
+3. One candidate pattern is separated from its nearest competitor by at least one **directly observed** piece of evidence — not by inference from an unprobed dimension.
+4. No probe still outstanding could plausibly flip the classification. If one could, run it; that is the whole adaptive rule.
+
+Stop early and stop gladly: a clean core plus a clear stance close plus one adaptive probe is a complete run. Length is not a proxy for rigour.
+
+### Undetermined — when and how
+
+Trigger Undetermined when:
+- The core items were skipped or abandoned.
+- The taps carry no structure — everything sorted into one bucket, or sorts that contradict each other across passes with no discernible read.
+- Two or more patterns remain tied after the probe that was supposed to separate them, and no further probe would help.
+- The situation supplied is too thin to build concrete items from and the person declined the optional text (nothing real to sort).
+
+Undetermined is **not** triggered by: honest uncertainty, "I don't know" taps, high emotional load, or changing one's mind. Those are readable patterns.
+
+How it is presented — warm, specific, never an error:
+> "Not enough to read yet. What's here is honest, it's just thin — there wasn't a concrete enough piece of the situation for the pattern to show. If you want, come back to it with one part of it in mind and it'll read."
+
+Always offer: re-run, or leave it. Never a score of zero, never a retry counter, never "you failed to complete".
+
+### Ambiguity between neighbouring patterns
+
+The system does not pretend certainty it does not have.
+
+1. **Probe once.** When two patterns tie, run the single item that distinguishes them (from the boundary table in the Phase 2C stress test).
+2. **Apply precedence.** If still tied, use the locked precedence rules — named single-dimension patterns take precedence over the broad pattern; demonstrated structure classifies over self-reported confidence.
+3. **Name it out loud.** If genuinely between two, the reading says so rather than picking silently: *"This sits between two shapes today — closer to X, with something of Y in it."* The primary number is given, the neighbour is named, and the reflection points at the specific thing that would tip it.
+4. **Prefer Undetermined over a coin flip.** If neither pattern is better supported, Undetermined is the honest answer.
+
+### The final result — language and shape
+
+It should read like a **reading**, not an assessment. Four parts, in this order:
+
+1. **The number.** Presented plainly, with today's framing: *"Today reads as a 7."* No score, no percentage, no bar, no comparison to other users, no "level".
+2. **The established meaning.** Sarah's existing 1–9 meaning for that number, presented verbatim as the interpretive lens. Not invented, not paraphrased, not softened. Framed as a lens: *"This is what 7 tends to point at."*
+3. **The observed pattern — concise, non-diagnostic, 2–3 sentences.** Describes what the responses did, in ordinary language, tied to their own material. Example register: *"You kept the facts and your read on them apart most of the way through, and you could name the one thing that would change your mind. The weight of it was clearly in view rather than driving. What you didn't go near was the part about the money."* No dimension names. No numbers per dimension. No "you scored low on".
+4. **A question to carry forward — optional, one line.** Not advice, not a task, not a prediction. *"If the thing you named actually arrived tomorrow, would it change what you do — or just how you feel about it?"*
+
+Plus: their opening words shown back as context, clearly marked as context. And a quiet line that today's number is today's, not a label they now carry.
+
+**Language rules (hard).** No diagnosis, no verdict, no prediction, no advice on the premise. No good/bad numbers, no ranking, no progress framing, no push toward 9. Never "you are a 4" — always "today reads as a 4". Never explain the mechanism in clinical terms. Never claim mystical causation. Second person, plain words, short sentences.
+
+### Explicitly not in this milestone
+
+- The number-determination algorithm (deferred; the rejected arithmetic approach stays rejected).
+- Any redesign of Sarah's 1–9 meanings — those are preserved as-is and are still awaited in readable form.
+- Tree of Life / Pythagorean mapping beyond using the established meanings as the interpretive layer.
+- Any production code, question, scoring, or UI change.
+
+### Open items added by this milestone
+
+1. The boundary-probe table needs one named item per competing pair before implementation.
+2. Exact structural checks for "taps carry no structure" (single-bucket sort, cross-pass contradiction) need thresholds.
+3. Whether the "between two shapes" phrasing appears for every near-tie or only above a stated closeness.
+4. Whether the carry-forward question is generated from the observed pattern or drawn from a small library per number.
+
+No production code, questions, scoring, or UI changed in this task.
