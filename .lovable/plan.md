@@ -544,3 +544,119 @@ The opening words are reported back at the end ("You started here: …") so the 
 - Any implementation: questions, scenarios, opening-baseline UI, scoring, number, reflection UI all stay as they are until the flow above is agreed.
 
 No code, questions, scoring, or UI changed in this task.
+
+## Phase 2C — CANDIDATE PATTERN ARCHITECTURE FOR NUMBERS 1–9 (DRAFT — not final)
+
+Research/design draft to stress-test before implementation, and before the 1–9 meanings from Sarah's Pythagorean / Tree-of-Life source are restored. No code, UI, question, or scoring change. **No meanings are assigned to any digit here** — this section defines only what each *response pattern* looks like.
+
+### Reading conventions
+
+Levels are **relative configurations**, never totals: `strong` / `mixed` / `weak` / `uneven` (sharp disagreement inside a group). Two further axes carry real weight:
+
+- **D–S alignment** — distance between **demonstrated** structure (task/scenario evidence) and **self-perception** (the person's own rating of the same territory). `aligned` / `over` (self above demonstrated) / `under` (self below demonstrated).
+- **Load condition** — Dim 5 is read as *load present* × *load seen*, never as "how heavy, therefore how unclear".
+
+Dimension groups used throughout: **core discriminations** = 1, 2, 3. **Uncertainty handling** = 4. **Conditions** = 5, 6, 7. **Stance** = 8.
+
+Crucially, the nine patterns are **not a ranked ladder from bad to good**. Some are low-information patterns, some are high-coverage patterns, and several are *sideways* from each other — same amount of clarity, different shape. Ordering is a labelling convention only, chosen so neighbours differ on exactly one defining axis; it is not a quality ranking and must never be presented as one.
+
+### 1) Candidate pattern profiles
+
+**Pattern 1 — Unformed, and unclaimed**
+Core 1–3 weak · 4 weak (unknowns not yet nameable) · load low-to-mixed · 6 weak (little movement yet) · 7 mixed · 8 mixed · **D–S aligned or under**.
+The reading has not formed and the person is not claiming it has. Nothing is being defended.
+
+**Pattern 2 — Formed early, held firmly**
+Core 1–3 weak-to-mixed (especially 2 weak) · 4 weak (no named unknowns) · 8 **weak** · **D–S over** (self-perception clearly above demonstrated).
+A conclusion is in place and being held. The distinguishing feature is not weakness but *confidence that outruns structure*.
+
+**Pattern 3 — Reaction carrying the account**
+3 **weak** while 1 and 2 mixed-to-strong · load present and **not seen** (low load-awareness) · 6 mixed · 8 mixed.
+The account of the situation is fused with the response to it. Dim 3 is the defining weak point, not overall weakness.
+
+**Pattern 4 — Circling**
+Core 1–3 mixed-to-strong · 6 **weak** (repetition without development) · 4 weak *on resolution criteria specifically* (can name unknowns, cannot say what would settle them) · 7 **strong** (nothing being avoided) · 8 mixed.
+Considerable material has been examined, repeatedly, without moving. Coverage is fine; movement is not.
+
+**Pattern 5 — Steering around something**
+Core 1–3 mixed-to-strong · 7 **weak** · 6 **strong** (thinking is moving) · 4 mixed.
+Sound reasoning with a hole in its coverage. The exact inverse of Pattern 4 on the 6/7 pair.
+
+**Pattern 6 — Uneven**
+Core 1–4 **uneven** — sharp disagreement, one discrimination clearly strong and another clearly weak · conditions mixed · 8 mixed.
+Parts of the situation are seen well and parts are barely seen. Reporting this as a middling result is exactly the failure the whole architecture exists to prevent; the reflection must name which discrimination is carrying and which is missing.
+
+**Pattern 7 — Grounded in what is not known**
+Core 1–3 strong · 4 **strong** (unknowns named *and* resolution criteria named) · 6 strong · 7 mixed-to-strong · load mixed and **seen** · 8 **strong** · **D–S aligned**.
+The clearest available conclusion is an accurate account of the edge of certainty. Honest uncertainty is the *defining strength* of this pattern, never a deduction.
+
+**Pattern 8 — Held under weight**
+Core 1–4 strong · load **high and clearly seen** · 6 mixed-to-strong · 7 mixed-to-strong · 8 strong · **D–S aligned**.
+The discriminations hold while significant weight is present and visible. This is a strong pattern *because* of the load condition, not despite it.
+
+**Pattern 9 — Integrated**
+Core 1–4 strong · conditions 5–7 all strong (load seen, thinking moving, coverage complete) · 8 strong · **D–S aligned**.
+Everything the instrument can see is accounted for, including the stance toward being wrong. The distinguishing feature versus 7 and 8 is *conditions strong across the board*, not higher core scores.
+
+### 2) Defining combinations (what separates each from its neighbours)
+
+| Pattern | Defining combination |
+| --- | --- |
+| 1 | Weak core **with** D–S aligned/under — unformed and unclaimed |
+| 2 | Weak core **with** D–S over **and** 8 weak — claimed without structure |
+| 3 | 3 weak **while** 1–2 hold, **and** load unseen — a Dim-3-specific failure |
+| 4 | 6 weak **with** 7 strong — movement problem, coverage intact |
+| 5 | 7 weak **with** 6 strong — coverage problem, movement intact |
+| 6 | Spread inside 1–4 is the signal itself, regardless of level |
+| 7 | 4 strong (unknowns + criteria) **with** core strong and 8 strong |
+| 8 | Core strong **with** high-and-seen load |
+| 9 | Core strong **with** all of 5, 6, 7 strong |
+
+Neighbour separations are single-axis by design: 1↔2 = D–S alignment. 4↔5 = the 6/7 inversion. 6↔any = spread vs level. 7↔8 = load condition. 8↔9 = conditions partial vs complete. 2↔6 = confidence gap vs internal disagreement. 3↔2 = which dimension fails, and whether load is seen.
+
+### 3) What must NOT push a pattern lower
+
+- **High emotional load.** Load never subtracts. High load *with* load-awareness is a distinguishing strength (Pattern 8). Load is a condition the reading was taken under, reported in words.
+- **Honest uncertainty.** Naming unknowns accurately is Dim 4 *strength*. Pattern 7 is built on it. "Fewer unknowns" is never read as "clearer".
+- **Reconsidering / high revisability.** Dim 8 strength never costs anything and never marks instability. Movement between the opening words and the post-reveal re-read is reported as movement, not error.
+- **The future non-scored "I genuinely don't know" response.** Entirely outside the pattern classification.
+- **The opening word-based baseline.** Context only. It is displayed with the result and never used as evidence for the number.
+- **Low self-perception.** A person underrating themselves (D–S under) is not penalized; it is reported as the gap it is.
+
+### 4) The seven locked edge cases, tested
+
+| Edge case | Lands on | Why it is correct |
+| --- | --- | --- |
+| High emotional load + high clarity | **8** | Load high and seen, core holds. Load raises nothing artificially and subtracts nothing; it defines the pattern. |
+| Calm + poor clarity | **1** (if D–S aligned) or **2** (if D–S over) | Low load cannot substitute for discrimination. Calm is not evidence. The split by D–S alignment is what makes these two honest rather than one blurred verdict. |
+| Honest uncertainty + strong clarity | **7** | Dim 4 strength plus strong core. This case exists to prove uncertainty is not a deduction. |
+| Confident but assumption-heavy | **2** | Caught by D–S over plus 2 weak plus 8 weak — the case that self-report alone cannot detect, which is why demonstrated tasks are required. |
+| Looping vs genuine iterative reasoning | **4** vs **7/9** | Both revisit. Looping = 6 weak with 4 weak on resolution criteria. Genuine iteration = 6 strong, each pass changing the account. This pair is the single strongest argument for demonstrating Dim 6 rather than self-rating it. |
+| Avoidance with otherwise strong reasoning | **5** | 7 weak in isolation, core intact. Reported as reduced *coverage*, never as "you are avoiding, therefore unclear". |
+| High revisability | Raises nothing artificially; supports **7/8/9** and separates **2** | Dim 8 strength never lowers a pattern and never reads as instability. |
+
+### 5) Pairs that were too similar, and the revisions made
+
+- **4 vs 5** (originally both "sound reasoning with a problem"). Revised: the 6/7 pair is now *inverted* between them — 4 requires 7 strong, 5 requires 6 strong. Neither can absorb the other.
+- **7 vs 9** (originally both "strong core + strong 8"). Revised: 7 is defined by Dim 4 specifically with conditions only mixed; 9 requires all three conditions strong. 7 is not a lesser 9 — it is the pattern where the edge of certainty is the finding.
+- **8 vs 9** (originally both "strong everything"). Revised: 8's defining feature is the load condition; 9's is complete conditions. A 9-shaped profile under low load is 9; the same core under high seen load with partial conditions is 8.
+- **1 vs 2** (originally one "low clarity" pattern). Revised: split on D–S alignment. This is the split that keeps the instrument from calling honest not-knowing the same thing as unearned confidence.
+- **2 vs 6** (both show internal inconsistency). Revised: 2's inconsistency is *between* demonstrated and self-perceived; 6's is *within* the demonstrated core. Different axes, different patterns.
+- **3 vs 6** (a single weak dimension could read as uneven). Revised: 3 is claimed only when the weak dimension is specifically 3 *and* load is present-but-unseen; otherwise a lone weak discrimination with sharp spread is 6.
+
+Remaining risk to test with real runs: 6 is the widest pattern and could over-absorb 3, 4, and 5 cases. Rule of precedence to try — a **named single-dimension** pattern (3, 4, 5) takes precedence over 6 when the weakness is isolated to that dimension; 6 is claimed only when *two or more* of the core 1–4 disagree sharply.
+
+### 6) Output shape
+
+The result is **the emergent number plus a concise non-diagnostic reflection**, in this order:
+
+1. **The number** — 1–9, meaning-free at this stage, presented as a classification of the pattern, never as a score, percentage, or grade, and never framed as a rank.
+2. **The reflection** — a few plain sentences describing the *observed pattern*: which discriminations held, which did not, the condition the reading was taken under (load present/seen, thinking moving/repeating, coverage complete/partial), and the stance toward updating. It describes the pattern, not the person, and contains no diagnosis, advice, or prediction.
+3. **The opening words, shown as context** — "You started here: …", displayed alongside the result so the number is read against the starting point. Explicitly context, never evidence, never scored.
+4. **Where a D–S gap exists**, it is named plainly and neutrally (e.g. "your own read of this sat above what the responses showed") without judgment language.
+
+### Status
+
+**DRAFT — explicitly not final.** These nine patterns are a stress-test artefact. Next steps before any implementation: run real and constructed profiles against the nine definitions, confirm the 6-precedence rule holds, decide which dimensions become demonstrated tasks (Phase 2C step 1), and only then move to Phase 2E for restoring the 1–9 meanings from the uploaded Pythagorean / Tree-of-Life source.
+
+No code, questions, scoring, or UI changed in this task.
