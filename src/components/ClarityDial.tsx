@@ -9,10 +9,10 @@ import { SCALE, type ScaleValue } from "../lib/evaluator";
 
 interface ClarityDialProps {
   /** Selected / displayed value. May be fractional in read-only mode. */
-  value?: number;
-  onChange?: (value: ScaleValue) => void;
-  label?: string;
-  tone?: "teal" | "terracotta";
+  value?: number | undefined;
+  onChange?: ((value: ScaleValue) => void) | undefined;
+  label?: string | undefined;
+  tone?: "teal" | "terracotta" | undefined;
 }
 
 const RADIUS = 78;

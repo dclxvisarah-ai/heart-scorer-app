@@ -7,10 +7,10 @@ import { SCALE, type ScaleValue } from "../lib/evaluator";
 
 interface ScaleChoiceProps {
   label: string;
-  hint?: string;
-  lowLabel?: string;
-  highLabel?: string;
-  value?: ScaleValue;
+  hint?: string | undefined;
+  lowLabel?: string | undefined;
+  highLabel?: string | undefined;
+  value?: ScaleValue | undefined;
   onChange: (value: ScaleValue) => void;
 }
 
@@ -60,9 +60,9 @@ export function ScaleChoice({
 
 interface OptionChoiceProps<T extends string> {
   label: string;
-  hint?: string;
+  hint?: string | undefined;
   options: readonly T[];
-  value?: T;
+  value?: T | undefined;
   onChange: (value: T) => void;
 }
 
