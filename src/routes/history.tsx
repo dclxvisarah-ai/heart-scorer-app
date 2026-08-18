@@ -15,7 +15,7 @@ import {
 
 const TITLE = "Evaluation History — Gabriel's Number Clarity Evaluator";
 const DESCRIPTION =
-  "Your saved clarity evaluations, kept on this device only: felt reading, provisional evaluated figure, Clarity Gap and reflection for each pass.";
+  "Your saved clarity evaluations, kept on this device only: felt reading, evaluated figure, Clarity Gap and reflection for each pass.";
 
 export const Route = createFileRoute("/history")({
   head: () => ({
@@ -62,7 +62,7 @@ function HistoryPage() {
         <section className="card-cream p-5 sm:p-7">
           <p className="text-sm leading-relaxed text-olive-soft">
             Saved evaluations stay on this device and are never sent anywhere. Each row records the
-            reading you gave by feel, the provisional evaluated figure, and the Clarity Gap between
+            reading you gave by feel, the evaluated figure, and the Clarity Gap between
             them.
           </p>
           <ProvisionalNote className="mt-4" />
