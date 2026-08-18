@@ -601,7 +601,11 @@ export type AnswerMap = Record<string, string>;
  * follow-up appears only once the universal question has been answered,
  * so the path genuinely branches on what the person said.
  */
-export function buildSequence(doorway: Doorway, answers: AnswerMap): Question[] {
+export function buildSequence(
+  doorway: Doorway,
+  answers: AnswerMap,
+  deeperIds: string[] = [],
+): Question[] {
   const sequence: Question[] = [...doorway.questions];
 
   if (doorway.universal) {
