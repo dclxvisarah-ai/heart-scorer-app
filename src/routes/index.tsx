@@ -87,7 +87,11 @@ function GabrielsNumberPage() {
 
   function choose(questionId: string, choiceId: string) {
     const next = { ...answers, [questionId]: choiceId };
+    // Changing an answer invalidates anything answered after this question,
+    // since later questions can depend on this branch.
+    for (const q of sequence.slice(index + 1)) delete next[q.id];
     setAnswers(next);
+    setSavedId(undefined);
 
     const nextSequence = doorway ? buildSequence(doorway, next) : [];
     if (index + 1 >= nextSequence.length) {
@@ -96,6 +100,17 @@ function GabrielsNumberPage() {
       setIndex(index + 1);
     }
   }
+
+  function goBack() {
+    if (stage === "result") {
+      setStage("questions");
+      setIndex(Math.max(sequence.length - 1, 0));
+      setSavedId(undefined);
+      return;
+    }
+    if (index > 0) setIndex(index - 1);
+  }
+
 
   const current = sequence[index];
 
