@@ -1758,3 +1758,141 @@ RESULT — the reading
 6. The boundary-probe table needs one named item per competing pair before implementation.
 
 No production code, questions, scoring, or UI changed in this task.
+
+---
+
+## Milestone 10 — THE 1–9 OVERLAP MAP AND PATTERN-DISCRIMINATION FRAMEWORK (design only)
+
+### Stated limitation, up front
+
+**The uploaded 1–9 source text is not present in this project.** I searched the repository and the plan: there is no file containing Sarah's Pythagorean / Tree-of-Life meanings for the digits. Every earlier milestone recorded the same gap. Therefore:
+
+- The **"Established meaning"** column of the matrix below is deliberately left as `[SOURCE REQUIRED]`. It is not filled with generic numerology, invented psychology, or a paraphrase of anything. Filling it in is a separate, mechanical step once the source text arrives.
+- Nothing else in this milestone depends on those meanings. The overlap map, the discriminators, the dominance rule, and the Undetermined logic are all built on the **observed response configuration**, which is independent of what the digits mean. That is deliberate: the architecture must be defensible before the interpretive layer is attached, and the meanings must not be used to rescue a weak pattern definition.
+- When the source arrives, the meanings are transcribed **exactly as source-derived** into the matrix. If an established meaning turns out to conflict with a pattern definition, the pattern definition is revised — not the meaning.
+
+### Layer 1 — The eight-dimensional evidence profile (qualitative, never numeric)
+
+Each dimension resolves to one qualitative state. There is no score, no total, no average, and no ordering across dimensions.
+
+| Dimension | Possible states |
+| --- | --- |
+| 1 Fact vs Interpretation | `separated` · `partly separated` · `fused` · `insufficient` |
+| 2 Known vs Felt/Assumed | `separated` · `partly separated` · `fused` · `insufficient` |
+| 3 Observation vs Reaction | `separated` · `reaction-led` · `insufficient` |
+| 4 Uncertainty / Missing Info | `located + resolver named` · `located, no resolver` · `not located` · `insufficient` |
+| 5 Emotional Load | `light + seen` · `heavy + seen` · `heavy + unseen` · `unclear` — **context only, never a penalty** |
+| 6 Mental Movement | `moving` · `iterating` · `repeating` · `insufficient` |
+| 7 Avoidance / Coverage | `full coverage` · `one area untouched` · `several untouched` · `insufficient` |
+| 8 Revisability | `updated on evidence` · `open but unmoved` · `held firm` · `unstable/indecisive` · `insufficient` |
+
+Two cross-cutting qualifiers, also qualitative:
+- **D–S alignment:** `aligned` · `self over demonstrated` · `self under demonstrated` · `insufficient`. A qualifier, not a magnitude.
+- **Load coherence:** whether 5's two taps agree (weight present / weight seen). Coherence, never level.
+
+`insufficient` is a real, common, non-punitive state. It means the probe was not run or carried no structure — not that the person did poorly.
+
+### Layer 2 — Candidate-number overlap
+
+**Hard rule: a single dimension must NEVER determine a number.** Every candidate requires a *combination* of at least two dimensions plus at least one qualifier. Where only one dimension distinguishes a candidate, that candidate is not admitted; it goes to the discriminator step instead.
+
+Candidate generation is deliberately **generous**: the model collects every number whose defining configuration is compatible with the observed profile, then narrows. It never starts from one number and looks for support.
+
+### The overlap matrix
+
+Numbers here are **labels for configurations, not a ranked ladder.** Nothing in this matrix is a point system: no cell contributes a value, and no set of cells is summed.
+
+| # | Established meaning | Strongest supporting dimension combinations | Common overlap / confusion candidates | Best discriminator | What evidence is insufficient |
+| --- | --- | --- | --- | --- | --- |
+| **1** | `[SOURCE REQUIRED]` | 1 `fused`/`insufficient` + 2 `insufficient` + 8 `insufficient`; read not yet formed; 4 `not located` without overclaim | 2 (formed and held), 4 | *"Is your read on this something you'd defend, or are you still holding it loosely?"* | Only 4 `not located`. Unformedness must show across 1, 2 **and** 8 — a single "I don't know" is not this configuration. |
+| **2** | `[SOURCE REQUIRED]` | 1 `fused` or `partly` + 8 `held firm` + D–S `self over demonstrated`; conclusion arrived early and defended | 1, 6, 3 | *"If someone disagreed, would you want to explain first or hear theirs first?"* | High confidence alone. Confidence without a demonstrated fusion or a firm 8 is not this. |
+| **3** | `[SOURCE REQUIRED]` | 3 `reaction-led` + 1 `partly separated` + 5 `heavy + unseen`; observation available but response is doing the telling | 6, 5-adjacent readings, 2 | *"When it comes back to you, does the wording change or the content?"* | Distress on its own. Load is context — 5 alone can never place a number here. |
+| **4** | `[SOURCE REQUIRED]` | 6 `repeating` + 7 `one/several untouched` + 4 `located, no resolver`; ground re-covered without new content | 5, 7, 6-as-iteration | *"Is the part you can't see missing, or just not looked at?"* | Revisiting the topic. Repetition must be demonstrated by unchanged content across passes, not self-described. |
+| **5** | `[SOURCE REQUIRED]` | 6 `moving` or `iterating` + 7 `several untouched`; movement is real but the coverage is partial | 4, 7, 9 | *"Have you gone over this with anyone out loud?"* | Movement alone. 6 `moving` with `full coverage` is a different configuration entirely. |
+| **6** | `[SOURCE REQUIRED]` | Mixed profile with no single named configuration dominant; several dimensions `partly` with 8 `open but unmoved` | Everything — **this is the precedence risk** | Whichever probe separates the strongest *named* competitor; 6 is only admitted after named single-configuration candidates 3, 4, 5 are ruled out | Any profile where a named configuration fits. **Precedence rule (locked): named configurations beat 6.** 6 may never act as a catch-all. |
+| **7** | `[SOURCE REQUIRED]` | 4 `located + resolver named` + 1 `separated` + 2 `separated`; grounded in what is *not* known | 9, 5, 1 | *"Is there a part of this you'd rather I didn't ask about?"* | A resolver named while 1/2 stay `fused`. Honest uncertainty must sit on top of intact discrimination to be this. |
+| **8** | `[SOURCE REQUIRED]` | 5 `heavy + seen` (coherent) + 1/2 `separated` + 7 `full coverage`; discrimination holding under weight | 7, 9, 3 | *"How much of the weight of this is in view to you right now?"* | Heavy load by itself. Load without coherence and without intact 1/2 is not this — and heavy load is never a demotion. |
+| **9** | `[SOURCE REQUIRED]` | 1 `separated` + 2 `separated` + 6 `iterating` + 7 `full coverage` + 8 `updated on evidence`; integrated across the board | 7, 8, 5 | *"Did anything shift while you were answering these?"* | Self-reported "I'm very clear." Integration must be demonstrated on every listed dimension; a gap in any one of them moves the reading elsewhere. **9 is not the goal, the top, or the reward.** |
+
+**Reading the matrix.** A row is admitted as a candidate only when its whole combination is compatible with the observed profile. Partial matches produce *overlap*, which is the normal case and the reason the discriminator column exists.
+
+### Layer 3 — Discriminators
+
+Goal: the **smallest** number of follow-ups that separate the top two or three candidates. Rules:
+
+- **At most one discriminator per run**, drawn from the matrix's discriminator column or the boundary-probe library (Milestone 6).
+- The discriminator is chosen to split the top two candidates specifically — not to gather general information.
+- If three candidates remain, choose the probe that splits the top candidate from the *other two together*; if no such probe exists, the answer is Undetermined, not two probes.
+- A discriminator may never be a question about the person's confidence. It probes structure.
+- If the discriminator's answer is "I don't know," that is recorded as legitimate and the run proceeds to the dominance step with the tie intact — which usually means Undetermined. An honest unknown is never converted into a default number.
+
+### Layer 4 — Pattern dominance (no averaging)
+
+The emergent number is the one whose **whole configuration** is best supported by the total profile. Determination is by configuration match and precedence, never by totalling.
+
+Order of application:
+1. **Configuration completeness.** The candidate whose required combination is matched on the most dimensions *and* has no contradicted requirement. A single contradicted requirement disqualifies a candidate outright, however much else fits.
+2. **Demonstrated over self-reported.** Where D–S is `self over` or `self under`, the demonstrated structure classifies. The divergence is then named neutrally in the reflection — never as a failing.
+3. **Named-configuration precedence.** 3, 4, 5, 7, 8, 9 (and 1, 2) beat 6. 6 is admitted only when no named configuration matches.
+4. **Ordered decision tests for the close cluster 7 / 8 / 9,** applied in this order: is coverage full (7 vs 8/9)? is load heavy-and-seen (8)? is 6 `iterating` with 8 `updated on evidence` (9)? First test that resolves, wins.
+5. **Non-subtraction guarantees.** None of the following ever moves a reading to a different number *by itself*: heavy emotional load, an honest "I don't know," locating uncertainty, reconsidering or updating, or distress. Where these appear, they are context or strength, per the matrix.
+
+### Layer 5 — Confidence and Undetermined
+
+Return **Undetermined** when:
+- The core items are `insufficient` (skipped, abandoned, or structureless).
+- Two candidates remain genuinely indistinguishable after the one permitted discriminator, and no further probe would separate them.
+- Every candidate has a contradicted requirement (the profile fits no configuration).
+- The context supplied is too thin to build concrete items from.
+
+Between Undetermined and a confident reading there is one intermediate state, **cautious result**: the primary number is given and the neighbour is named — *"This sits between two shapes today — closer to X, with something of Y in it"* — with the reflection pointing at the specific thing that would tip it. This is used when one candidate is better supported but not decisively.
+
+**Never** force a number to make a run feel complete. Undetermined and cautious results are first-class outcomes, presented warmly.
+
+### Layer 6 — Reflection
+
+The reflection explains **which observed combination made the number emerge**, in plain language, tied to the person's own material. Rules already locked in Milestone 5 apply. Additionally:
+
+- Name the combination, not the dimensions: *"You kept what happened and what you make of it apart, and you could say what would change your mind — and the weight of it stayed in view rather than driving."* Never *"Dimension 1: separated."*
+- If D–S diverged, say so neutrally: *"You felt less sure than your answers looked."*
+- The established meaning is offered as a **lens**: *"This is what X tends to point at."* Never as a diagnosis, prediction, or permanent identity. Today's number is today's.
+- If the result is cautious or Undetermined, the reflection says what would make it readable — never what the person got wrong.
+
+---
+
+### Stress test of the overlap model
+
+For each case: the initially overlapping candidates, and the follow-up evidence that would distinguish them. **Cases are not forced to a number.** Where the architecture is genuinely ambiguous, that is stated as the finding.
+
+**A) High emotional load + high clarity.** Overlap: **8, 9, 7.** All three admit heavy load without demotion. Distinguisher: whether load is *coherent* (5 `heavy + seen` → 8 admitted) and whether 6/8 show `iterating` + `updated on evidence` (→ 9) or 4 carries a named resolver with coverage gaps (→ 7). Probe: *"How much of the weight is in view right now?"* then the 7/8/9 ordered tests. **Architecture succeeds** — load is context throughout.
+
+**B) Calm + poor clarity.** Overlap: **2, 3, 6, 1.** Calm removes 5 as a signal entirely, which is correct but leaves the field wide. Distinguisher: is the read formed (1 vs 2)? Is it reaction-led despite the calm (3)? Probe: *"Would you defend your read, or are you holding it loosely?"* **Partially ambiguous:** 3 with a calm surface is hard to detect, since `reaction-led` is easiest to observe when the reaction is visible. **Finding: the PAIR item for `[3]` must not rely on emotional intensity to work** — it must contrast response *language*, not heat. Flagged as a required item-design fix.
+
+**C) Honest uncertainty + strong reasoning.** Overlap: **7, 9, 1.** Distinguisher: whether 1/2 are `separated` (rules 1 out immediately) and whether 7 coverage is full and 8 shows evidence-driven updating (→ 9) or coverage has a gap (→ 7). **Architecture succeeds.** Honest uncertainty with intact discrimination is a strong configuration, exactly as intended.
+
+**D) Extreme confidence + assumption-heavy reasoning.** Overlap: **2, 6, 5.** D–S is `self over demonstrated`, which by the dominance rule means the demonstrated fusion classifies. Distinguisher: 8 `held firm` + 1 `fused` → 2; a mixed profile with no named fit → 6, but only after 2 is ruled out. Probe: *"Explain first, or hear theirs first?"* **Architecture succeeds** — and this is the case the whole demonstrated-over-self-report rule exists for.
+
+**E) Looping vs genuine iterative movement.** Overlap: **4 vs 5 vs 9.** Distinguisher is purely demonstrated: did the *content* of the account change across passes? Unchanged → 6 `repeating` → 4. Changed with coverage gaps → 5. Changed with full coverage and 8 `updated on evidence` → 9. Probe: *"Does the wording change or the content?"* **Architecture succeeds only if the two-pass comparison is actually implemented** — self-report cannot carry this. Flagged as a hard implementation requirement: the account must be captured twice.
+
+**F) Avoidance + otherwise strong reasoning.** Overlap: **5, 7, 8.** All admit strong 1/2. Distinguisher: number of untouched areas (one → 7 or 8; several → 5) and whether load is heavy-and-seen (→ 8). Probe: *"Is there a part of this you'd rather I didn't ask about?"* **Mildly ambiguous:** 7 and 8 both tolerate one untouched area, and the split rests on load coherence alone. **Finding: 7 vs 8 needs a second distinguishing requirement beyond load.** Candidate: 4 `located + resolver named` is required for 7 but optional for 8. Flagged for resolution before implementation.
+
+**G) High revisability.** Overlap: **9, 8, and the `unstable/indecisive` reading.** Distinguisher: did updating happen *on evidence* (→ 9 admitted) or without it (→ `unstable`, which currently has no clean home). **Genuine gap identified:** the profile "revises constantly, not on evidence" is accurately captured by 8 `unstable/indecisive` but the matrix does not name which configuration owns it. **Finding: unresolved. Either a configuration must claim it or it must be an explicit cautious-result case.** Do not paper over this with 6 — that would make 6 a catch-all, which is forbidden.
+
+**H) No obvious problem / everything going well but calm feels unfamiliar.** Overlap: **7, 9, 1, and Undetermined.** The bracing/not-trusting-it response is real material for 4 and 7. Distinguisher: is there a locatable unknown with a resolver (→ 7 admitted) or is the whole thing genuinely unformed (→ 1 or Undetermined)? **Architecture holds, with a caution:** "everything is fine" runs are the most likely to produce structureless taps, so Undetermined must be genuinely available here and must not read as a failure. Going well is not automatically high clarity; being unable to rest in it is not automatically low.
+
+**I) "I want a drink and don't know why."** Overlap: **wide open — 1, 4, 7, and any of 3/8 depending on what follows.** This is correct: the doorway must not predetermine anything. Distinguisher: whether the person points at a "trying not to" (routes into the Milestone 7 pathway) or names genuine enjoyment (taken at face value, normal ladder). **Architecture succeeds specifically because it refuses to infer avoidance from the behavior.** Note: an honest "I don't know why" is 4 `located, no resolver` at worst — never a low-clarity verdict.
+
+**J) "Take a Chance" with little initial context.** Overlap: **all nine, plus Undetermined — and that is the honest state.** With only a light context tap, the SORT lines are generic and the evidence is thin. **Finding: this pathway will legitimately return Undetermined more often than others.** That must be designed for, not engineered around. The warm Undetermined copy plus an invitation to bring one concrete part of the situation is the correct outcome, not a fallback number.
+
+### Verdict and required fixes before implementing the number engine
+
+**Verdict: REVISE — the layered architecture is sound; four specific gaps must close first.**
+
+1. **The `[3]` PAIR item must not depend on emotional intensity** to detect `reaction-led` (case B). Rewrite to contrast response *language* only.
+2. **7 vs 8 needs a second distinguishing requirement beyond load coherence** (case F). Proposal: make 4 `located + resolver named` a hard requirement for 7.
+3. **The "revises without evidence" profile has no owner** (case G). Assign it a configuration, or make it an explicit cautious-result / Undetermined case. It may not be absorbed by 6.
+4. **The two-pass account capture is a hard implementation requirement** (case E), not an optional nicety. Without it, 4 / 5 / 9 cannot be separated.
+
+Plus the standing prerequisites: the six definitional fixes from the Phase 2C stress test, and **the uploaded 1–9 source text**, without which the meaning column stays `[SOURCE REQUIRED]` and the app must either ship the number meaning-free or not ship the meaning layer.
+
+No production code, questions, scoring, or UI changed in this task.
