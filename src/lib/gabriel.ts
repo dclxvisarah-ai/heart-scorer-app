@@ -1484,7 +1484,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       "Here's the part nobody asks: if drinking disappeared tomorrow, which possibility would scare you the most?",
     note: "Last one.",
     choices: [
-      { id: "a", label: "I might actually get healthy — and then the next move would be mine to make.", evidence: { 9: 3 } },
+      { id: "a", label: "That I'd actually have to build the life I say I want, one real step at a time.", evidence: { 9: 3 } },
       { id: "b", label: "I might succeed, and I don't know how to be that person. That's genuinely new ground.", evidence: { 1: 3 } },
       { id: "c", label: "I'd have to be fully myself with nothing over the top of it — and own that as it is.", evidence: { 6: 3 } },
       { id: "d", label: "I'd be alone without it. It's my company and it costs me. Both.", evidence: { 2: 3 } },
@@ -1494,8 +1494,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "h", label: "I'm scared to even start. That's exactly where I am.", evidence: { 1: 2, 7: 1 } },
       { id: "i", label: "I'd love being sober and have to face the years — and I can stay with that.", evidence: { 7: 2, 9: 1 } },
       { id: "j", label: "Nothing would change and I'd have to find the real problem — I'd want the two separated.", evidence: { 5: 3 } },
-      { id: "k", label: "I'm not afraid of any of that. I want my life back, and I know the first move.", evidence: { 9: 3 } },
-      { id: "l", label: "I don't know which scares me more, and I'll leave it there tonight.", evidence: { 1: 2, 7: 1 } },
+      { id: "k", label: "That I don't need a fear story anymore — I'd have to own my part in what comes next.", evidence: { 6: 2, 9: 1 } },
     ],
   },
 
