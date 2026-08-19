@@ -17,7 +17,7 @@ Findings:
 - **Banned wording** (`land` / `landed` / `landing`): 2 occurrences.
   - `spiral-replay` prompt: "What does the replay keep landing on?"
   - `spiral-replay/e`: "It doesn't land anywhere, it just runs"
-- **Same-question evidence collisions**: 2.
+- **Same-question evidence collisions**: 2 initially (a third surfaced during the fix and was cleared; final audit: 0).
   - `spiral-1`: `predict` and `unsolvable` both carried `{5:1, 7:2}` — two
     distinct mechanisms (future simulation vs. premature closure on an
     unanswerable question) with an identical signature.
@@ -52,6 +52,10 @@ Findings:
 4. `spiral-stuck/c` → "Weeks or longer, without much of a break", `{3:2, 7:1}`.
    Continuous, unbroken duration is recurrence plus an inability to put it
    down; cyclical return stays the pure `{3:3}` pattern response (`d`).
+5. `spiral-stuck/b` ("A few days") → `{7:3}` (was `{3:2, 7:1}`). A few days of
+   one thought is not yet a recognized recurring pattern — it is an inability
+   to set the thought down. This also cleared the new collision the fix in (4)
+   introduced with `b`; re-audited to 0 collisions.
 
 No prompts other than `spiral-replay` changed. No structural change: the fixed
 six-page architecture was preserved (the audit exposed no problem requiring it).
@@ -64,9 +68,9 @@ Full enumeration of the spiraling branch:
 - **55,440 complete paths**, all exactly 6 pages — **0 page-length violations**.
 - **All 84 reachable response options exercised** (0 uncovered).
 - **All nine numbers reachable as primary**:
-  1: 2,173 · 2: 4,778 · 3: 7,234 · 4: 2,102 · 5: 6,744 · 6: 2,430 ·
-  7: 6,129 · 8: 5,245 · 9: 3,560.
-- **Undetermined: 27.1%** of paths — inside the validated 25–30% band; never
+  1: 2,179 · 2: 4,832 · 3: 6,655 · 4: 2,119 · 5: 6,790 · 6: 2,460 ·
+  7: 6,341 · 8: 5,282 · 9: 3,561.
+- **Undetermined: 27.5%** of paths — inside the validated 25–30% band; never
   forced into a number.
 - **Deterministic scoring**: re-evaluating every path gave byte-identical
   results.
