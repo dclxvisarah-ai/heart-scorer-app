@@ -1411,9 +1411,8 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     choices: [
       { id: "a", label: "I'd have no idea what to do with that time. That's the first real question.", evidence: { 1: 2, 4: 1 }, followUp: "drink-missing" },
       { id: "b", label: "Relieved and thrown, both at once.", evidence: { 2: 3 }, followUp: "drink-want" },
-      { id: "c", label: "I'd go find another way to feel different. Same reach, new object.", evidence: { 3: 3 }, followUp: "drink-want", avoids: true },
+      { id: "c", label: "I'd go looking for another way to feel different. Same reach, new object — I can see the pattern.", evidence: { 3: 3 }, followUp: "drink-want", avoids: true },
       { id: "d", label: "Scared, because I know what my body does when I stop — I'd want that heard by someone who knows.", evidence: { 8: 2, 5: 1 }, followUp: "drink-fear" },
-      { id: "e", label: "The clerk who knows exactly what I get. It's a relationship, small as it is.", evidence: { 2: 3 }, followUp: "drink-missing" },
       { id: "f", label: "The one thing in the day that was mine, and mine on purpose.", evidence: { 4: 3 }, followUp: "drink-missing" },
       { id: "g", label: "Pissed — and honest about being pissed instead of performing gratitude.", evidence: { 6: 3 }, followUp: "drink-consequence" },
       { id: "h", label: "I'd find out the ritual mattered more than the drink ever did.", evidence: { 3: 2, 5: 1 }, followUp: "drink-missing" },
