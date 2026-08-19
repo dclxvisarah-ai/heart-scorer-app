@@ -399,7 +399,10 @@ export const DOORWAYS: Doorway[] = [
     label: "Why the fuck do I want a drink right now?",
     sub: "No lecture. Just a look at what the urge is actually for",
     universal: "ifAvoidance",
-    closing: "drink-closing",
+    stage2: "drink-lost",
+    prefixPages: 3,
+    totalPages: 6,
+
     questions: [
       {
         id: "drink-1",
