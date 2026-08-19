@@ -1419,7 +1419,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "i", label: "I'd miss the version of me that comes out after — and I'd have to be the other one sober.", evidence: { 6: 2, 2: 1 }, followUp: "drink-fear" },
       { id: "j", label: "More money, more time, a better day — and I'd still fucking miss it. Both true.", evidence: { 2: 2, 5: 1 }, followUp: "drink-consequence" },
       { id: "k", label: "I'm more afraid of my life without it than of what it's doing to me — and I can say that and stay in it.", evidence: { 7: 3 }, followUp: "drink-fear" },
-      { id: "l", label: "I wouldn't miss the drink. I'd miss having something automatic to reach for.", evidence: { 3: 3 }, followUp: "drink-missing" },
+      { id: "l", label: "I'd miss having that hour already decided for me. Without it, I'd have to decide what that hour is for.", evidence: { 4: 2, 1: 1 }, followUp: "drink-missing" },
       { id: "m", label: "I'd do everything the same, just without it. That's the actual next step.", evidence: { 9: 3 }, followUp: "drink-changes" },
     ],
   },
