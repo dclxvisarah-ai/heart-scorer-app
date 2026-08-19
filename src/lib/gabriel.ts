@@ -414,7 +414,7 @@ export const ALL_DOORWAYS: Doorway[] = [
         prompt: "What is it actually doing right now?",
         choices: [
           { id: "replay", label: "Replaying something that already happened", evidence: { 3: 2, 8: 1 }, followUp: "spiral-replay" },
-          { id: "predict", label: "Predicting something that hasn't happened", evidence: { 5: 1, 7: 2 }, followUp: "spiral-predict" },
+          { id: "predict", label: "Predicting something that hasn't happened", evidence: { 7: 2, 3: 1 }, followUp: "spiral-predict" },
           { id: "meant", label: "Trying to figure out what someone else meant", evidence: { 8: 2, 2: 1 }, followUp: "spiral-meant" },
           { id: "reassure", label: "Searching for reassurance", evidence: { 2: 2, 7: 1 }, followUp: "spiral-reassure" },
           { id: "unsolvable", label: "Trying to solve a problem that doesn't have an answer yet", evidence: { 7: 2, 5: 1 }, followUp: "spiral-unsolvable" },
@@ -892,14 +892,14 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
    */
   "spiral-replay": {
     id: "spiral-replay",
-    prompt: "What does the replay keep landing on?",
+    prompt: "What does the replay keep circling back to?",
     next: "spiral-subject",
     choices: [
       { id: "a", label: "Something I said", evidence: { 8: 2, 6: 1 } },
       { id: "b", label: "Something they said", evidence: { 8: 2, 2: 1 } },
       { id: "c", label: "The moment I should have said something and didn't", evidence: { 9: 2, 8: 1 } },
       { id: "d", label: "How I looked or came across", evidence: { 6: 3 } },
-      { id: "e", label: "It doesn't land anywhere, it just runs", evidence: { 3: 3 } },
+      { id: "e", label: "Nothing in particular — it just runs on repeat", evidence: { 3: 3 } },
     ],
   },
   "spiral-predict": {
@@ -968,7 +968,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     choices: [
       { id: "a", label: "Since today", evidence: { 5: 2, 7: 1 } },
       { id: "b", label: "A few days", evidence: { 3: 2, 7: 1 } },
-      { id: "c", label: "Weeks or longer", evidence: { 3: 3 } },
+      { id: "c", label: "Weeks or longer, without much of a break", evidence: { 3: 2, 7: 1 } },
       { id: "d", label: "It comes back every few months", evidence: { 3: 3 } },
       { id: "e", label: "No idea", evidence: { 1: 2 } },
     ],
