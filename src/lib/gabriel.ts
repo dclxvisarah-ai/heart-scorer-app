@@ -141,7 +141,17 @@ export interface Question {
   choices: Choice[];
   /** Asked next regardless of which answer was chosen (linear chains). */
   next?: string;
+  /**
+   * AUDIT FLAG — non-scoring metadata. Set when a question fails the
+   * question-design standard (generic self-help wording, asks the person to
+   * name a psychological mechanism, or repeats a dimension without adding
+   * discrimination) and is queued for a creative rebuild. The string records
+   * the 1–9 information target that MUST be preserved by the rebuild.
+   * This field never affects evidence, weights, or convergence.
+   */
+  rebuild?: string;
 }
+
 
 export interface Doorway {
   id: string;
@@ -181,6 +191,8 @@ export interface Doorway {
 
 export const UNIVERSAL_QUESTION: Question = {
   id: "u1",
+    rebuild:
+      "REQUIRES REBUILD — banned generic what-are-you-avoiding framing. Information target to preserve: which dimension the avoidance sits in (7 staying, 8 listening, 5 discernment, 4 structure, 9 embodiment).",
   prompt: "What are you trying not to experience right now?",
   note: "Not an accusation. Sometimes the honest answer is that you aren't avoiding anything.",
   choices: [
@@ -199,6 +211,8 @@ export const UNIVERSAL_QUESTION: Question = {
 export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
   "uf-discomfort": {
     id: "uf-discomfort",
+    rebuild:
+      "REQUIRES REBUILD — banned where-does-the-discomfort-sit framing. Target: body/unsaid/known-task/undifferentiated (7, 8, 9+4, 5+1).",
     prompt: "Where does the discomfort actually sit?",
     choices: [
       { id: "a", label: "In my body — restless, tight, wired", evidence: { 7: 2, 3: 1 } },
@@ -210,17 +224,21 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
   },
   "uf-conversation": {
     id: "uf-conversation",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: what makes the unsaid thing hard (8 listening, 5 discernment, 6 integration, 4 timing).",
     prompt: "What's the harder part of it?",
     choices: [
       { id: "a", label: "Hearing what they'll say", evidence: { 8: 3 } },
       { id: "b", label: "Saying my part accurately", evidence: { 8: 2, 5: 1 } },
-      { id: "c", label: "Admitting where I contributed", evidence: { 6: 3, 2: 1 } },
+      { id: "c", label: "Admitting where I contributed", evidence: { 6: 3 } },
       { id: "d", label: "Choosing when to have it", evidence: { 8: 2, 4: 1 } },
       { id: "e", label: "Not sure yet", evidence: { 1: 1 } },
     ],
   },
   "uf-uncertainty": {
     id: "uf-uncertainty",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: kind of not-knowing (5 gettable, 7 time-only, 2/8 another person, 1 unknown want).",
     prompt: "What kind of not-knowing is it?",
     choices: [
       { id: "a", label: "Information I could actually get", evidence: { 5: 3 } },
@@ -232,6 +250,8 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
   },
   "uf-decision": {
     id: "uf-decision",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: what makes deciding heavy (2 others, 5 real loss, 4 holding to it).",
     prompt: "What makes it heavy?",
     choices: [
       { id: "a", label: "It affects someone besides me", evidence: { 2: 2, 6: 1 } },
@@ -243,6 +263,8 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
   },
   "uf-boredom": {
     id: "uf-boredom",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: what surfaces in the quiet (9 undone task, 3 loop, 7 skipped feeling).",
     prompt: "When the quiet comes, what usually turns up in it?",
     choices: [
       { id: "a", label: "Something I've been putting off", evidence: { 9: 2, 4: 1 } },
@@ -254,6 +276,8 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
   },
   "uf-relief": {
     id: "uf-relief",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: relief from what (3 repetition, 4/6 responsibility, 7/8 waiting, 6 self).",
     prompt: "Relief from what, if you had to name it?",
     choices: [
       { id: "a", label: "Thinking about the same thing again", evidence: { 3: 3 } },
@@ -272,6 +296,8 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
 export const CORE_QUESTIONS: Question[] = [
   {
     id: "c1",
+    rebuild:
+      "REQUIRES REBUILD — asks the person to label their own epistemics (known vs felt vs assumed) in quiz language. Target: fact-vs-interpretation split (5, 3, 2, 6/7, 1).",
     prompt: "Right now, which of these is doing most of the talking?",
     choices: [
       { id: "a", label: "What I actually know", evidence: { 5: 2, 9: 1 } },
@@ -294,6 +320,8 @@ export const CORE_QUESTIONS: Question[] = [
   },
   {
     id: "c3",
+    rebuild:
+      "REQUIRES REBUILD — options restate the nine lessons back to the person, so it self-reports the result instead of gathering evidence. Target: one clean read of which dimension the person reaches for (9, 8, 7, 4, 6, 1).",
     prompt: "And what would help most in the next hour?",
     note: "Last one.",
     choices: [
@@ -386,7 +414,7 @@ export const DOORWAYS: Doorway[] = [
         note: "Just the line between what happened and what you've filled in.",
         choices: [
           { id: "a", label: "I know something happened", evidence: { 5: 3 } },
-          { id: "b", label: "I know how I feel, but not what the other person meant", evidence: { 2: 2, 8: 2 } },
+          { id: "b", label: "I know how I feel, but not what the other person meant", evidence: { 2: 2, 8: 1 } },
           { id: "c", label: "I have evidence, but I'm filling in some gaps", evidence: { 5: 2, 2: 1 } },
           { id: "d", label: "I mostly have assumptions right now", evidence: { 2: 3 } },
           { id: "e", label: "I genuinely don't know yet", evidence: { 1: 2, 5: 1 } },
@@ -578,7 +606,7 @@ export const DOORWAYS: Doorway[] = [
         prompt: "What's your part in it?",
         note: "Contribution, not verdict.",
         choices: [
-          { id: "a", label: "I can name it without piling on myself", evidence: { 6: 3, 2: 1 } },
+          { id: "a", label: "I can name it without piling on myself", evidence: { 6: 3 } },
           { id: "b", label: "I can name it and then I don't stop", evidence: { 6: 2, 3: 1 } },
           { id: "c", label: "I don't think I have one", evidence: { 2: 2 } },
           { id: "d", label: "Still working that out", evidence: { 1: 1, 2: 1 } },
@@ -786,7 +814,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     id: "chance-info",
     prompt: "Is the missing information gettable?",
     choices: [
-      { id: "a", label: "Yes — I know exactly what I'd need to check", evidence: { 5: 3, 9: 1 } },
+      { id: "a", label: "Yes — I know exactly what I'd need to check", evidence: { 5: 3 } },
       { id: "b", label: "Only by doing it", evidence: { 9: 2, 7: 1 } },
       { id: "c", label: "Only someone else can tell me", evidence: { 8: 3 } },
       { id: "d", label: "Only time tells", evidence: { 7: 3 } },
@@ -828,7 +856,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     id: "chance-split",
     prompt: "Can you name both halves without picking a winner?",
     choices: [
-      { id: "a", label: "Yes — and both make sense", evidence: { 2: 3, 6: 1 } },
+      { id: "a", label: "Yes — and both make sense", evidence: { 2: 3 } },
       { id: "b", label: "Yes, but one half sounds like an excuse", evidence: { 6: 2, 5: 1 } },
       { id: "c", label: "One half is loud and I can't hear the other", evidence: { 3: 2, 7: 1 } },
       { id: "d", label: "They swap depending on the hour", evidence: { 3: 3 } },
@@ -919,7 +947,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "a", label: "Since today", evidence: { 5: 2, 7: 1 } },
       { id: "b", label: "A few days", evidence: { 3: 2, 7: 1 } },
       { id: "c", label: "Weeks or longer", evidence: { 3: 3 } },
-      { id: "d", label: "It comes back every few months", evidence: { 3: 3, 4: 1 } },
+      { id: "d", label: "It comes back every few months", evidence: { 3: 3 } },
       { id: "e", label: "No idea", evidence: { 1: 2 } },
     ],
   },
