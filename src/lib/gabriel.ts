@@ -1402,7 +1402,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     prompt: "Then what does the drink change about the thing you're already doing?",
     choices: [
       { id: "a", label: "It makes boring shit tolerable — though I could tolerate it.", evidence: { 7: 3 }, followUp: "drink-boredom" },
-      { id: "b", label: "Things land better, and I'd rather carry that into how I actually spend the night.", evidence: { 9: 3 }, followUp: "drink-want" },
+      { id: "b", label: "Everything hits better, and I'd rather carry that into how I actually spend the night.", evidence: { 9: 3 }, followUp: "drink-want" },
       { id: "c", label: "It makes the boredom easier to avoid. Without it I'd actually have to sit through the boring part — that's the trade.", evidence: { 7: 2, 5: 1 }, followUp: "drink-boredom", avoids: true },
       { id: "d", label: "It gives a shapeless day something to point at.", evidence: { 4: 3 }, followUp: "drink-inertia" },
       { id: "e", label: "TV, music, food, sex, gaming — all of it hits differently. Two good things at once.", evidence: { 2: 3 }, followUp: "drink-want" },
