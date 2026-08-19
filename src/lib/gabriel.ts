@@ -154,6 +154,14 @@ export interface Doorway {
    * "ifAvoidance" (default posture), "always", or "never".
    */
   universal: "always" | "ifAvoidance" | "never";
+  /**
+   * Optional id of a doorway-specific closing question (resolved from
+   * BRANCH_QUESTIONS at runtime). When present it replaces the shared final
+   * core question as the last question of the path, so a branch ends on
+   * something specific to its own thread instead of the generic closer.
+   * Doorways without one keep the shared closer (unchanged behavior).
+   */
+  closing?: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -380,6 +388,7 @@ export const DOORWAYS: Doorway[] = [
     label: "I feel like I want a drink and I don't know why",
     sub: "Could be nothing. Could be worth a look",
     universal: "ifAvoidance",
+    closing: "drink-closing",
     questions: [
       {
         id: "drink-1",
@@ -1039,6 +1048,19 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "e", label: "I don't want to answer this today", evidence: { 7: 2, 1: 1 } },
     ],
   },
+  "drink-closing": {
+    id: "drink-closing",
+    prompt: "And if you didn't drink right now, what would you have to experience instead?",
+    note: "Last one.",
+    choices: [
+      { id: "a", label: "I'd have to sit with a feeling I don't really want to feel.", evidence: { 7: 3 } },
+      { id: "b", label: "I'd have to break a routine that feels familiar.", evidence: { 3: 2, 4: 1 } },
+      { id: "c", label: "I'd have to figure out what to do with the time or energy instead.", evidence: { 1: 2, 4: 1 } },
+      { id: "d", label: "I'd have to deal with something I've been avoiding.", evidence: { 9: 2, 5: 1 } },
+      { id: "e", label: "Honestly, nothing is wrong — I just feel pulled toward the drink anyway.", evidence: { 2: 2, 7: 1 } },
+      { id: "f", label: "I still can't tell what I'm trying not to experience.", evidence: { 1: 2 } },
+    ],
+  },
 };
 
 export function getDoorway(id: string | undefined): Doorway | undefined {
@@ -1109,12 +1131,21 @@ export function buildSequence(
 
   // Top up with the shared closing questions only if the branch was short,
   // so the whole path stays around five or six taps.
+  const doorwayClosing = doorway.closing ? getQuestion(doorway.closing) : undefined;
+  const sharedClosing = CORE_QUESTIONS[CORE_QUESTIONS.length - 1];
   const remaining = 5 - sequence.length;
   if (remaining > 0) {
     sequence.push(...CORE_QUESTIONS.slice(0, Math.min(CORE_QUESTIONS.length, remaining)));
+    // A doorway with its own closer ends on that, not the shared final
+    // question the top-up would otherwise land on.
+    if (doorwayClosing) {
+      const last = sequence[sequence.length - 1];
+      if (last && sharedClosing && last.id === sharedClosing.id) sequence.pop();
+      if (doorwayClosing && !seen.has(doorwayClosing.id)) sequence.push(doorwayClosing);
+    }
   } else {
-    // Always end on the same closing question, whatever the branch length.
-    const closing = CORE_QUESTIONS[CORE_QUESTIONS.length - 1];
+    // Always end on a closing question, whatever the branch length.
+    const closing = doorwayClosing ?? sharedClosing;
     if (closing && !seen.has(closing.id)) sequence.push(closing);
   }
 
