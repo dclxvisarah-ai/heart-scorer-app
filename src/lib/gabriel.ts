@@ -388,7 +388,7 @@ export const DOORWAYS: Doorway[] = [
     label: "I feel like I want a drink and I don't know why",
     sub: "Could be nothing. Could be worth a look",
     universal: "ifAvoidance",
-    closing: { id: "drink-closing", prompt: "drink-closing", choices: [] } as never,
+    closing: "drink-closing",
     questions: [
       {
         id: "drink-1",
