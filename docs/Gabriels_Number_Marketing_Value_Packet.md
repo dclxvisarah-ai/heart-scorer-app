@@ -1,0 +1,1973 @@
+# Gabriel's Number — Marketing Value Packet
+> Documentation artifact only. This file is for developer/investor review. It does not change, describe changes to, or alter any application behavior, scoring, questions, branches, UI, or the 1–9 framework.
+## 1. PRODUCT IN ONE SENTENCE
+Gabriel's Number is a reflection tool that uses situation-specific questions to collect weighted evidence and converge on a 1–9 number representing the user's current psychological pattern, with a corresponding symbolic/Tree of Life interpretation.
+## 2. ACTUAL SOURCE CODE
+The complete current contents of `src/lib/gabriel.ts`, verbatim:
+```typescript
+/**
+ * Gabriel's Number — Vol. 2
+ *
+ * Working psychological-symbolic framework: nine dimensions, each with a
+ * Tree of Life mapping. Answers accumulate *evidence* toward dimensions.
+ * Nothing is averaged. The result is the dimension with the strongest
+ * coherent pattern across the answers — or "undetermined" when the answers
+ * do not cohere yet.
+ *
+ * The Tree of Life and number mappings here are OUR working
+ * psychological-symbolic mappings. They are not claims about what
+ * traditional Kabbalah or Pythagorean numerology officially assigns.
+ */
+
+export type GNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+export const G_NUMBERS: GNumber[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+export interface NumberMeaning {
+  n: GNumber;
+  /** Short name of the dimension. */
+  name: string;
+  /** Tree of Life mapping (working map). */
+  tree: string;
+  /** The psychological-symbolic meaning. */
+  meaning: string;
+  /** The core lesson. */
+  lesson: string;
+  /** Used in the plain-language reasoning: "your answers kept returning to …" */
+  signal: string;
+}
+
+export const NUMBERS: Record<GNumber, NumberMeaning> = {
+  1: {
+    n: 1,
+    name: "Beginning",
+    tree: "Keter",
+    meaning:
+      "Initiation. The first honest question, and the willingness to look at something you have not looked at yet.",
+    lesson: "Start with the first honest question. You don't need the whole answer to begin.",
+    signal: "beginning — the willingness to look before you know",
+  },
+  2: {
+    n: 2,
+    name: "Duality",
+    tree: "Chokmah",
+    meaning:
+      "Holding two truths at once. Perspective. Seeing your own contribution without making yourself the villain of it.",
+    lesson: "Hold two truths at once.",
+    signal: "duality — holding two true things at the same time",
+  },
+  3: {
+    n: 3,
+    name: "Pattern",
+    tree: "Binah",
+    meaning:
+      "Recognizing what recurs, and noticing how your emotional state changes what you perceive.",
+    lesson: "Notice recurring patterns without immediately turning them into judgments.",
+    signal: "pattern — what keeps returning, and what your state does to your view of it",
+  },
+  4: {
+    n: 4,
+    name: "Structure",
+    tree: "Chesed",
+    meaning:
+      "Creating a container. Stability. Turning an insight into something repeatable rather than something you had once.",
+    lesson: "Give insight a container.",
+    signal: "structure — giving this a container instead of carrying it loose",
+  },
+  5: {
+    n: 5,
+    name: "Discernment",
+    tree: "Gevurah",
+    meaning:
+      "Tension and boundaries. Separating what you know from what you feel and what you assume.",
+    lesson: "Separate what you know, what you feel, and what you assume.",
+    signal: "discernment — separating what you know from what you feel and assume",
+  },
+  6: {
+    n: 6,
+    name: "Integration",
+    tree: "Tiferet",
+    meaning:
+      "Accountability without prosecution. Holding complexity without abandoning yourself in it.",
+    lesson: "Bring opposing pieces together without self-punishment.",
+    signal: "integration — accountability that doesn't turn into a case against you",
+  },
+  7: {
+    n: 7,
+    name: "Staying",
+    tree: "Netzach",
+    meaning:
+      "Observation and tolerating stillness. Remaining present rather than escaping into the next problem.",
+    lesson:
+      "Remain present when uncomfortable — or even when things are going well — instead of escaping into the next problem.",
+    signal: "staying — remaining present instead of moving into the next thing",
+  },
+  8: {
+    n: 8,
+    name: "Listening",
+    tree: "Hod",
+    meaning:
+      "Timing and disciplined communication. Receiving before interpreting or responding.",
+    lesson:
+      "Receive before interpreting. Slow the urge to explain, interrupt, solve, or respond.",
+    signal: "listening — receiving before interpreting or answering",
+  },
+  9: {
+    n: 9,
+    name: "Embodiment / Completion",
+    tree: "Yesod → Malkuth",
+    meaning:
+      "Carrying the lesson forward. Release, embodiment, and the next right step rather than the whole solution.",
+    lesson:
+      "Carry insight into behavior. Release the need to solve everything and take the next right step.",
+    signal: "embodiment — carrying this into one actual next step",
+  },
+};
+
+/** Evidence a single choice contributes. Weights are small on purpose. */
+export type Evidence = Partial<Record<GNumber, number>>;
+
+export interface Choice {
+  id: string;
+  label: string;
+  evidence: Evidence;
+  /** If set, choosing this opens a follow-up question by id. */
+  followUp?: string;
+  /**
+   * Marks an answer that actually suggests avoidance or discomfort. The
+   * universal "what are you trying not to experience" question is only asked
+   * when the person's own answers point that way — never by default.
+   */
+  avoids?: boolean;
+}
+
+export interface Question {
+  id: string;
+  prompt: string;
+  note?: string;
+  choices: Choice[];
+  /** Asked next regardless of which answer was chosen (linear chains). */
+  next?: string;
+  /**
+   * AUDIT FLAG — non-scoring metadata. Set when a question fails the
+   * question-design standard (generic self-help wording, asks the person to
+   * name a psychological mechanism, or repeats a dimension without adding
+   * discrimination) and is queued for a creative rebuild. The string records
+   * the 1–9 information target that MUST be preserved by the rebuild.
+   * This field never affects evidence, weights, or convergence.
+   */
+  rebuild?: string;
+}
+
+
+export interface Doorway {
+  id: string;
+  label: string;
+  sub: string;
+  /** Doorway-specific questions, asked in order. */
+  questions: Question[];
+  /**
+   * When the universal "trying not to experience" branch is asked:
+   * "ifAvoidance" (default posture), "always", or "never".
+   */
+  universal: "always" | "ifAvoidance" | "never";
+  /**
+   * PRESERVED-BUT-HIDDEN. When true the doorway keeps all of its questions,
+   * mappings and follow-ups intact but is not offered on the start screen.
+   * Nothing is deleted, so the branch can be renamed or rebuilt later.
+   * Never affects evidence, weights, thresholds or convergence.
+   */
+  hidden?: boolean;
+  /**
+   * Optional id of a doorway-specific closing question (resolved from
+   * BRANCH_QUESTIONS at runtime). When present it replaces the shared final
+   * core question as the last question of the path, so a branch ends on
+   * something specific to its own thread instead of the generic closer.
+   * Doorways without one keep the shared closer (unchanged behavior).
+   */
+  closing?: string;
+  /**
+   * Optional fixed-length architecture. `prefixPages` questions come from the
+   * doorway's own opening chain, then the path continues into `stage2` and is
+   * capped at `totalPages`, so the branch always has the same number of pages
+   * however the person answers.
+   */
+  stage2?: string;
+  prefixPages?: number;
+  totalPages?: number;
+}
+
+
+
+/* ------------------------------------------------------------------ */
+/* The universal branch                                               */
+/* ------------------------------------------------------------------ */
+
+export const UNIVERSAL_QUESTION: Question = {
+  id: "u1",
+    rebuild:
+      "REQUIRES REBUILD — banned generic what-are-you-avoiding framing. Information target to preserve: which dimension the avoidance sits in (7 staying, 8 listening, 5 discernment, 4 structure, 9 embodiment).",
+  prompt: "What are you trying not to experience right now?",
+  note: "Not an accusation. Sometimes the honest answer is that you aren't avoiding anything.",
+  choices: [
+    { id: "u1-discomfort", label: "A feeling I don't want to sit in", evidence: { 7: 2, 9: 1 }, followUp: "uf-discomfort" },
+    { id: "u1-conversation", label: "A conversation I keep putting off", evidence: { 8: 2, 2: 1 }, followUp: "uf-conversation" },
+    { id: "u1-uncertainty", label: "Not knowing how this turns out", evidence: { 5: 2, 7: 1 }, followUp: "uf-uncertainty" },
+    { id: "u1-decision", label: "Being the one who has to decide", evidence: { 4: 2, 6: 1 }, followUp: "uf-decision" },
+    { id: "u1-boredom", label: "Boredom. The quiet. Nothing happening", evidence: { 7: 3 }, followUp: "uf-boredom" },
+    { id: "u1-task", label: "One specific thing I said I'd do", evidence: { 9: 3 } },
+    { id: "u1-relief", label: "Nothing in particular — I just want a break", evidence: { 9: 1, 7: 1 }, followUp: "uf-relief" },
+    { id: "u1-enjoy", label: "Honestly nothing. I'm enjoying myself", evidence: { 7: 1, 2: 1 } },
+    { id: "u1-unsure", label: "I don't know", evidence: { 1: 1 } },
+  ],
+};
+
+export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
+  "uf-discomfort": {
+    id: "uf-discomfort",
+    rebuild:
+      "REQUIRES REBUILD — banned where-does-the-discomfort-sit framing. Target: body/unsaid/known-task/undifferentiated (7, 8, 9+4, 5+1).",
+    prompt: "Where does the discomfort actually sit?",
+    choices: [
+      { id: "a", label: "In my body — restless, tight, wired", evidence: { 7: 2, 3: 1 } },
+      { id: "b", label: "In something I haven't said", evidence: { 8: 2 } },
+      { id: "c", label: "In something I already know I need to do", evidence: { 9: 2, 4: 1 } },
+      { id: "d", label: "In not knowing which part is the problem", evidence: { 5: 2, 1: 1 } },
+      { id: "e", label: "I can't locate it", evidence: { 1: 1 } },
+    ],
+  },
+  "uf-conversation": {
+    id: "uf-conversation",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: what makes the unsaid thing hard (8 listening, 5 discernment, 6 integration, 4 timing).",
+    prompt: "What's the harder part of it?",
+    choices: [
+      { id: "a", label: "Hearing what they'll say", evidence: { 8: 3 } },
+      { id: "b", label: "Saying my part accurately", evidence: { 8: 2, 5: 1 } },
+      { id: "c", label: "Admitting where I contributed", evidence: { 6: 3 } },
+      { id: "d", label: "Choosing when to have it", evidence: { 8: 2, 4: 1 } },
+      { id: "e", label: "Not sure yet", evidence: { 1: 1 } },
+    ],
+  },
+  "uf-uncertainty": {
+    id: "uf-uncertainty",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: kind of not-knowing (5 gettable, 7 time-only, 2/8 another person, 1 unknown want).",
+    prompt: "What kind of not-knowing is it?",
+    choices: [
+      { id: "a", label: "Information I could actually get", evidence: { 5: 3 } },
+      { id: "b", label: "Something only time answers", evidence: { 7: 3 } },
+      { id: "c", label: "What someone else is thinking", evidence: { 2: 2, 8: 1 } },
+      { id: "d", label: "What I want", evidence: { 5: 1, 1: 2 } },
+      { id: "e", label: "I don't know", evidence: { 1: 1 } },
+    ],
+  },
+  "uf-decision": {
+    id: "uf-decision",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: what makes deciding heavy (2 others, 5 real loss, 4 holding to it).",
+    prompt: "What makes it heavy?",
+    choices: [
+      { id: "a", label: "It affects someone besides me", evidence: { 2: 2, 6: 1 } },
+      { id: "b", label: "There's no version where nothing is lost", evidence: { 5: 2, 6: 1 } },
+      { id: "c", label: "I'd have to hold to it afterwards", evidence: { 4: 3 } },
+      { id: "d", label: "I'm not sure it's mine to make", evidence: { 2: 2, 5: 1 } },
+      { id: "e", label: "Not sure", evidence: { 1: 1 } },
+    ],
+  },
+  "uf-boredom": {
+    id: "uf-boredom",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: what surfaces in the quiet (9 undone task, 3 loop, 7 skipped feeling).",
+    prompt: "When the quiet comes, what usually turns up in it?",
+    choices: [
+      { id: "a", label: "Something I've been putting off", evidence: { 9: 2, 4: 1 } },
+      { id: "b", label: "An old thought on a loop", evidence: { 3: 3 } },
+      { id: "c", label: "A feeling I'd rather skip", evidence: { 7: 3 } },
+      { id: "d", label: "Nothing — it's just flat", evidence: { 7: 2 } },
+      { id: "e", label: "I don't stay long enough to find out", evidence: { 7: 2, 1: 1 } },
+    ],
+  },
+  "uf-relief": {
+    id: "uf-relief",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: relief from what (3 repetition, 4/6 responsibility, 7/8 waiting, 6 self).",
+    prompt: "Relief from what, if you had to name it?",
+    choices: [
+      { id: "a", label: "Thinking about the same thing again", evidence: { 3: 3 } },
+      { id: "b", label: "Being the responsible one", evidence: { 4: 2, 6: 1 } },
+      { id: "c", label: "Waiting for something to resolve", evidence: { 7: 2, 8: 1 } },
+      { id: "d", label: "Myself, a bit", evidence: { 6: 3 } },
+      { id: "e", label: "Can't say", evidence: { 1: 1 } },
+    ],
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* Shared closing questions                                            */
+/* ------------------------------------------------------------------ */
+
+export const CORE_QUESTIONS: Question[] = [
+  {
+    id: "c1",
+    rebuild:
+      "REQUIRES REBUILD — asks the person to label their own epistemics (known vs felt vs assumed) in quiz language. Target: fact-vs-interpretation split (5, 3, 2, 6/7, 1).",
+    prompt: "Right now, which of these is doing most of the talking?",
+    choices: [
+      { id: "a", label: "What I actually know", evidence: { 5: 2, 9: 1 } },
+      { id: "b", label: "What I feel", evidence: { 3: 2, 7: 1 } },
+      { id: "c", label: "What I'm assuming about someone else", evidence: { 2: 2, 5: 1 } },
+      { id: "d", label: "What I'm afraid of", evidence: { 7: 2, 6: 1 } },
+      { id: "e", label: "I can't tell them apart yet", evidence: { 5: 2, 1: 1 } },
+    ],
+  },
+  {
+    id: "c2",
+    prompt: "If you left this completely alone for a week, what happens?",
+    choices: [
+      { id: "a", label: "Nothing changes — it just keeps circling", evidence: { 3: 2, 9: 1 } },
+      { id: "b", label: "It gets decided for me", evidence: { 4: 2, 8: 1 } },
+      { id: "c", label: "It probably settles on its own", evidence: { 7: 2, 8: 1 } },
+      { id: "d", label: "I'd feel better and know less", evidence: { 7: 2, 5: 1 } },
+      { id: "e", label: "I genuinely don't know", evidence: { 1: 2 } },
+    ],
+  },
+  {
+    id: "c3",
+    rebuild:
+      "REQUIRES REBUILD — options restate the nine lessons back to the person, so it self-reports the result instead of gathering evidence. Target: one clean read of which dimension the person reaches for (9, 8, 7, 4, 6, 1).",
+    prompt: "And what would help most in the next hour?",
+    note: "Last one.",
+    choices: [
+      { id: "a", label: "One small thing I actually do", evidence: { 9: 3 } },
+      { id: "b", label: "Hearing someone else out first", evidence: { 8: 3 } },
+      { id: "c", label: "Sitting with it without fixing it", evidence: { 7: 3 } },
+      { id: "d", label: "Writing down what I know so far", evidence: { 4: 3 } },
+      { id: "e", label: "Being less hard on myself about it", evidence: { 6: 3 } },
+      { id: "f", label: "Asking a better question than the one I started with", evidence: { 1: 3 } },
+    ],
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/* Doorways                                                            */
+/* ------------------------------------------------------------------ */
+
+export const ALL_DOORWAYS: Doorway[] = [
+  {
+    id: "lost",
+    label: "I don't know what the hell to do today",
+    sub: "Unfocused, and it's getting louder",
+    universal: "ifAvoidance",
+    questions: [
+      {
+        id: "lost-1",
+        prompt: "Which one is closest?",
+        choices: [
+          { id: "many", label: "I have too many things I could do and can't choose", evidence: { 4: 2, 5: 1 }, followUp: "lost-many" },
+          { id: "should", label: "I know what I should do, but I don't want to do it", evidence: { 9: 2 }, followUp: "lost-should", avoids: true },
+          { id: "restless", label: "Nothing is actually wrong. I'm just restless", evidence: { 7: 2 }, followUp: "lost-restless" },
+          { id: "stim", label: "I feel like I need something stimulating", evidence: { 7: 2, 3: 1 }, followUp: "lost-stim" },
+          { id: "avoid", label: "I'm avoiding something I know I need to deal with", evidence: { 9: 2, 7: 1 }, followUp: "lost-avoid", avoids: true },
+          { id: "tell", label: "I want somebody else to tell me what to do", evidence: { 8: 2, 4: 1 }, followUp: "lost-tell" },
+          { id: "spont", label: "I want to do something spontaneous", evidence: { 9: 1, 7: 1 }, followUp: "lost-spont" },
+          { id: "okay", label: "I feel strangely uncomfortable because everything is going okay", evidence: { 7: 2, 6: 1 }, followUp: "lost-okay" },
+          { id: "unknown", label: "I genuinely don't know what I need", evidence: { 1: 2 }, followUp: "lost-unknown" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "chance",
+    hidden: true,
+    label: "Should I take a chance?",
+    sub: "Something's on the table",
+    universal: "ifAvoidance",
+    questions: [
+      {
+        id: "chance-1",
+        prompt: "What kind of chance is it?",
+        choices: [
+          { id: "money", label: "Something financial", evidence: { 5: 2, 4: 1 } },
+          { id: "love", label: "Something romantic", evidence: { 2: 2, 8: 1 } },
+          { id: "say", label: "Saying something I've been holding back", evidence: { 8: 2, 9: 1 } },
+          { id: "work", label: "A career or work decision", evidence: { 4: 2, 5: 1 } },
+          { id: "new", label: "Doing something I've never done", evidence: { 1: 2, 9: 1 } },
+          { id: "bored", label: "Taking a risk because I'm bored", evidence: { 7: 2 } },
+          { id: "gut", label: "Trusting my gut", evidence: { 3: 1, 9: 2 } },
+          { id: "leave", label: "Walking away from something", evidence: { 9: 2, 6: 1 } },
+          { id: "vague", label: "I don't even know what the chance is yet", evidence: { 1: 2 } },
+        ],
+        next: "chance-2",
+      },
+    ],
+  },
+  {
+    id: "spiral",
+    label: "My brain is spiraling",
+    sub: "It's moving fast and not going anywhere",
+    universal: "ifAvoidance",
+    // Fixed six-page architecture, same shape as the drinking branch:
+    // three adaptive pages (what it's doing → how it's doing it → what it's
+    // actually about) then a fixed stage 2 (fact/built line → what stops it →
+    // what would actually end it). No new scoring framework: every choice
+    // maps into the existing 1–9 evidence weights.
+    stage2: "spiral-known",
+    prefixPages: 3,
+    totalPages: 6,
+    questions: [
+      {
+        id: "spiral-1",
+        prompt: "What is it actually doing right now?",
+        choices: [
+          { id: "replay", label: "Replaying something that already happened", evidence: { 3: 2, 8: 1 }, followUp: "spiral-replay" },
+          { id: "predict", label: "Predicting something that hasn't happened", evidence: { 5: 1, 7: 2 }, followUp: "spiral-predict" },
+          { id: "meant", label: "Trying to figure out what someone else meant", evidence: { 8: 2, 2: 1 }, followUp: "spiral-meant" },
+          { id: "reassure", label: "Searching for reassurance", evidence: { 2: 2, 7: 1 }, followUp: "spiral-reassure" },
+          { id: "unsolvable", label: "Trying to solve a problem that doesn't have an answer yet", evidence: { 7: 2, 5: 1 }, followUp: "spiral-unsolvable" },
+          { id: "worst", label: "Finding everything that could go wrong", evidence: { 5: 2, 7: 1 }, followUp: "spiral-predict" },
+          { id: "jump", label: "Jumping between several problems", evidence: { 4: 2, 3: 1 }, followUp: "spiral-jump" },
+          { id: "stuck", label: "Getting stuck on one thought", evidence: { 3: 3 }, followUp: "spiral-stuck" },
+          { id: "unknown", label: "I can't even tell what started it", evidence: { 1: 2 }, followUp: "spiral-unknown" },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "drink",
+    label: "Why the fuck do I want a drink right now?",
+    sub: "No lecture. Just a look at what the urge is actually for",
+    universal: "ifAvoidance",
+    stage2: "drink-lost",
+    prefixPages: 3,
+    totalPages: 6,
+
+    questions: [
+      {
+        id: "drink-1",
+        prompt:
+          "When the urge hits, what sounds so damn appealing about saying \u201cfuck it\u201d and having one?",
+        note: "You already know it's bad for you. You already know the consequences. You already know what tomorrow might feel like. So that's not the question.",
+        choices: [
+          // expected reward
+          { id: "good", label: "I know I'll feel good.", evidence: { 9: 2, 2: 1 }, followUp: "drink-reward" },
+          // emotional regulation
+          { id: "better", label: "It makes me feel better.", evidence: { 7: 2, 6: 1 }, followUp: "drink-better" },
+          // identity / state borrowing
+          { id: "confidence", label: "I want to feel confident today.", evidence: { 6: 2, 2: 1 }, followUp: "drink-confidence" },
+          // arousal down-regulation
+          { id: "calm", label: "I want to calm the fuck down.", evidence: { 7: 2, 3: 1 }, followUp: "drink-calm" },
+          // cognitive escape
+          { id: "nothink", label: "I don't want to think anymore.", evidence: { 3: 2, 7: 1 }, followUp: "drink-nothink", avoids: true },
+          // anxiety about going without
+          { id: "scared", label: "I'm scared to go without it.", evidence: { 7: 2, 5: 1 }, followUp: "drink-without" },
+          // physical/somatic concern
+          { id: "shit", label: "I feel like shit without it.", evidence: { 7: 2, 9: 1 }, followUp: "drink-without" },
+          // automaticity / habit
+          { id: "routine", label: "It's just what I do. I don't even think about it anymore.", evidence: { 3: 3 }, followUp: "drink-routine" },
+          // anticipation
+          { id: "forward", label: "I want something to look forward to.", evidence: { 9: 2, 1: 1 }, followUp: "drink-forward" },
+          // identity
+          { id: "myself", label: "I want to feel more like myself.", evidence: { 6: 2, 1: 1 }, followUp: "drink-myself" },
+          // boredom
+          { id: "bored", label: "I'm bored as fuck.", evidence: { 7: 3 }, followUp: "drink-bored" },
+          // avoidance
+          { id: "escape", label: "I want to escape how I feel right now.", evidence: { 7: 2, 6: 1 }, followUp: "drink-escape", avoids: true },
+          // unexplained incongruence
+          { id: "well", label: "My life is actually good right now. I don't even know why I want one.", evidence: { 2: 2, 7: 1 }, followUp: "drink-good-life" },
+          // undifferentiated want
+          { id: "plain", label: "Honestly? I just fucking want one.", evidence: { 2: 1, 7: 1 }, followUp: "drink-plain-hour" },
+          // uncertainty
+          { id: "unclear", label: "I don't know. That's literally why I'm here.", evidence: { 1: 2 }, followUp: "drink-unclear" },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "gamble",
+    hidden: true,
+    label: "I'm feeling lucky — should I gamble?",
+    sub: "Playful, but let's be honest about it",
+    universal: "ifAvoidance",
+    questions: [
+      {
+        id: "gamble-1",
+        prompt: "Where's the lucky feeling coming from?",
+        note: "No judgment here. Sometimes it's just a good mood.",
+        choices: [
+          { id: "a", label: "Good mood, nothing more", evidence: { 7: 1, 2: 1 } },
+          { id: "b", label: "A run of things going right", evidence: { 3: 2, 7: 1 } },
+          { id: "c", label: "I'm behind and want to catch up", evidence: { 5: 2, 6: 1 }, avoids: true },
+          { id: "d", label: "I'm bored and want something to happen", evidence: { 7: 3 } },
+          { id: "e", label: "I want to have fun and this is fun", evidence: { 2: 1, 9: 1 } },
+          { id: "f", label: "Not sure", evidence: { 1: 1 } },
+        ],
+      },
+      {
+        id: "gamble-2",
+        prompt: "Do you have a number you've already decided on?",
+        choices: [
+          { id: "a", label: "Yes, a set amount, and I stick to it", evidence: { 4: 3 } },
+          { id: "b", label: "Yes, but I've moved it before", evidence: { 4: 1, 3: 2 } },
+          { id: "c", label: "No line", evidence: { 4: 2, 5: 1 } },
+          { id: "d", label: "Hadn't thought about it", evidence: { 1: 2 } },
+        ],
+      },
+    ],
+  },
+  {
+    id: "talk",
+    hidden: true,
+    label: "I want to talk to someone but don't know if now is right",
+    sub: "The what may be settled; the when isn't",
+    universal: "ifAvoidance",
+    questions: [
+      {
+        id: "talk-1",
+        prompt: "What do you want out of the conversation?",
+        choices: [
+          { id: "a", label: "To be understood", evidence: { 8: 2, 2: 1 } },
+          { id: "b", label: "To understand what they meant", evidence: { 8: 3 } },
+          { id: "c", label: "For something to actually change", evidence: { 9: 2, 4: 1 } },
+          { id: "d", label: "To stop carrying it alone", evidence: { 6: 2, 7: 1 } },
+          { id: "e", label: "To get it over with", evidence: { 9: 2, 7: 1 }, avoids: true },
+          { id: "f", label: "I don't know yet", evidence: { 1: 2 } },
+        ],
+      },
+      {
+        id: "talk-2",
+        prompt: "Have you said the important part out loud to them, or only in your head?",
+        choices: [
+          { id: "a", label: "Only in my head", evidence: { 8: 2, 3: 1 } },
+          { id: "b", label: "Part of it, sideways", evidence: { 8: 2, 5: 1 } },
+          { id: "c", label: "Yes, and it didn't land", evidence: { 2: 2, 8: 1 } },
+          { id: "d", label: "Yes, and I'm waiting on them", evidence: { 7: 2, 8: 1 } },
+        ],
+      },
+      {
+        id: "talk-3",
+        prompt: "If they answered in a way you didn't expect, what would you do?",
+        choices: [
+          { id: "a", label: "Explain myself again", evidence: { 8: 2, 2: 1 } },
+          { id: "b", label: "Ask what they meant", evidence: { 8: 3 } },
+          { id: "c", label: "Go quiet and think about it for a week", evidence: { 7: 2, 3: 1 } },
+          { id: "d", label: "Honestly, react", evidence: { 6: 2, 3: 1 } },
+        ],
+      },
+    ],
+  },
+  {
+    id: "well",
+    label: "Everything's going really well and I'm not used to that",
+    sub: "Calm can feel unfamiliar",
+    universal: "ifAvoidance",
+    questions: [
+      {
+        id: "well-1",
+        prompt: "What does the good stretch feel like from the inside?",
+        choices: [
+          { id: "a", label: "Like I'm waiting for the other shoe", evidence: { 7: 3 } },
+          { id: "b", label: "Like I should be doing more with it", evidence: { 7: 2, 9: 1 } },
+          { id: "c", label: "Undeserved", evidence: { 6: 3 } },
+          { id: "d", label: "Good, and unfamiliar", evidence: { 7: 2, 2: 1 } },
+          { id: "e", label: "Quietly boring, if I'm honest", evidence: { 7: 2, 3: 1 } },
+          { id: "f", label: "Hard to describe", evidence: { 1: 2 } },
+        ],
+      },
+      {
+        id: "well-2",
+        prompt: "What do you usually do when things are calm?",
+        choices: [
+          { id: "a", label: "Find the next problem", evidence: { 7: 3 } },
+          { id: "b", label: "Brace", evidence: { 7: 2, 3: 1 } },
+          { id: "c", label: "Build something on it", evidence: { 4: 2, 9: 1 } },
+          { id: "d", label: "Actually rest", evidence: { 7: 2, 9: 1 } },
+          { id: "e", label: "It hasn't been calm long enough to know", evidence: { 1: 2 } },
+        ],
+      },
+    ],
+  },
+  {
+    id: "happened",
+    label: "Something happened and I can't stop thinking about it",
+    sub: "One event, still running",
+    universal: "ifAvoidance",
+    questions: [
+      {
+        id: "happened-1",
+        prompt: "Can you say what happened without saying what it meant?",
+        choices: [
+          { id: "a", label: "Yes, easily", evidence: { 5: 3 } },
+          { id: "b", label: "Yes, but the meaning comes right after", evidence: { 5: 2, 3: 1 } },
+          { id: "c", label: "Not really — they're the same thing to me", evidence: { 5: 2, 2: 1 } },
+          { id: "d", label: "I haven't tried", evidence: { 1: 2 } },
+        ],
+      },
+      {
+        id: "happened-2",
+        prompt: "When it replays, does anything change?",
+        choices: [
+          { id: "a", label: "Yes — I notice something new each time", evidence: { 3: 1, 9: 2 } },
+          { id: "b", label: "The wording changes, not the content", evidence: { 3: 3 } },
+          { id: "c", label: "It's identical every time", evidence: { 3: 2, 7: 1 } },
+          { id: "d", label: "It gets worse each pass", evidence: { 6: 2, 7: 1 } },
+        ],
+      },
+      {
+        id: "happened-3",
+        prompt: "What's your part in it?",
+        note: "Contribution, not verdict.",
+        choices: [
+          { id: "a", label: "I can name it without piling on myself", evidence: { 6: 3 } },
+          { id: "b", label: "I can name it and then I don't stop", evidence: { 6: 2, 3: 1 } },
+          { id: "c", label: "I don't think I have one", evidence: { 2: 2 } },
+          { id: "d", label: "Still working that out", evidence: { 1: 1, 2: 1 } },
+        ],
+      },
+    ],
+  },
+  {
+    id: "loop",
+    label: "The same thing keeps happening again",
+    sub: "A shape you recognize",
+    universal: "ifAvoidance",
+    questions: [
+      {
+        id: "loop-1",
+        prompt: "Can you describe it by what happens, rather than what it means about you?",
+        choices: [
+          { id: "a", label: "Yes — here's the sequence", evidence: { 3: 3 } },
+          { id: "b", label: "Partly", evidence: { 3: 2, 5: 1 } },
+          { id: "c", label: "It arrives as a conclusion about me", evidence: { 6: 3 } },
+          { id: "d", label: "Haven't separated those", evidence: { 5: 2, 1: 1 } },
+        ],
+      },
+      {
+        id: "loop-2",
+        prompt: "What's different about the times it doesn't happen?",
+        choices: [
+          { id: "a", label: "I can name it", evidence: { 3: 2, 4: 1 } },
+          { id: "b", label: "Different people involved", evidence: { 2: 2, 3: 1 } },
+          { id: "c", label: "I was rested, or had more room", evidence: { 4: 2, 7: 1 } },
+          { id: "d", label: "It always happens", evidence: { 3: 1, 5: 2 } },
+          { id: "e", label: "I've never looked at the exceptions", evidence: { 1: 2 } },
+        ],
+      },
+      {
+        id: "loop-3",
+        prompt: "What have you tried, and what did it change?",
+        choices: [
+          { id: "a", label: "Something specific, and it helped a bit", evidence: { 4: 2, 9: 1 } },
+          { id: "b", label: "Thought about it a lot", evidence: { 3: 2, 9: 1 } },
+          { id: "c", label: "Decided to stop caring about it", evidence: { 7: 2, 6: 1 }, avoids: true },
+          { id: "d", label: "Nothing yet", evidence: { 1: 1, 9: 1 } },
+        ],
+      },
+    ],
+  },
+  {
+    id: "surprise",
+    label: "Take a chance — pick for me",
+    sub: "You bring nothing; we'll start anyway",
+    universal: "always",
+    questions: [
+      {
+        id: "surprise-1",
+        prompt: "Fine. What's the first true thing about today?",
+        choices: [
+          { id: "a", label: "I'm carrying something and pretending I'm not", evidence: { 6: 2, 7: 1 }, avoids: true },
+          { id: "b", label: "I'm fine and slightly bored", evidence: { 7: 2 } },
+          { id: "c", label: "There's one thing I keep not doing", evidence: { 9: 3 } },
+          { id: "d", label: "Someone is on my mind", evidence: { 8: 2, 2: 1 } },
+          { id: "e", label: "I want to have fun and nothing else", evidence: { 9: 1, 2: 1 } },
+          { id: "f", label: "I couldn't tell you", evidence: { 1: 2 } },
+        ],
+      },
+    ],
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/* Branch questions — reached only through a specific answer            */
+/* ------------------------------------------------------------------ */
+
+export const BRANCH_QUESTIONS: Record<string, Question> = {
+  /* --- "I don't know what the hell to do today" ------------------- */
+  "lost-many": {
+    id: "lost-many",
+    prompt: "What makes choosing hard?",
+    choices: [
+      { id: "a", label: "They all matter about the same", evidence: { 5: 3 } },
+      { id: "b", label: "Whichever I pick, I'll think about the others", evidence: { 3: 2, 7: 1 } },
+      { id: "c", label: "None of them is urgent, so none of them starts", evidence: { 4: 3 } },
+      { id: "d", label: "One of them is the real one and I keep skipping it", evidence: { 9: 3 }, avoids: true },
+      { id: "e", label: "I just want someone to pick", evidence: { 8: 2, 4: 1 } },
+    ],
+  },
+  "lost-should": {
+    id: "lost-should",
+    prompt: "What's the honest reason you don't want to do it?",
+    choices: [
+      { id: "a", label: "It's boring", evidence: { 7: 2, 9: 1 } },
+      { id: "b", label: "It'll take longer than I have energy for", evidence: { 4: 2, 9: 1 } },
+      { id: "c", label: "It involves someone else", evidence: { 8: 3 } },
+      { id: "d", label: "I might find out I did it wrong", evidence: { 6: 3 }, avoids: true },
+      { id: "e", label: "I don't actually think it's mine to do", evidence: { 2: 2, 5: 1 } },
+      { id: "f", label: "No reason. I just don't want to", evidence: { 7: 2 } },
+    ],
+  },
+  "lost-restless": {
+    id: "lost-restless",
+    prompt: "What does the restlessness want?",
+    choices: [
+      { id: "a", label: "Movement — anything but sitting here", evidence: { 7: 3 } },
+      { id: "b", label: "Something new to happen to me", evidence: { 1: 2, 7: 1 } },
+      { id: "c", label: "People", evidence: { 2: 2, 8: 1 } },
+      { id: "d", label: "To finish something I started", evidence: { 9: 3 } },
+      { id: "e", label: "No idea, it just hums", evidence: { 1: 2 } },
+    ],
+  },
+  "lost-stim": {
+    id: "lost-stim",
+    prompt: "Stimulating how?",
+    choices: [
+      { id: "a", label: "Loud, fast, other people", evidence: { 2: 2, 7: 1 } },
+      { id: "b", label: "Something hard enough to hold my attention", evidence: { 4: 2, 9: 1 } },
+      { id: "c", label: "Something new I've never tried", evidence: { 1: 3 } },
+      { id: "d", label: "Anything that isn't my own head", evidence: { 3: 2, 7: 1 }, avoids: true },
+      { id: "e", label: "I want to have fun. That's it", evidence: { 9: 1, 2: 1 } },
+    ],
+  },
+  "lost-avoid": {
+    id: "lost-avoid",
+    prompt: "What kind of thing is it?",
+    choices: [
+      { id: "a", label: "A task — boring, not scary", evidence: { 9: 3 } },
+      { id: "b", label: "A conversation", evidence: { 8: 3 } },
+      { id: "c", label: "A decision", evidence: { 4: 2, 5: 1 } },
+      { id: "d", label: "Something about money or admin", evidence: { 4: 3 } },
+      { id: "e", label: "Something I'd have to feel", evidence: { 7: 3 } },
+      { id: "f", label: "I know it's there and I won't name it yet", evidence: { 7: 2, 1: 1 } },
+    ],
+  },
+  "lost-tell": {
+    id: "lost-tell",
+    prompt: "If someone told you what to do, what would that give you?",
+    choices: [
+      { id: "a", label: "Relief from choosing", evidence: { 4: 2, 7: 1 } },
+      { id: "b", label: "Someone else to blame if it's wrong", evidence: { 6: 3 } },
+      { id: "c", label: "Permission — I already know what I want", evidence: { 9: 3 } },
+      { id: "d", label: "Company, mostly", evidence: { 2: 2, 8: 1 } },
+      { id: "e", label: "A structure for the day", evidence: { 4: 3 } },
+    ],
+  },
+  "lost-spont": {
+    id: "lost-spont",
+    prompt: "What's stopping the spontaneous thing?",
+    choices: [
+      { id: "a", label: "Nothing. I just haven't moved", evidence: { 9: 3 } },
+      { id: "b", label: "It feels irresponsible", evidence: { 6: 2, 4: 1 } },
+      { id: "c", label: "I don't have anyone to do it with", evidence: { 2: 2, 8: 1 } },
+      { id: "d", label: "I can't think of anything good", evidence: { 1: 2, 7: 1 } },
+      { id: "e", label: "Money or time", evidence: { 5: 2, 4: 1 } },
+    ],
+  },
+  "lost-okay": {
+    id: "lost-okay",
+    prompt: "What's uncomfortable about okay?",
+    choices: [
+      { id: "a", label: "It feels like it's about to end", evidence: { 7: 3 } },
+      { id: "b", label: "I don't know who I am without a problem", evidence: { 6: 2, 3: 1 } },
+      { id: "c", label: "There's nothing to push against", evidence: { 7: 2, 4: 1 } },
+      { id: "d", label: "I feel like I should be doing more with it", evidence: { 9: 2, 4: 1 } },
+      { id: "e", label: "It's quiet and I'm not used to quiet", evidence: { 7: 3 } },
+    ],
+  },
+  "lost-unknown": {
+    id: "lost-unknown",
+    prompt: "Then start smaller — what's true in the last hour?",
+    choices: [
+      { id: "a", label: "I've been on my phone the whole time", evidence: { 7: 2, 3: 1 } },
+      { id: "b", label: "I've been tired", evidence: { 7: 2, 6: 1 } },
+      { id: "c", label: "I've been irritable", evidence: { 3: 2, 6: 1 } },
+      { id: "d", label: "I've been fine, just floating", evidence: { 7: 2, 2: 1 } },
+      { id: "e", label: "Someone's been on my mind", evidence: { 8: 2, 2: 1 } },
+      { id: "f", label: "Still nothing", evidence: { 1: 3 } },
+    ],
+  },
+
+  /* --- "Should I take a chance?" ---------------------------------- */
+  "chance-2": {
+    id: "chance-2",
+    prompt: "What makes you hesitate?",
+    choices: [
+      { id: "regret", label: "I might regret it", evidence: { 7: 2, 5: 1 }, followUp: "chance-regret" },
+      { id: "info", label: "I don't have enough information", evidence: { 5: 3 }, followUp: "chance-info" },
+      { id: "opinion", label: "I'm afraid of what someone will think", evidence: { 2: 2, 8: 1 }, followUp: "chance-opinion" },
+      { id: "lose", label: "I'm afraid of losing something I already have", evidence: { 5: 2, 4: 1 }, followUp: "chance-lose" },
+      { id: "permission", label: "I know the risk; I just want permission", evidence: { 9: 3 }, followUp: "chance-permission" },
+      { id: "split", label: "Part of me wants it and part of me doesn't", evidence: { 2: 3 }, followUp: "chance-split" },
+      { id: "timing", label: "I'm not actually afraid — I just don't know if the timing is right", evidence: { 8: 3 }, followUp: "chance-timing" },
+      { id: "excuse-do", label: "I'm looking for an excuse to do it", evidence: { 9: 2, 2: 1 }, followUp: "chance-permission" },
+      { id: "excuse-not", label: "I'm looking for an excuse not to do it", evidence: { 7: 2, 6: 1 }, followUp: "chance-split", avoids: true },
+    ],
+  },
+  "chance-regret": {
+    id: "chance-regret",
+    prompt: "Which regret is bigger, if you're honest?",
+    choices: [
+      { id: "a", label: "Doing it and it going badly", evidence: { 5: 3 } },
+      { id: "b", label: "Not doing it and always wondering", evidence: { 9: 3 } },
+      { id: "c", label: "Both feel about equal", evidence: { 2: 3 } },
+      { id: "d", label: "I can't picture either clearly", evidence: { 1: 2 } },
+    ],
+  },
+  "chance-info": {
+    id: "chance-info",
+    prompt: "Is the missing information gettable?",
+    choices: [
+      { id: "a", label: "Yes — I know exactly what I'd need to check", evidence: { 5: 3 } },
+      { id: "b", label: "Only by doing it", evidence: { 9: 2, 7: 1 } },
+      { id: "c", label: "Only someone else can tell me", evidence: { 8: 3 } },
+      { id: "d", label: "Only time tells", evidence: { 7: 3 } },
+      { id: "e", label: "I've been saying I need more info for a while", evidence: { 3: 2, 9: 1 }, avoids: true },
+    ],
+  },
+  "chance-opinion": {
+    id: "chance-opinion",
+    prompt: "Whose reaction are you actually picturing?",
+    choices: [
+      { id: "a", label: "One specific person", evidence: { 8: 3 } },
+      { id: "b", label: "A general 'everybody'", evidence: { 2: 2, 3: 1 } },
+      { id: "c", label: "Someone who isn't in my life anymore", evidence: { 3: 3 } },
+      { id: "d", label: "Honestly, my own", evidence: { 6: 3 } },
+    ],
+  },
+  "chance-lose": {
+    id: "chance-lose",
+    prompt: "What exactly would be at risk?",
+    choices: [
+      { id: "a", label: "Money I can name a number for", evidence: { 5: 3 } },
+      { id: "b", label: "Stability I've worked to build", evidence: { 4: 3 } },
+      { id: "c", label: "A relationship", evidence: { 2: 2, 8: 1 } },
+      { id: "d", label: "How people see me", evidence: { 6: 2, 2: 1 } },
+      { id: "e", label: "Nothing concrete — it just feels risky", evidence: { 7: 2, 5: 1 } },
+    ],
+  },
+  "chance-permission": {
+    id: "chance-permission",
+    prompt: "If nobody would ever know either way, what would you do?",
+    choices: [
+      { id: "a", label: "Do it today", evidence: { 9: 3 } },
+      { id: "b", label: "Do it, but smaller", evidence: { 4: 2, 9: 1 } },
+      { id: "c", label: "Wait a week and see if I still want it", evidence: { 7: 2, 8: 1 } },
+      { id: "d", label: "Not do it — which tells me something", evidence: { 5: 2, 6: 1 } },
+    ],
+  },
+  "chance-split": {
+    id: "chance-split",
+    prompt: "Can you name both halves without picking a winner?",
+    choices: [
+      { id: "a", label: "Yes — and both make sense", evidence: { 2: 3 } },
+      { id: "b", label: "Yes, but one half sounds like an excuse", evidence: { 6: 2, 5: 1 } },
+      { id: "c", label: "One half is loud and I can't hear the other", evidence: { 3: 2, 7: 1 } },
+      { id: "d", label: "They swap depending on the hour", evidence: { 3: 3 } },
+      { id: "e", label: "No", evidence: { 1: 2 } },
+    ],
+  },
+  "chance-timing": {
+    id: "chance-timing",
+    prompt: "What would make the timing right?",
+    choices: [
+      { id: "a", label: "A specific date or event I can name", evidence: { 4: 3 } },
+      { id: "b", label: "Hearing from someone first", evidence: { 8: 3 } },
+      { id: "c", label: "Feeling readier than I do", evidence: { 7: 2, 6: 1 } },
+      { id: "d", label: "Honestly, nothing — 'timing' might be the excuse", evidence: { 9: 2, 6: 1 } },
+    ],
+  },
+
+  /* --- "My brain is spiraling" ------------------------------------ */
+  /**
+   * Six fixed pages. Layer 2 (below) keeps the wording that passed the audit
+   * and now chains into a layer-3 question chosen by which thread the person
+   * is on, so what the spiral is *about* gets uncovered instead of assumed.
+   * Every mapping below is the existing 1–9 evidence vocabulary; no new
+   * framework, no weight above 3, no per-choice sum above 3, and answers that
+   * say the same thing in different words carry identical evidence.
+   */
+  "spiral-replay": {
+    id: "spiral-replay",
+    prompt: "What does the replay keep landing on?",
+    next: "spiral-subject",
+    choices: [
+      { id: "a", label: "Something I said", evidence: { 8: 2, 6: 1 } },
+      { id: "b", label: "Something they said", evidence: { 8: 2, 2: 1 } },
+      { id: "c", label: "The moment I should have said something and didn't", evidence: { 9: 2, 8: 1 } },
+      { id: "d", label: "How I looked or came across", evidence: { 6: 3 } },
+      { id: "e", label: "It doesn't land anywhere, it just runs", evidence: { 3: 3 } },
+    ],
+  },
+  "spiral-predict": {
+    id: "spiral-predict",
+    prompt: "How likely is the thing you're predicting, really?",
+    next: "spiral-stakes",
+    choices: [
+      { id: "a", label: "Likely — there's actual evidence", evidence: { 5: 3 } },
+      { id: "b", label: "Possible, but I've stacked the worst case", evidence: { 5: 2, 2: 1 } },
+      { id: "c", label: "Unlikely, and I know that and it doesn't help", evidence: { 3: 3 } },
+      { id: "d", label: "It already happened once before", evidence: { 3: 2, 5: 1 } },
+      { id: "e", label: "I can't judge it from in here", evidence: { 1: 2, 7: 1 } },
+    ],
+  },
+  "spiral-meant": {
+    id: "spiral-meant",
+    prompt: "What are you working from?",
+    next: "spiral-subject",
+    choices: [
+      { id: "a", label: "Their exact words", evidence: { 5: 2, 8: 1 } },
+      { id: "b", label: "Their tone", evidence: { 2: 2, 8: 1 } },
+      { id: "c", label: "How long they took to reply", evidence: { 2: 3 } },
+      { id: "d", label: "What they didn't say", evidence: { 2: 2, 3: 1 } },
+      { id: "e", label: "A pattern from before with someone else", evidence: { 3: 3 } },
+    ],
+  },
+  "spiral-reassure": {
+    id: "spiral-reassure",
+    prompt: "What happens when you get the reassurance?",
+    next: "spiral-subject",
+    choices: [
+      { id: "a", label: "It helps for a while, then it wears off", evidence: { 3: 3 } },
+      { id: "b", label: "I doubt it immediately", evidence: { 3: 2, 6: 1 } },
+      { id: "c", label: "It actually settles it", evidence: { 8: 2, 9: 1 } },
+      { id: "d", label: "I haven't asked anyone", evidence: { 8: 2, 7: 1 } },
+    ],
+  },
+  "spiral-unsolvable": {
+    id: "spiral-unsolvable",
+    prompt: "What would have to happen for it to be answerable?",
+    next: "spiral-stakes",
+    choices: [
+      { id: "a", label: "Someone has to tell me something", evidence: { 8: 3 } },
+      { id: "b", label: "Time has to pass", evidence: { 7: 3 } },
+      { id: "c", label: "I have to make a decision first", evidence: { 9: 2, 4: 1 } },
+      { id: "d", label: "It may never be answerable", evidence: { 7: 2, 5: 1 } },
+      { id: "e", label: "I don't know", evidence: { 1: 2 } },
+    ],
+  },
+  "spiral-jump": {
+    id: "spiral-jump",
+    prompt: "Do the problems have anything in common?",
+    next: "spiral-fuel",
+    choices: [
+      { id: "a", label: "Yes — same person in most of them", evidence: { 2: 2, 8: 1 } },
+      { id: "b", label: "Yes — they're all things I'm behind on", evidence: { 4: 3 } },
+      { id: "c", label: "Yes — they all come down to money or time", evidence: { 4: 2, 5: 1 } },
+      { id: "d", label: "No, they're unrelated", evidence: { 7: 2, 3: 1 } },
+      { id: "e", label: "I've never lined them up to check", evidence: { 1: 2, 3: 1 } },
+    ],
+  },
+  "spiral-stuck": {
+    id: "spiral-stuck",
+    prompt: "How long has that one thought been running?",
+    next: "spiral-fuel",
+    choices: [
+      { id: "a", label: "Since today", evidence: { 5: 2, 7: 1 } },
+      { id: "b", label: "A few days", evidence: { 3: 2, 7: 1 } },
+      { id: "c", label: "Weeks or longer", evidence: { 3: 3 } },
+      { id: "d", label: "It comes back every few months", evidence: { 3: 3 } },
+      { id: "e", label: "No idea", evidence: { 1: 2 } },
+    ],
+  },
+  "spiral-unknown": {
+    id: "spiral-unknown",
+    prompt: "What was happening right before it started?",
+    next: "spiral-fuel",
+    choices: [
+      { id: "a", label: "I was alone and it got quiet", evidence: { 7: 3 } },
+      { id: "b", label: "I read or saw something", evidence: { 3: 2, 5: 1 } },
+      { id: "c", label: "I talked to someone", evidence: { 8: 3 } },
+      { id: "d", label: "I was tired or hadn't eaten", evidence: { 7: 2, 6: 1 } },
+      { id: "e", label: "Nothing I can point to", evidence: { 1: 2, 3: 1 } },
+    ],
+  },
+
+  /* Layer 3 — what the spiral is actually about (page 3). */
+  "spiral-subject": {
+    id: "spiral-subject",
+    prompt: "Strip the story off it. What are you afraid is actually true?",
+    note: "Say the blunt version, not the reasonable one.",
+    choices: [
+      { id: "a", label: "That I screwed it up and they've quietly written me off", evidence: { 6: 2, 2: 1 } },
+      { id: "b", label: "That they don't care about this as much as I do", evidence: { 2: 3 } },
+      { id: "c", label: "That I've read the whole thing wrong", evidence: { 5: 2, 8: 1 } },
+      { id: "d", label: "That something's ending and I can't stop it", evidence: { 7: 2, 5: 1 } },
+      { id: "e", label: "That if I actually respond, I'll say it badly", evidence: { 8: 2, 9: 1 } },
+      { id: "f", label: "Nothing's 'true'. I just can't put it down", evidence: { 3: 3 } },
+    ],
+  },
+  "spiral-stakes": {
+    id: "spiral-stakes",
+    prompt: "Run it to the end. If the worst version happened, what's actually on the line?",
+    choices: [
+      { id: "a", label: "Money, work, something with a number on it", evidence: { 5: 2, 4: 1 } },
+      { id: "b", label: "A person I'd have to live without", evidence: { 2: 2, 8: 1 } },
+      { id: "c", label: "How I'd have to see myself afterwards", evidence: { 6: 3 } },
+      { id: "d", label: "Nothing I can name. It just feels enormous", evidence: { 7: 2, 3: 1 } },
+      { id: "e", label: "I'd survive it. That's the weird part", evidence: { 9: 2, 5: 1 } },
+      { id: "f", label: "I won't let myself picture it that far", evidence: { 7: 3 }, avoids: true },
+    ],
+  },
+  "spiral-fuel": {
+    id: "spiral-fuel",
+    prompt: "What does it do the second you try to put it down?",
+    choices: [
+      { id: "a", label: "Starts again from the top", evidence: { 3: 3 } },
+      { id: "b", label: "Hands me a different thing to worry about", evidence: { 4: 2, 3: 1 } },
+      { id: "c", label: "Gets louder the second it's quiet", evidence: { 7: 3 } },
+      { id: "d", label: "Backs off only while my hands are busy", evidence: { 9: 2, 7: 1 } },
+      { id: "e", label: "Waits until I lie down at night", evidence: { 7: 2, 3: 1 } },
+      { id: "f", label: "No idea — I've never actually tried putting it down", evidence: { 1: 2, 3: 1 } },
+    ],
+  },
+
+  /* Stage 2 — fixed pages 4, 5, 6 for the spiral branch. */
+  "spiral-known": {
+    id: "spiral-known",
+    prompt: "Say only the part that actually happened. How much of this is that?",
+    note: "Not what it means. What occurred.",
+    next: "spiral-stop",
+    choices: [
+      { id: "a", label: "There's a real event. I'm not inventing this", evidence: { 5: 3 } },
+      { id: "b", label: "I know what I felt. I don't know what they meant", evidence: { 2: 2, 8: 1 } },
+      { id: "c", label: "Something real happened and I've built the rest", evidence: { 5: 2, 2: 1 } },
+      { id: "d", label: "Almost all of it is me guessing", evidence: { 2: 3 } },
+      { id: "e", label: "I couldn't separate the two right now", evidence: { 1: 2, 5: 1 } },
+    ],
+  },
+  "spiral-stop": {
+    id: "spiral-stop",
+    prompt: "What has actually stopped it before — not what should, what has?",
+    next: "spiral-need",
+    choices: [
+      { id: "a", label: "Somebody said the one thing I needed to hear", evidence: { 8: 3 } },
+      { id: "b", label: "It wore itself out after a day or two", evidence: { 7: 3 } },
+      { id: "c", label: "I did the thing I was dreading and it went quiet", evidence: { 9: 3 } },
+      { id: "d", label: "Writing it down or saying it out loud", evidence: { 8: 2, 6: 1 } },
+      { id: "e", label: "Nothing stops it — it goes underground and comes back", evidence: { 3: 3 } },
+      { id: "f", label: "Cutting a decision loose so there was nothing left to weigh", evidence: { 4: 2, 9: 1 } },
+    ],
+  },
+  "spiral-need": {
+    id: "spiral-need",
+    prompt: "So what do you actually need here? Not what would be nice.",
+    choices: [
+      { id: "a", label: "One piece of information I don't have yet", evidence: { 5: 3 } },
+      { id: "b", label: "To hear it straight from the one person involved", evidence: { 8: 3 } },
+      { id: "c", label: "To decide something and stop renegotiating it", evidence: { 4: 2, 9: 1 } },
+      { id: "d", label: "To do one small thing today and let the rest sit", evidence: { 9: 3 } },
+      { id: "e", label: "To be alright with not knowing for a while", evidence: { 7: 2, 5: 1 } },
+      { id: "f", label: "To quit being this hard on myself about it", evidence: { 6: 3 } },
+      { id: "g", label: "I still don't know", evidence: { 1: 2 } },
+    ],
+  },
+
+
+
+  /* --- "Why the fuck do I want a drink right now?" ----------------- */
+
+  /**
+   * Second layer shared by most drinking answers. Keeps the thread on the
+   * drink itself instead of drifting into generic clarity language, and
+   * quietly separates the substance from the state it is standing in for.
+   */
+  "drink-layer2": {
+    id: "drink-layer2",
+    prompt: "Be honest: is it the drink you want, or the feeling on the other side of it?",
+    choices: [
+      { id: "a", label: "The feeling. The drink is just how I get there.", evidence: { 7: 2, 6: 1 } },
+      { id: "b", label: "The drink itself. I actually like it.", evidence: { 2: 2, 9: 1 } },
+      { id: "c", label: "The moment around it — the pause, the people, the hour.", evidence: { 3: 2, 2: 1 } },
+      { id: "d", label: "The off switch. Not the taste, the off switch.", evidence: { 7: 2, 3: 1 }, avoids: true },
+      { id: "e", label: "Both, and I can't separate them anymore.", evidence: { 3: 2, 2: 1 } },
+      { id: "f", label: "I don't know.", evidence: { 1: 2 } },
+    ],
+  },
+
+  /* expected reward */
+  "drink-reward": {
+    id: "drink-reward",
+    prompt: "How reliable is that good feeling, really?",
+    note: "Not a trick question. Sometimes it delivers.",
+    choices: [
+      { id: "a", label: "Very. It works basically every time.", evidence: { 3: 2, 2: 1 } },
+      { id: "b", label: "The first one works. After that it's downhill.", evidence: { 5: 2, 3: 1 } },
+      { id: "c", label: "It works for an hour, then I feel worse.", evidence: { 5: 2, 9: 1 } },
+      { id: "d", label: "Lately it doesn't really work at all.", evidence: { 5: 3 } },
+      { id: "e", label: "I've stopped checking. I just do it.", evidence: { 3: 3 } },
+      { id: "f", label: "I don't know.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* emotional regulation */
+  "drink-better": {
+    id: "drink-better",
+    prompt: "Better than what, though? What's the current setting?",
+    choices: [
+      { id: "a", label: "Wired and can't come down.", evidence: { 7: 2, 3: 1 } },
+      { id: "b", label: "Flat. Nothing much at all.", evidence: { 7: 2, 1: 1 } },
+      { id: "c", label: "Sad, and I'd rather not be.", evidence: { 7: 2, 6: 1 } },
+      { id: "d", label: "Angry or irritated.", evidence: { 6: 2, 8: 1 } },
+      { id: "e", label: "Lonely.", evidence: { 2: 2, 8: 1 } },
+      { id: "f", label: "Fine, honestly. Better would just be better.", evidence: { 2: 2, 9: 1 } },
+      { id: "g", label: "I can't name it, it's just off.", evidence: { 1: 2, 7: 1 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* identity / state borrowing */
+  "drink-confidence": {
+    id: "drink-confidence",
+    prompt: "Confidence to do what?",
+    choices: [
+      { id: "a", label: "Face people.", evidence: { 2: 2, 8: 1 } },
+      { id: "b", label: "Get through the day.", evidence: { 7: 2, 4: 1 } },
+      { id: "c", label: "Say what I actually think.", evidence: { 8: 3 } },
+      { id: "d", label: "Stop overthinking everything.", evidence: { 3: 3 } },
+      { id: "e", label: "Feel comfortable in my own skin.", evidence: { 6: 3 } },
+      { id: "f", label: "Do something I've been putting off.", evidence: { 9: 2, 4: 1 }, avoids: true },
+      { id: "g", label: "I don't know. I just feel more confident when I drink.", evidence: { 1: 2, 6: 1 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* arousal down-regulation */
+  "drink-calm": {
+    id: "drink-calm",
+    prompt: "What's got you wound up?",
+    choices: [
+      { id: "a", label: "Work, money, logistics.", evidence: { 4: 3 } },
+      { id: "b", label: "A person, or something they said.", evidence: { 8: 2, 2: 1 } },
+      { id: "c", label: "Too many small things stacked up.", evidence: { 4: 2, 3: 1 } },
+      { id: "d", label: "My own head. Nothing external.", evidence: { 3: 3 } },
+      { id: "e", label: "Something unresolved just sitting there.", evidence: { 9: 2, 7: 1 }, avoids: true },
+      { id: "f", label: "Nothing specific. My body is just switched on.", evidence: { 7: 2, 6: 1 } },
+      { id: "g", label: "No idea.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* cognitive escape */
+  "drink-nothink": {
+    id: "drink-nothink",
+    prompt: "What's the thought that keeps coming back?",
+    note: "You don't have to be specific. Just point at it.",
+    choices: [
+      { id: "a", label: "Something I did or said.", evidence: { 6: 3 } },
+      { id: "b", label: "Something someone else did.", evidence: { 8: 3 } },
+      { id: "c", label: "A decision I haven't made.", evidence: { 4: 2, 5: 1 } },
+      { id: "d", label: "Money, or how things are going to work out.", evidence: { 5: 2, 4: 1 } },
+      { id: "e", label: "Something about me I don't like.", evidence: { 6: 2, 7: 1 } },
+      { id: "f", label: "It's not one thought. It's all of it at once.", evidence: { 3: 3 } },
+      { id: "g", label: "I'd rather not name it.", evidence: { 7: 2, 1: 1 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* anxiety / physical dependence concern — held without diagnosis */
+  "drink-without": {
+    id: "drink-without",
+    prompt: "When you picture going without it, what shows up first?",
+    note: "No diagnosis here, and nothing you say gets turned into advice.",
+    choices: [
+      { id: "a", label: "My body. I don't feel right without it.", evidence: { 7: 2, 9: 1 } },
+      { id: "b", label: "I know I might feel sick in a few days without it.", evidence: { 9: 2, 5: 1 } },
+      { id: "c", label: "The hours. I don't know how I'd fill them.", evidence: { 4: 2, 1: 1 } },
+      { id: "d", label: "Everything I've been not-feeling shows up at once.", evidence: { 7: 3 }, avoids: true },
+      { id: "e", label: "I'd be afraid I'd cave anyway.", evidence: { 6: 2, 7: 1 } },
+      { id: "f", label: "That it would prove something I don't want proven.", evidence: { 6: 2, 5: 1 } },
+      { id: "g", label: "I honestly don't know.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* automaticity / habit */
+  "drink-routine": {
+    id: "drink-routine",
+    prompt: "If you woke up tomorrow and the routine simply wasn't there, what would feel weirdest?",
+    choices: [
+      { id: "a", label: "I know I might feel sick in a few days without it.", evidence: { 9: 2, 5: 1 } },
+      { id: "b", label: "Not having my usual thing to look forward to.", evidence: { 9: 2, 2: 1 } },
+      { id: "c", label: "Having to figure out what to do instead.", evidence: { 1: 2, 4: 1 } },
+      { id: "d", label: "Feeling like something is missing.", evidence: { 7: 2, 2: 1 } },
+      { id: "e", label: "Having to actually be present.", evidence: { 7: 2, 9: 1 }, avoids: true },
+      { id: "f", label: "I'd be afraid I'd cave later.", evidence: { 6: 2, 7: 1 } },
+      { id: "g", label: "I'd probably be fine, but it would still feel strange.", evidence: { 3: 2, 5: 1 } },
+      { id: "h", label: "Honestly, I don't know.", evidence: { 1: 2 } },
+    ],
+    next: "drink-routine-2",
+  },
+  "drink-routine-2": {
+    id: "drink-routine-2",
+    prompt: "How much of it is the hour, and how much of it is you?",
+    note: "Both directions count. This isn't a nudge to stop.",
+    choices: [
+      { id: "a", label: "Mostly the hour. Same time, every time.", evidence: { 3: 3 } },
+      { id: "b", label: "Mostly the day I've had.", evidence: { 7: 2, 4: 1 } },
+      { id: "c", label: "Mostly who I'm with.", evidence: { 2: 3 } },
+      { id: "d", label: "It's the marker. It ends the day.", evidence: { 4: 3 } },
+      { id: "e", label: "It's me. It doesn't need a reason anymore.", evidence: { 3: 2, 6: 1 } },
+      { id: "f", label: "I've never separated them.", evidence: { 1: 2, 3: 1 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* anticipation */
+  "drink-forward": {
+    id: "drink-forward",
+    prompt: "What else is on the list of things to look forward to right now?",
+    choices: [
+      { id: "a", label: "Plenty. This one is just the easiest.", evidence: { 3: 2, 9: 1 } },
+      { id: "b", label: "A couple of things, but they're further away.", evidence: { 5: 2, 4: 1 } },
+      { id: "c", label: "People, mostly.", evidence: { 2: 3 } },
+      { id: "d", label: "Nothing I've actually planned.", evidence: { 4: 2, 1: 1 } },
+      { id: "e", label: "Honestly, nothing. That's the problem.", evidence: { 7: 2, 1: 1 } },
+      { id: "f", label: "I haven't thought about it.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* identity */
+  "drink-myself": {
+    id: "drink-myself",
+    prompt: "When you say \u201cmore like myself,\u201d which version of you are you missing?",
+    choices: [
+      { id: "a", label: "The confident one.", evidence: { 6: 2, 2: 1 } },
+      { id: "b", label: "The social one.", evidence: { 2: 3 } },
+      { id: "c", label: "The carefree one.", evidence: { 7: 2, 1: 1 } },
+      { id: "d", label: "The one who doesn't overthink everything.", evidence: { 3: 3 } },
+      { id: "e", label: "The one who doesn't give a shit what people think.", evidence: { 6: 2, 8: 1 } },
+      { id: "f", label: "The one who feels relaxed.", evidence: { 7: 2, 9: 1 } },
+      { id: "g", label: "The one who can actually enjoy things.", evidence: { 9: 2, 2: 1 } },
+      { id: "h", label: "I don't know which version. I just know I miss it.", evidence: { 1: 2, 6: 1 } },
+    ],
+    next: "drink-myself-2",
+  },
+  "drink-myself-2": {
+    id: "drink-myself-2",
+    prompt: "When was that version last around, without a drink involved?",
+    choices: [
+      { id: "a", label: "Recently. It comes and goes.", evidence: { 3: 2, 5: 1 } },
+      { id: "b", label: "A while ago, and I know roughly when it changed.", evidence: { 5: 2, 3: 1 } },
+      { id: "c", label: "Years.", evidence: { 1: 2, 7: 1 } },
+      { id: "d", label: "Only when things around me are easy.", evidence: { 4: 2, 7: 1 } },
+      { id: "e", label: "Only around certain people.", evidence: { 2: 2, 8: 1 } },
+      { id: "f", label: "I'm not sure it existed without one.", evidence: { 6: 2, 1: 1 } },
+      { id: "g", label: "I can't remember.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* boredom */
+  "drink-bored": {
+    id: "drink-bored",
+    prompt: "What would fill the same slot tonight, if the drink were off the table?",
+    choices: [
+      { id: "a", label: "Plenty of things — I just default to this one.", evidence: { 3: 2, 9: 1 } },
+      { id: "b", label: "Company. It's about people, not the drink.", evidence: { 2: 3 } },
+      { id: "c", label: "Nothing has the same edge to it.", evidence: { 7: 3 } },
+      { id: "d", label: "Something I'd have to plan, which is the problem.", evidence: { 4: 3 } },
+      { id: "e", label: "Screens, probably. Same slot, different thing.", evidence: { 3: 2, 7: 1 } },
+      { id: "f", label: "I don't know.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* avoidance */
+  "drink-escape": {
+    id: "drink-escape",
+    prompt: "What's the feeling you'd be getting away from?",
+    note: "Naming it here doesn't obligate you to do anything about it.",
+    choices: [
+      { id: "a", label: "Anxiety.", evidence: { 7: 2, 5: 1 } },
+      { id: "b", label: "Sadness.", evidence: { 7: 2, 6: 1 } },
+      { id: "c", label: "Shame or regret.", evidence: { 6: 3 } },
+      { id: "d", label: "Anger.", evidence: { 8: 2, 6: 1 } },
+      { id: "e", label: "Loneliness.", evidence: { 2: 2, 8: 1 } },
+      { id: "f", label: "Dread about something coming up.", evidence: { 5: 2, 4: 1 } },
+      { id: "g", label: "Emptiness.", evidence: { 7: 2, 1: 1 } },
+      { id: "h", label: "I can feel it but I can't name it.", evidence: { 1: 2, 7: 1 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* unexplained incongruence */
+  "drink-good-life": {
+    id: "drink-good-life",
+    prompt: "Okay, then let's not invent a problem. What feels strangest about wanting it when nothing seems wrong?",
+    choices: [
+      { id: "a", label: "I'm not used to things going this well.", evidence: { 7: 2, 6: 1 } },
+      { id: "b", label: "I feel restless even though I'm happy.", evidence: { 7: 3 } },
+      { id: "c", label: "I keep waiting for something to go wrong.", evidence: { 5: 2, 7: 1 } },
+      { id: "d", label: "I don't know what to do with myself when there's nothing to fix.", evidence: { 4: 2, 1: 1 } },
+      { id: "e", label: "I want to change how I feel even though I don't hate how I feel.", evidence: { 2: 2, 9: 1 } },
+      { id: "f", label: "I think it's just a habit.", evidence: { 3: 3 } },
+      { id: "g", label: "Nothing feels strange. I just want one.", evidence: { 2: 2, 7: 1 } },
+      { id: "h", label: "I honestly don't know.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* undifferentiated want */
+  "drink-plain-hour": {
+    id: "drink-plain-hour",
+    prompt: "Okay. Fair enough. If you got exactly what you want from that drink, what would you want the next hour to feel like?",
+    choices: [
+      { id: "a", label: "Easier.", evidence: { 7: 2, 4: 1 } },
+      { id: "b", label: "More fun.", evidence: { 9: 2, 2: 1 } },
+      { id: "c", label: "Quieter.", evidence: { 3: 2, 7: 1 } },
+      { id: "d", label: "More confident.", evidence: { 6: 2, 2: 1 }, followUp: "drink-confidence" },
+      { id: "e", label: "Less fucking boring.", evidence: { 7: 3 } },
+      { id: "f", label: "Less emotional.", evidence: { 7: 2, 6: 1 }, avoids: true },
+      { id: "g", label: "More social.", evidence: { 2: 3 } },
+      { id: "h", label: "More normal.", evidence: { 3: 2, 6: 1 } },
+      { id: "i", label: "I don't care how I feel. I just want the drink.", evidence: { 2: 1, 3: 1 } },
+      { id: "j", label: "I have no idea.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* uncertainty */
+  "drink-unclear": {
+    id: "drink-unclear",
+    prompt: "Then let's start smaller. When did you first notice the pull today?",
+    choices: [
+      { id: "a", label: "When the day stopped moving.", evidence: { 7: 2, 3: 1 } },
+      { id: "b", label: "Right after something specific happened.", evidence: { 3: 2, 5: 1 }, avoids: true },
+      { id: "c", label: "Around other people.", evidence: { 2: 3 } },
+      { id: "d", label: "It's been there all day, low.", evidence: { 7: 2, 3: 1 } },
+      { id: "e", label: "The second I had nothing to do.", evidence: { 7: 3 } },
+      { id: "f", label: "I can't place it.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* ---------------- PAGE 4: what would actually be lost ------------ */
+
+  "drink-lost": {
+    id: "drink-lost",
+    prompt:
+      "Forget whether drinking is 'good' or 'bad' for a second. If it disappeared from your life tomorrow, what would you actually be losing?",
+    choices: [
+      { id: "a", label: "The physical feeling.", evidence: { 9: 2, 2: 1 }, followUp: "drink-gone" },
+      { id: "b", label: "The ritual.", evidence: { 3: 2, 4: 1 }, followUp: "drink-gone" },
+      { id: "c", label: "The excuse to check out for a while.", evidence: { 7: 3 }, followUp: "drink-changes", avoids: true },
+      { id: "d", label: "The confidence it gives me.", evidence: { 6: 2, 2: 1 }, followUp: "drink-power" },
+      { id: "e", label: "The people and places connected to it.", evidence: { 2: 3 }, followUp: "drink-gone" },
+      { id: "f", label: "The version of myself I get to be when I drink.", evidence: { 6: 3 }, followUp: "drink-power" },
+      { id: "g", label: "The ability to stop thinking for a while.", evidence: { 7: 3 }, followUp: "drink-changes", avoids: true },
+      { id: "h", label: "The routine I know exactly how to follow.", evidence: { 3: 2, 4: 1 }, followUp: "drink-gone" },
+      { id: "i", label: "Something I genuinely fucking enjoy.", evidence: { 2: 2, 9: 1 }, followUp: "drink-power" },
+      { id: "j", label: "Nothing important. That's what makes this confusing.", evidence: { 2: 2, 1: 1 }, followUp: "drink-power" },
+      { id: "k", label: "My fear of what happens when I stop.", evidence: { 7: 2, 5: 1 }, followUp: "drink-power" },
+      { id: "l", label: "More than I want to admit.", evidence: { 5: 2, 7: 1 }, followUp: "drink-power" },
+    ],
+  },
+
+  /* PAGE 5a: which one has more power */
+  "drink-power": {
+    id: "drink-power",
+    prompt: "Be honest. Which one has more power over you right now?",
+    choices: [
+      { id: "a", label: "The life I'm actually trying to build.", evidence: { 9: 3 }, followUp: "drink-want" },
+      { id: "b", label: "The life I get when I drink.", evidence: { 6: 2, 7: 1 }, followUp: "drink-fear" },
+      { id: "c", label: "The fear of what happens if I stop.", evidence: { 7: 2, 5: 1 }, followUp: "drink-fear" },
+      { id: "d", label: "The comfort of not having to decide.", evidence: { 4: 2, 3: 1 }, followUp: "drink-inertia" },
+      { id: "e", label: "Honestly? It changes depending on the fucking day.", evidence: { 2: 2, 3: 1 }, followUp: "drink-consequence" },
+    ],
+  },
+
+  /* ---------------- PAGE 5b: if the drink disappeared -------------- */
+
+  "drink-gone": {
+    id: "drink-gone",
+    prompt:
+      "You wake up tomorrow and the urge is completely gone. Your life otherwise stays exactly the same. What feels weirdest?",
+    choices: [
+      { id: "a", label: "I'd have no idea what to do with that time.", evidence: { 7: 2, 1: 1 }, followUp: "drink-missing" },
+      { id: "b", label: "I'd be relieved, but I'd also feel weird as hell.", evidence: { 2: 2, 9: 1 }, followUp: "drink-want" },
+      { id: "c", label: "I'd probably start looking for another reason to feel different.", evidence: { 3: 2, 7: 1 }, followUp: "drink-want", avoids: true },
+      { id: "d", label: "I'd be scared because I know what happens when I stop.", evidence: { 7: 2, 5: 1 }, followUp: "drink-fear" },
+      { id: "e", label: "I'd miss my favorite gas station or liquor store clerk who knows exactly what I get.", evidence: { 2: 2, 3: 1 }, followUp: "drink-missing" },
+      { id: "f", label: "I'd miss having that first thing of the day that was just mine.", evidence: { 4: 2, 6: 1 }, followUp: "drink-missing" },
+      { id: "g", label: "I'd be pissed that something I actually enjoy was suddenly gone.", evidence: { 2: 2, 6: 1 }, followUp: "drink-consequence" },
+      { id: "h", label: "I'd probably discover I miss the ritual more than the drink.", evidence: { 3: 2, 4: 1 }, followUp: "drink-missing" },
+      { id: "i", label: "I'd miss the version of me that comes out after I drink.", evidence: { 6: 3 }, followUp: "drink-fear" },
+      { id: "j", label: "I'd have more money, more time, and probably a better day — and somehow I'd still fucking miss it.", evidence: { 3: 2, 5: 1 }, followUp: "drink-consequence" },
+      { id: "k", label: "I'd be more afraid of what happens to my life without it than I am of what it's doing to my life with it.", evidence: { 7: 2, 5: 1 }, followUp: "drink-fear" },
+      { id: "l", label: "Honestly, I don't think I'd miss the drink. I'd miss having something to automatically reach for.", evidence: { 3: 3 }, followUp: "drink-missing" },
+      { id: "m", label: "I'd still do everything I normally do. I'd just be doing it without the drink.", evidence: { 4: 2, 2: 1 }, followUp: "drink-changes" },
+    ],
+  },
+
+  /* the "free time hypothesis is wrong" branch */
+  "drink-missing": {
+    id: "drink-missing",
+    prompt: "Wait — what would actually be missing?",
+    choices: [
+      { id: "a", label: "The time itself? No. I'd still be doing the same shit.", evidence: { 4: 2, 5: 1 } },
+      { id: "b", label: "Having something to look forward to.", evidence: { 9: 2, 1: 1 } },
+      { id: "c", label: "That little ritual that tells me the day has started or ended.", evidence: { 3: 2, 4: 1 } },
+      { id: "d", label: "The excuse to stop being productive for a while.", evidence: { 7: 3 } },
+      { id: "e", label: "The feeling that I'm finally off duty.", evidence: { 7: 3 } },
+      { id: "f", label: "Having something that's just mine.", evidence: { 6: 3 } },
+      { id: "g", label: "The comfort of doing something I don't have to think about.", evidence: { 3: 3 } },
+      { id: "h", label: "The drink is basically my security blanket.", evidence: { 7: 2, 6: 1 } },
+      { id: "i", label: "Honestly, nothing. I just automatically put drinking in that space.", evidence: { 3: 2, 2: 1 } },
+      { id: "j", label: "I don't know. That's actually something I haven't thought about.", evidence: { 1: 2, 8: 1 } },
+    ],
+  },
+
+  /* the enhancer branch: the activity is already happening */
+  "drink-changes": {
+    id: "drink-changes",
+    prompt: "Then what does the drink change about the thing you're already doing?",
+    choices: [
+      { id: "a", label: "It makes boring shit tolerable.", evidence: { 7: 3 }, followUp: "drink-boredom" },
+      { id: "b", label: "It makes me enjoy things more.", evidence: { 2: 2, 9: 1 }, followUp: "drink-want" },
+      { id: "c", label: "It makes me stop caring that I'm bored.", evidence: { 7: 3 }, followUp: "drink-boredom", avoids: true },
+      { id: "d", label: "It gives me something to look forward to while I'm doing the same shit.", evidence: { 4: 2, 9: 1 }, followUp: "drink-inertia" },
+      { id: "e", label: "It makes TV, music, food, sex, gaming, whatever hit differently.", evidence: { 2: 2, 6: 1 }, followUp: "drink-want" },
+      { id: "f", label: "It lets me shut my brain up while I'm doing it.", evidence: { 3: 3 }, followUp: "drink-boredom", avoids: true },
+      { id: "g", label: "It makes being alone feel less alone.", evidence: { 2: 2, 7: 1 }, followUp: "drink-fear" },
+      { id: "h", label: "It doesn't change anything. I just fucking want the drink.", evidence: { 5: 2, 3: 1 }, followUp: "drink-consequence" },
+      { id: "i", label: "I don't know — it just feels wrong to do the activity without it now.", evidence: { 3: 2, 1: 1 }, followUp: "drink-missing" },
+      { id: "j", label: "The activity isn't the point. The drinking is.", evidence: { 5: 2, 3: 1 }, followUp: "drink-fear" },
+    ],
+  },
+
+  "drink-boredom": {
+    id: "drink-boredom",
+    prompt: "If the drink could make one part of that experience disappear, what would you choose?",
+    choices: [
+      { id: "a", label: "The boredom.", evidence: { 7: 3 } },
+      { id: "b", label: "The anxiety.", evidence: { 7: 2, 3: 1 } },
+      { id: "c", label: "The silence in my head.", evidence: { 3: 3 } },
+      { id: "d", label: "The feeling that I'm wasting my life.", evidence: { 9: 2, 5: 1 } },
+      { id: "e", label: "The feeling that I should be doing something else.", evidence: { 9: 2, 4: 1 } },
+      { id: "f", label: "The loneliness.", evidence: { 2: 3 } },
+      { id: "g", label: "The pressure to enjoy myself.", evidence: { 6: 2, 4: 1 } },
+      { id: "h", label: "Nothing. I just like being buzzed.", evidence: { 2: 2, 9: 1 } },
+    ],
+  },
+
+  /* ---------------- PAGE 6 variants -------------------------------- */
+
+  "drink-fear": {
+    id: "drink-fear",
+    prompt:
+      "Here's the part nobody asks: if drinking disappeared tomorrow, which possibility would scare you the most?",
+    note: "Last one.",
+    choices: [
+      { id: "a", label: "I might actually become healthy, and then I'd have no excuse for how I live.", evidence: { 9: 2, 5: 1 } },
+      { id: "b", label: "I might succeed, and I'm not sure I know how to be that person.", evidence: { 1: 2, 6: 1 } },
+      { id: "c", label: "I'd have to take the mask off and be fully myself.", evidence: { 6: 3 } },
+      { id: "d", label: "I'd be alone without my drinking buddy — the drink is basically my best friend.", evidence: { 2: 2, 7: 1 } },
+      { id: "e", label: "I'm scared of going to meetings and being seen like that.", evidence: { 6: 2, 2: 1 } },
+      { id: "f", label: "I'm scared I'd fail, relapse, and prove I couldn't do it.", evidence: { 4: 2, 6: 1 } },
+      { id: "g", label: "I'm scared I won't be able to drink in moderation.", evidence: { 4: 3 } },
+      { id: "h", label: "I'm scared to even try because then I could fail.", evidence: { 1: 2, 4: 1 } },
+      { id: "i", label: "I'm scared I'd actually love being sober and have to admit how much time I lost.", evidence: { 5: 2, 9: 1 } },
+      { id: "j", label: "I'm scared nothing would change and I'd have to figure out what the real problem is.", evidence: { 5: 2, 3: 1 } },
+      { id: "k", label: "I'm not afraid of any of that. I fucking want my life back.", evidence: { 9: 3 } },
+      { id: "l", label: "I don't know what scares me more — the drink or the idea of not having it.", evidence: { 1: 2, 2: 1 } },
+    ],
+  },
+
+  "drink-want": {
+    id: "drink-want",
+    prompt:
+      "Now flip it. If you could keep the parts of your life you actually want, what are you secretly hoping you get back?",
+    note: "Last one.",
+    choices: [
+      { id: "a", label: "My health.", evidence: { 9: 3 } },
+      { id: "b", label: "My confidence.", evidence: { 6: 3 } },
+      { id: "c", label: "My money.", evidence: { 4: 2, 9: 1 } },
+      { id: "d", label: "My energy.", evidence: { 9: 2, 1: 1 } },
+      { id: "e", label: "My relationships.", evidence: { 2: 3 } },
+      { id: "f", label: "My mornings.", evidence: { 1: 2, 4: 1 } },
+      { id: "g", label: "My ability to remember my life.", evidence: { 5: 2, 9: 1 } },
+      { id: "h", label: "My freedom from thinking about this shit all the time.", evidence: { 3: 3 } },
+      { id: "i", label: "The version of me I know is still in there.", evidence: { 6: 2, 1: 1 } },
+      { id: "j", label: "The ability to drink moderately without it running my life.", evidence: { 4: 3 } },
+      { id: "k", label: "I don't want to give drinking up. I want the consequences to disappear.", evidence: { 2: 2, 5: 1 } },
+      { id: "l", label: "Honestly? I want all of it back.", evidence: { 9: 2, 5: 1 } },
+    ],
+  },
+
+  "drink-inertia": {
+    id: "drink-inertia",
+    prompt:
+      "Be honest. Is part of this simply that drinking is easier than doing the thing you know you should do?",
+    note: "Last one.",
+    choices: [
+      { id: "a", label: "Yeah. Sometimes I choose the easier fucking option.", evidence: { 5: 2, 9: 1 } },
+      { id: "b", label: "It's not laziness. I'm exhausted.", evidence: { 7: 2, 4: 1 } },
+      { id: "c", label: "I want to do things — I just can't get myself moving.", evidence: { 1: 2, 9: 1 } },
+      { id: "d", label: "Drinking makes me feel like I'm doing something.", evidence: { 3: 2, 6: 1 } },
+      { id: "e", label: "I use it as my excuse not to start.", evidence: { 1: 2, 7: 1 } },
+      { id: "f", label: "I know exactly what I should be doing and don't want to do it.", evidence: { 5: 2, 9: 1 } },
+      { id: "g", label: "No. I'm productive as hell while I drink.", evidence: { 5: 2, 2: 1 } },
+      { id: "h", label: "That's not what's happening at all.", evidence: { 5: 2, 2: 1 } },
+      { id: "i", label: "Maybe. I've never separated those two things before.", evidence: { 1: 2, 8: 1 } },
+    ],
+  },
+
+  "drink-consequence": {
+    id: "drink-consequence",
+    prompt:
+      "If someone told you this habit could eventually take years from your life, which thought hits harder?",
+    note: "Last one. Reflection, not a verdict.",
+    choices: [
+      { id: "a", label: "Fuck that. I want my life.", evidence: { 9: 3 } },
+      { id: "b", label: "I know. I just don't care enough in the moment.", evidence: { 7: 2, 3: 1 } },
+      { id: "c", label: "I care, but the drink still wins sometimes.", evidence: { 2: 2, 4: 1 } },
+      { id: "d", label: "The idea of losing my life scares me more than giving up the drink.", evidence: { 9: 2, 5: 1 } },
+      { id: "e", label: "The idea of giving up the drink scares me more than the consequences.", evidence: { 7: 2, 6: 1 } },
+      { id: "f", label: "I understand the risk intellectually, but it doesn't feel real.", evidence: { 3: 2, 5: 1 } },
+      { id: "g", label: "That's exactly the problem. I know what I'm risking and I still reach for it.", evidence: { 5: 3 } },
+      { id: "h", label: "I don't know yet.", evidence: { 1: 2, 8: 1 } },
+    ],
+  },
+
+};
+
+/**
+ * Doorways offered on the start screen. Hidden branches stay in
+ * `ALL_DOORWAYS` (and remain resolvable by id) so no work is lost.
+ */
+export const DOORWAYS: Doorway[] = ALL_DOORWAYS.filter((d) => !d.hidden);
+
+export function getDoorway(id: string | undefined): Doorway | undefined {
+  return ALL_DOORWAYS.find((d) => d.id === id);
+}
+
+/* ------------------------------------------------------------------ */
+/* The sequence                                                        */
+/* ------------------------------------------------------------------ */
+
+export type AnswerMap = Record<string, string>;
+
+/**
+ * Builds the question sequence for a doorway. The universal branch's
+ * follow-up appears only once the universal question has been answered,
+ * so the path genuinely branches on what the person said.
+ */
+/** Every question that can be reached through a branch, by id. */
+const ALL_BRANCHES: Record<string, Question> = {
+  ...BRANCH_QUESTIONS,
+  ...UNIVERSAL_FOLLOW_UPS,
+};
+
+function getQuestion(id: string): Question | undefined {
+  return ALL_BRANCHES[id];
+}
+
+/**
+ * Walks a question and everything the person's own answer opened after it:
+ * `choice.followUp` for answer-specific branches, `question.next` for a
+ * linear chain. Nothing beyond the last answered question is added, so the
+ * path genuinely diverges instead of pre-loading a fixed sequence.
+ */
+function expand(question: Question, answers: AnswerMap, out: Question[], seen: Set<string>) {
+  if (seen.has(question.id)) return;
+  seen.add(question.id);
+  out.push(question);
+
+  const chosenId = answers[question.id];
+  if (!chosenId) return;
+  const chosen = question.choices.find((c) => c.id === chosenId);
+  const nextId = chosen?.followUp ?? question.next;
+  if (!nextId) return;
+  const next = getQuestion(nextId);
+  if (next) expand(next, answers, out, seen);
+}
+
+export function buildSequence(
+  doorway: Doorway,
+  answers: AnswerMap,
+  deeperIds: string[] = [],
+): Question[] {
+  const sequence: Question[] = [];
+  const seen = new Set<string>();
+  for (const question of doorway.questions) expand(question, answers, sequence, seen);
+
+  // Fixed-length architecture: the opening chain is trimmed to `prefixPages`,
+  // then the path continues into the stage-2 chain and is capped, so the
+  // branch always runs the same number of pages however it is answered.
+  if (doorway.stage2) {
+    const prefixCount = doorway.prefixPages ?? 3;
+    const total = doorway.totalPages ?? 6;
+    const prefix = sequence.slice(0, prefixCount);
+    const out = [...prefix];
+    const prefixSeen = new Set(prefix.map((q) => q.id));
+    const last = prefix[prefix.length - 1];
+    if (prefix.length === prefixCount && last && answers[last.id]) {
+      const stage2 = getQuestion(doorway.stage2);
+      if (stage2) expand(stage2, answers, out, prefixSeen);
+    }
+    const capped = out.slice(0, total);
+    for (const id of deeperIds) {
+      const probe = DEEPER_PROBES.find((p) => p.question.id === id);
+      if (probe) capped.push(probe.question);
+    }
+    return capped;
+  }
+
+
+
+  // The universal "what are you trying not to experience" question is asked
+  // only when the person's own answers point toward avoidance — or when the
+  // doorway always asks it.
+  const suggestsAvoidance = sequence.some((q) => {
+    const chosenId = answers[q.id];
+    return q.choices.some((c) => c.id === chosenId && c.avoids);
+  });
+
+  if (doorway.universal === "always" || (doorway.universal === "ifAvoidance" && suggestsAvoidance)) {
+    expand(UNIVERSAL_QUESTION, answers, sequence, seen);
+  }
+
+  // Top up with the shared closing questions only if the branch was short,
+  // so the whole path stays around five or six taps.
+  const doorwayClosing = doorway.closing ? getQuestion(doorway.closing) : undefined;
+  const sharedClosing = CORE_QUESTIONS[CORE_QUESTIONS.length - 1];
+  const remaining = 5 - sequence.length;
+  if (remaining > 0) {
+    sequence.push(...CORE_QUESTIONS.slice(0, Math.min(CORE_QUESTIONS.length, remaining)));
+    // A doorway with its own closer ends on that, not the shared final
+    // question the top-up would otherwise land on.
+    if (doorwayClosing) {
+      const last = sequence[sequence.length - 1];
+      if (last && sharedClosing && last.id === sharedClosing.id) sequence.pop();
+      if (doorwayClosing && !seen.has(doorwayClosing.id)) sequence.push(doorwayClosing);
+    }
+  } else {
+    // Always end on a closing question, whatever the branch length.
+    const closing = doorwayClosing ?? sharedClosing;
+    if (closing && !seen.has(closing.id)) sequence.push(closing);
+  }
+
+  // Deeper probes, asked only when the person chose to go deeper from an
+  // undetermined result. They are appended in the order they were offered.
+  for (const id of deeperIds) {
+    const probe = DEEPER_PROBES.find((p) => p.question.id === id);
+    if (probe) sequence.push(probe.question);
+  }
+
+  return sequence;
+}
+
+/* ------------------------------------------------------------------ */
+/* Deeper probes (for the undetermined state)                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * A probe re-asks an underlying psychological question in different words.
+ * `separates` lists the numbers the probe can tell apart, so we can pick
+ * the probe that speaks to whichever numbers are currently tied.
+ */
+export interface DeeperProbe {
+  /** Which numbers this probe helps distinguish. */
+  separates: GNumber[];
+  question: Question;
+}
+
+export const DEEPER_PROBES: DeeperProbe[] = [
+  {
+    separates: [7, 9, 6],
+    question: {
+      id: "deep-feel",
+      prompt: "If you had to name what you don't want to feel right now, which is closest?",
+      note: "Same ground as before, asked another way.",
+      choices: [
+        { id: "a", label: "Restlessness — I want it to move already", evidence: { 7: 4 } },
+        { id: "b", label: "The weight of something I already know I should do", evidence: { 9: 4 } },
+        { id: "c", label: "Being at fault", evidence: { 6: 4 } },
+        { id: "d", label: "Not knowing where I stand", evidence: { 5: 4 } },
+        { id: "e", label: "Still can't name it", evidence: { 1: 2 } },
+      ],
+    },
+  },
+  {
+    separates: [7, 3, 9],
+    question: {
+      id: "deep-distract",
+      prompt: "What would become uncomfortable if you stopped distracting yourself for the next hour?",
+      choices: [
+        { id: "a", label: "The same thought would start circling", evidence: { 3: 4 } },
+        { id: "b", label: "I'd have to just sit in it", evidence: { 7: 4 } },
+        { id: "c", label: "I'd have to actually do the thing", evidence: { 9: 4 } },
+        { id: "d", label: "I'd have to hear someone out", evidence: { 8: 4 } },
+        { id: "e", label: "Nothing much would change", evidence: { 2: 2 } },
+      ],
+    },
+  },
+  {
+    separates: [5, 2],
+    question: {
+      id: "deep-known",
+      prompt: "Of what you've said so far, how much would hold up if someone asked you to show it?",
+      note: "Not a test. Just where the line sits.",
+      choices: [
+        { id: "a", label: "Most of it — I could point to the facts", evidence: { 5: 4 } },
+        { id: "b", label: "Some facts, and a read on someone else", evidence: { 2: 4 } },
+        { id: "c", label: "Mostly what I've concluded from it", evidence: { 3: 4 } },
+        { id: "d", label: "I'd want to check before answering", evidence: { 5: 2, 1: 1 } },
+      ],
+    },
+  },
+  {
+    separates: [8, 2],
+    question: {
+      id: "deep-hear",
+      prompt: "If the other person spoke first and you couldn't reply, what would that be like?",
+      choices: [
+        { id: "a", label: "Hard — I'd be building my answer the whole time", evidence: { 8: 4 } },
+        { id: "b", label: "Useful — I'd probably learn something", evidence: { 8: 3, 2: 1 } },
+        { id: "c", label: "Fine, but I'd still think they're wrong", evidence: { 2: 4 } },
+        { id: "d", label: "There's no one else in this", evidence: { 6: 2, 7: 1 } },
+      ],
+    },
+  },
+  {
+    separates: [4, 9],
+    question: {
+      id: "deep-container",
+      prompt: "If this same thing showed up again next week, what would you already have in place?",
+      choices: [
+        { id: "a", label: "A rule or limit I'd actually keep", evidence: { 4: 4 } },
+        { id: "b", label: "One small step I know how to take", evidence: { 9: 4 } },
+        { id: "c", label: "The same scramble as this time", evidence: { 4: 2, 3: 1 } },
+        { id: "d", label: "No idea yet", evidence: { 1: 2 } },
+      ],
+    },
+  },
+  {
+    separates: [3, 1],
+    question: {
+      id: "deep-recurs",
+      prompt: "Has this shape shown up before, in another setting?",
+      choices: [
+        { id: "a", label: "Yes — I can name where", evidence: { 3: 4 } },
+        { id: "b", label: "Maybe, but it feels different this time", evidence: { 2: 3 } },
+        { id: "c", label: "No — this is new ground", evidence: { 1: 4 } },
+        { id: "d", label: "I haven't looked", evidence: { 1: 2, 7: 1 } },
+      ],
+    },
+  },
+  {
+    separates: [6, 2],
+    question: {
+      id: "deep-part",
+      prompt: "Say your part in one sentence — which version comes out?",
+      note: "Contribution, not verdict.",
+      choices: [
+        { id: "a", label: "\"Here's what I did, and here's what they did\"", evidence: { 2: 4 } },
+        { id: "b", label: "\"This is on me\"", evidence: { 6: 4 } },
+        { id: "c", label: "\"I did one thing I'd do differently\"", evidence: { 6: 3, 9: 1 } },
+        { id: "d", label: "I can't get it to one sentence", evidence: { 1: 2 } },
+      ],
+    },
+  },
+  {
+    separates: [9, 7],
+    question: {
+      id: "deep-step",
+      prompt: "What's the smallest thing you could do about this today?",
+      choices: [
+        { id: "a", label: "Something specific — I can picture it", evidence: { 9: 4 } },
+        { id: "b", label: "Wait, on purpose", evidence: { 7: 4 } },
+        { id: "c", label: "Say one true thing to someone", evidence: { 8: 4 } },
+        { id: "d", label: "Nothing has a shape yet", evidence: { 1: 2 } },
+      ],
+    },
+  },
+];
+
+/**
+ * Picks the probe that best speaks to the numbers currently tied, skipping
+ * any probe already asked. Returns undefined when we've run out — at which
+ * point staying undetermined is the honest outcome.
+ */
+export function getDeeperProbe(
+  contested: GNumber[],
+  askedIds: string[] = [],
+): Question | undefined {
+  let best: DeeperProbe | undefined;
+  let bestScore = -1;
+  for (const probe of DEEPER_PROBES) {
+    if (askedIds.includes(probe.question.id)) continue;
+    const score = probe.separates.filter((n) => contested.includes(n)).length;
+    if (score > bestScore) {
+      bestScore = score;
+      best = probe;
+    }
+  }
+  return best?.question;
+}
+
+/* ------------------------------------------------------------------ */
+/* The pattern engine                                                  */
+/* ------------------------------------------------------------------ */
+
+export interface Contribution {
+  questionPrompt: string;
+  choiceLabel: string;
+}
+
+export interface PatternResult {
+  /** Undefined means undetermined. */
+  primary?: GNumber;
+  /** Up to two supporting numbers with real evidence behind them. */
+  supporting: GNumber[];
+  /** Raw evidence tallies, for the "how this read" panel. */
+  tallies: { n: GNumber; weight: number }[];
+  /** The answers that carried the primary pattern. */
+  contributions: Contribution[];
+  /** Plain-language reasoning shown to the person. */
+  reasoning: string;
+  /** How spread out the evidence was. */
+  coherent: boolean;
+  /** When undetermined: the numbers the answers are pointing at at once. */
+  contested: GNumber[];
+}
+
+/** A pattern is primary when it is both present and clearly ahead. */
+const MIN_PRIMARY_WEIGHT = 2.4;
+const MIN_LEAD = 0.35;
+const MIN_SUPPORT_WEIGHT = 1.8;
+
+export function evaluatePattern(sequence: Question[], answers: AnswerMap): PatternResult {
+  const totals = new Map<GNumber, number>();
+  /** How much evidence each number *could* have collected from the questions asked. */
+  const available = new Map<GNumber, number>();
+  const byNumber = new Map<GNumber, Contribution[]>();
+
+  for (const question of sequence) {
+    for (const n of G_NUMBERS) {
+      const reach = Math.max(...question.choices.map((c) => c.evidence[n] ?? 0));
+      if (reach > 0) available.set(n, (available.get(n) ?? 0) + reach);
+    }
+
+    const choiceId = answers[question.id];
+    if (!choiceId) continue;
+    const choice = question.choices.find((c) => c.id === choiceId);
+    if (!choice) continue;
+
+    for (const key of Object.keys(choice.evidence) as unknown[] as string[]) {
+      const n = Number(key) as GNumber;
+      const weight = choice.evidence[n] ?? 0;
+      if (!weight) continue;
+      totals.set(n, (totals.get(n) ?? 0) + weight);
+      const list = byNumber.get(n) ?? [];
+      list.push({ questionPrompt: question.prompt, choiceLabel: choice.label });
+      byNumber.set(n, list);
+    }
+  }
+
+  // Normalise by how often a number was even on the table, so a number that
+  // appears in many choices cannot win on sheer availability. This is not an
+  // average of the answers — it measures how concentrated the pattern is.
+  const tallies = G_NUMBERS.map((n) => {
+    const raw = totals.get(n) ?? 0;
+    const reach = available.get(n) ?? 0;
+    const weight = raw === 0 ? 0 : raw / Math.sqrt(Math.max(reach, 1)) * 2;
+    return { n, weight: Math.round(weight * 100) / 100 };
+  }).sort((a, b) => b.weight - a.weight || a.n - b.n);
+
+  const top = tallies[0];
+  const second = tallies[1];
+
+  const hasPrimary =
+    top !== undefined &&
+    top.weight >= MIN_PRIMARY_WEIGHT &&
+    (second === undefined || top.weight - second.weight >= MIN_LEAD);
+
+
+  if (!top || !hasPrimary) {
+    return {
+      supporting: tallies
+        .filter((t) => t.weight >= MIN_SUPPORT_WEIGHT)
+        .slice(0, 2)
+        .map((t) => t.n),
+      tallies,
+      contributions: [],
+      coherent: false,
+      contested: tallies.filter((t) => t.weight > 0).slice(0, 3).map((t) => t.n),
+      reasoning:
+        "Your answers are pointing in more than one direction at once. That is not a wrong set of answers — there just isn't enough separation yet to tell one pattern from the others in this situation.",
+    };
+  }
+
+  const primary = top.n;
+  const contributions = (byNumber.get(primary) ?? []).slice(0, 3);
+  const supporting = tallies
+    .slice(1)
+    .filter((t) => t.weight >= MIN_SUPPORT_WEIGHT)
+    .slice(0, 2)
+    .map((t) => t.n);
+
+  const meaning = NUMBERS[primary];
+  const reasoning = `Your answers kept returning to ${meaning.signal}. That pattern points most strongly to ${primary}.`;
+
+  return {
+    primary,
+    supporting,
+    tallies,
+    contributions,
+    coherent: true,
+    contested: [],
+    reasoning,
+  };
+}
+
+export const FRAMING_LINES = [
+  "There is no right answer and no wrong number.",
+  "Every number is useful information about what your mind is doing right now.",
+  "The number describes the pattern in this situation — not a permanent type.",
+];
+```
+## 3. CURRENT IMPLEMENTATION NOTES FOR DEVELOPER/INVESTOR
+- The authoritative calculation is `evaluatePattern()` in `src/lib/gabriel.ts`.
+- The current implemented formula is `W_n = Raw_n / sqrt(max(Available_n, 1)) * 2`, where `Raw_n` is the summed evidence weight contributed to number `n` by the user's selected answers, and `Available_n` is the summed maximum evidence that `n` could have received across the questions actually encountered.
+- Primary threshold: `MIN_PRIMARY_WEIGHT = 2.4`.
+- Required lead over second place: `MIN_LEAD = 0.35`.
+- Supporting threshold: `MIN_SUPPORT_WEIGHT = 1.8`.
+- `Undetermined` is returned when primary convergence requirements are not met; the engine never forces a number.
+- The Tree of Life mapping is metadata that accompanies a result; it does not add to the score or alter convergence.
+- The project's 1–9 meanings and Tree mappings are working psychological-symbolic mappings. They are NOT represented as official traditional Kabbalah or Pythagorean assignments, and no such claim is made by the project.
+## 4. MARKETING-VALUE ANALYSIS BRIEF
+The following characteristics may differentiate the product technically and product-wise. Items marked **[Hypothesis/Opportunity]** are unproven and should not be presented as market claims. No clinical, diagnostic, scientific, or market-demand validation is claimed.
+
+- **Situation-specific branching.** The experience starts from a concrete doorway (e.g. "I don't know what the hell to do today", "My brain is spiraling") rather than a generic quiz. Each doorway has its own opening question and follow-up tree, so the questions track the user's actual situation.
+- **Weighted evidence, not answer-counting.** Each answer choice contributes a small evidence weight toward one or more of the nine numbers. This is richer than counting selected options per category.
+- **Convergence rather than a simple result.** A 1–9 number is produced by convergence — the strongest coherent pattern across accumulated evidence — not by averaging or by matching the user to a pre-labeled bucket. Insufficient coherence yields `Undetermined`.
+- **Undetermined state.** The system can return "Undetermined" instead of forcing a number, which is an intentional outcome when the evidence does not cohere.
+- **Deeper probes.** When the first pass is Undetermined, follow-up deeper-probe questions attempt to resolve the pattern without manufacturing a result.
+- **Path-dependent evidence availability.** `Available_n` is computed across the questions actually encountered, which depend on prior answers, so normalization adapts to the specific path rather than a fixed denominator.
+- **Symbolic interpretation.** Each number carries a working psychological-symbolic meaning and a Tree of Life mapping as accompanying metadata.
+- **[Hypothesis/Opportunity]** The branching + convergence model may be a more honest framing for self-reflection than linear scoring quizzes; market reception is unproven.
+- **[Hypothesis/Opportunity]** Returning "Undetermined" as a valid outcome may reduce false certainty; whether users experience this as valuable is untested.
+- **[Hypothesis/Opportunity]** The situation-specific doorways could support future domain expansion; this is a product direction, not a validated demand signal.
+## 5. IMPORTANT FRAMEWORK RULE
+The 1–9 framework is the immutable core of Gabriel's Number. Questions are the instrument. The number is the product/output. The questions and answer choices generate evidence; they do not define or replace the 1–9 meanings, weights, thresholds, or convergence maths. Nothing in this packet should be read as implying that the questions themselves are the product.
+## 6. AUDIT FLAGS
+Known factual flags present in the current implementation. These are documented here for transparency; none are fixed by this task.
+
+- **`DEEPER_PROBES` currently contain evidence weights of 4.** The ordinary-choice convention describes small weights (1–3), so the deeper-probe weights of 4 are a discrepancy. Whether deeper probes intentionally carry stronger evidence is an explicit framework decision requiring product-owner approval; it is not silently changed here.
+- **Normalized weights are rounded to two decimals before ranking/convergence.** The rounding step is part of the implemented pipeline.
+- **The convergence formula has no external published mathematical source cited in the code.** `W_n = Raw_n / sqrt(max(Available_n, 1)) * 2` is a project formula, not a reference to a published statistical method.
+- **Tree mapping is symbolic metadata.** It accompanies results and does not contribute to the score or alter convergence.
