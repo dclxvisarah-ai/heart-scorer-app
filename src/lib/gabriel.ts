@@ -1046,6 +1046,19 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "e", label: "I don't want to answer this today", evidence: { 7: 2, 1: 1 } },
     ],
   },
+  "drink-closing": {
+    id: "drink-closing",
+    prompt: "And if you didn't drink right now, what would you have to experience instead?",
+    note: "Last one.",
+    choices: [
+      { id: "a", label: "I'd have to sit with a feeling I don't really want to feel.", evidence: { 7: 3 } },
+      { id: "b", label: "I'd have to break a routine that feels familiar.", evidence: { 3: 2, 4: 1 } },
+      { id: "c", label: "I'd have to figure out what to do with the time or energy instead.", evidence: { 1: 2, 4: 1 } },
+      { id: "d", label: "I'd have to deal with something I've been avoiding.", evidence: { 9: 2, 5: 1 } },
+      { id: "e", label: "Honestly, nothing is wrong — I just feel pulled toward the drink anyway.", evidence: { 2: 2, 7: 1 } },
+      { id: "f", label: "I still can't tell what I'm trying not to experience.", evidence: { 1: 2 } },
+    ],
+  },
 };
 
 export function getDoorway(id: string | undefined): Doorway | undefined {
