@@ -191,6 +191,8 @@ export interface Doorway {
 
 export const UNIVERSAL_QUESTION: Question = {
   id: "u1",
+    rebuild:
+      "REQUIRES REBUILD — banned generic "what are you avoiding" framing. Information target to preserve: which dimension the avoidance sits in (7 staying, 8 listening, 5 discernment, 4 structure, 9 embodiment).",
   prompt: "What are you trying not to experience right now?",
   note: "Not an accusation. Sometimes the honest answer is that you aren't avoiding anything.",
   choices: [
@@ -209,6 +211,8 @@ export const UNIVERSAL_QUESTION: Question = {
 export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
   "uf-discomfort": {
     id: "uf-discomfort",
+    rebuild:
+      "REQUIRES REBUILD — banned "where does the discomfort sit" framing. Target: body/unsaid/known-task/undifferentiated (7, 8, 9+4, 5+1).",
     prompt: "Where does the discomfort actually sit?",
     choices: [
       { id: "a", label: "In my body — restless, tight, wired", evidence: { 7: 2, 3: 1 } },
@@ -220,6 +224,8 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
   },
   "uf-conversation": {
     id: "uf-conversation",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: what makes the unsaid thing hard (8 listening, 5 discernment, 6 integration, 4 timing).",
     prompt: "What's the harder part of it?",
     choices: [
       { id: "a", label: "Hearing what they'll say", evidence: { 8: 3 } },
@@ -231,6 +237,8 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
   },
   "uf-uncertainty": {
     id: "uf-uncertainty",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: kind of not-knowing (5 gettable, 7 time-only, 2/8 another person, 1 unknown want).",
     prompt: "What kind of not-knowing is it?",
     choices: [
       { id: "a", label: "Information I could actually get", evidence: { 5: 3 } },
@@ -242,6 +250,8 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
   },
   "uf-decision": {
     id: "uf-decision",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: what makes deciding heavy (2 others, 5 real loss, 4 holding to it).",
     prompt: "What makes it heavy?",
     choices: [
       { id: "a", label: "It affects someone besides me", evidence: { 2: 2, 6: 1 } },
@@ -253,6 +263,8 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
   },
   "uf-boredom": {
     id: "uf-boredom",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: what surfaces in the quiet (9 undone task, 3 loop, 7 skipped feeling).",
     prompt: "When the quiet comes, what usually turns up in it?",
     choices: [
       { id: "a", label: "Something I've been putting off", evidence: { 9: 2, 4: 1 } },
@@ -264,6 +276,8 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
   },
   "uf-relief": {
     id: "uf-relief",
+    rebuild:
+      "REQUIRES REBUILD — follow-up of the banned u1 family. Target: relief from what (3 repetition, 4/6 responsibility, 7/8 waiting, 6 self).",
     prompt: "Relief from what, if you had to name it?",
     choices: [
       { id: "a", label: "Thinking about the same thing again", evidence: { 3: 3 } },
@@ -282,6 +296,8 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
 export const CORE_QUESTIONS: Question[] = [
   {
     id: "c1",
+    rebuild:
+      "REQUIRES REBUILD — asks the person to label their own epistemics (known vs felt vs assumed) in quiz language. Target: fact-vs-interpretation split (5, 3, 2, 6/7, 1).",
     prompt: "Right now, which of these is doing most of the talking?",
     choices: [
       { id: "a", label: "What I actually know", evidence: { 5: 2, 9: 1 } },
@@ -304,6 +320,8 @@ export const CORE_QUESTIONS: Question[] = [
   },
   {
     id: "c3",
+    rebuild:
+      "REQUIRES REBUILD — options restate the nine lessons back to the person, so it self-reports the result instead of gathering evidence. Target: one clean read of which dimension the person reaches for (9, 8, 7, 4, 6, 1).",
     prompt: "And what would help most in the next hour?",
     note: "Last one.",
     choices: [
