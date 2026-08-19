@@ -12,6 +12,8 @@ import {
   buildSequence,
   evaluatePattern,
   getDeeperProbe,
+  getNineBridge,
+
   getDoorway,
   type AnswerMap,
   type Question,
@@ -324,12 +326,23 @@ function GabrielsNumberPage() {
                   <p className="mt-5 text-sm leading-relaxed text-foreground">
                     {NUMBERS[result.primary].meaning}
                   </p>
+                  {result.primary === 9 ? (
+                    <div className="mt-4 rounded-xl border border-gold/50 bg-gold/10 px-4 py-3">
+                      <p className="text-sm leading-relaxed text-foreground">
+                        {getNineBridge(doorway.id).human}
+                      </p>
+                      <p className="mt-3 font-display text-lg leading-snug">
+                        {getNineBridge(doorway.id).question}
+                      </p>
+                    </div>
+                  ) : null}
                   <div className="mt-4 rounded-xl border border-teal/30 bg-teal/8 px-4 py-3">
                     <p className="eyebrow">The clarity you're missing</p>
                     <p className="mt-1.5 text-sm leading-relaxed text-foreground">
                       {NUMBERS[result.primary].lesson}
                     </p>
                   </div>
+
                 </>
               ) : (
                 <>

@@ -2215,3 +2215,51 @@ export const UNDETERMINED_NEXT: NextStep = {
   question: "Which of the threads above would change the most if you got one piece of information?",
   advice: "Pick the thread with the missing information and go get that one piece. Come back to this when you have it.",
 };
+
+/**
+ * PROJECT-WIDE HARD STANDARD — GABRIEL NUMBER 9 (PRESENTATION ONLY).
+ *
+ * 9 = Embodiment / Completion: the answers show the person has moved past
+ * identifying the pattern and can see what is happening underneath it, and is
+ * at the point of carrying that understanding forward. It does NOT mean a
+ * behavior stopped, a "correct" choice was made, or abstinence/success.
+ *
+ * NON-SCORING. This adds no rule for earning 9, changes no evidence, weight,
+ * threshold, formula, meaning or Tree mapping. It only shapes result copy.
+ */
+export const NINE_BRIDGE_QUESTION = "What are you going to do with this insight?";
+
+/** Per-doorway opening line for the 9 result. Falls back to the generic line. */
+const NINE_BRIDGE_OPENINGS: Record<string, string> = {
+  drink:
+    "The urge wasn't simply about wanting a drink. Your answers point to what was happening underneath the urge.",
+  well:
+    "The urge wasn't simply about wanting a drink. Your answers point to what was happening underneath the urge.",
+  bet: "The urge wasn't simply about gambling. Your answers point to what the bet was standing in for.",
+  gamble: "The urge wasn't simply about gambling. Your answers point to what the bet was standing in for.",
+  spiral: "The spiral wasn't simply about the event. Your answers show what the looping was protecting you from.",
+  loop: "The spiral wasn't simply about the event. Your answers show what the looping was protecting you from.",
+  lost:
+    "The restlessness wasn't simply about not knowing what to do today. Your answers point to the thing underneath it.",
+  chance:
+    "The question wasn't simply whether to take the chance. Your answers point to what the risk actually represents.",
+  talk:
+    "It wasn't simply about whether now is the right time to talk. Your answers point to what you already know needs saying.",
+  happened:
+    "It wasn't simply about what happened. Your answers point to what you already understand about your part in it.",
+  surprise:
+    "It wasn't simply about being caught off guard. Your answers point to what you already recognised underneath the surprise.",
+};
+
+export function getNineBridge(doorwayId: string | undefined): {
+  human: string;
+  question: string;
+} {
+  const opening =
+    (doorwayId && NINE_BRIDGE_OPENINGS[doorwayId]) ??
+    "This wasn't simply about the situation you came in with. Your answers point to what is happening underneath it.";
+  return {
+    human: `Your answers show you have moved past simply identifying the pattern — you can see what is actually going on underneath it. ${opening}`,
+    question: NINE_BRIDGE_QUESTION,
+  };
+}
