@@ -214,7 +214,7 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
     choices: [
       { id: "a", label: "Hearing what they'll say", evidence: { 8: 3 } },
       { id: "b", label: "Saying my part accurately", evidence: { 8: 2, 5: 1 } },
-      { id: "c", label: "Admitting where I contributed", evidence: { 6: 3, 2: 1 } },
+      { id: "c", label: "Admitting where I contributed", evidence: { 6: 3 } },
       { id: "d", label: "Choosing when to have it", evidence: { 8: 2, 4: 1 } },
       { id: "e", label: "Not sure yet", evidence: { 1: 1 } },
     ],
@@ -386,7 +386,7 @@ export const DOORWAYS: Doorway[] = [
         note: "Just the line between what happened and what you've filled in.",
         choices: [
           { id: "a", label: "I know something happened", evidence: { 5: 3 } },
-          { id: "b", label: "I know how I feel, but not what the other person meant", evidence: { 2: 2, 8: 2 } },
+          { id: "b", label: "I know how I feel, but not what the other person meant", evidence: { 2: 2, 8: 1 } },
           { id: "c", label: "I have evidence, but I'm filling in some gaps", evidence: { 5: 2, 2: 1 } },
           { id: "d", label: "I mostly have assumptions right now", evidence: { 2: 3 } },
           { id: "e", label: "I genuinely don't know yet", evidence: { 1: 2, 5: 1 } },
@@ -578,7 +578,7 @@ export const DOORWAYS: Doorway[] = [
         prompt: "What's your part in it?",
         note: "Contribution, not verdict.",
         choices: [
-          { id: "a", label: "I can name it without piling on myself", evidence: { 6: 3, 2: 1 } },
+          { id: "a", label: "I can name it without piling on myself", evidence: { 6: 3 } },
           { id: "b", label: "I can name it and then I don't stop", evidence: { 6: 2, 3: 1 } },
           { id: "c", label: "I don't think I have one", evidence: { 2: 2 } },
           { id: "d", label: "Still working that out", evidence: { 1: 1, 2: 1 } },
@@ -786,7 +786,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     id: "chance-info",
     prompt: "Is the missing information gettable?",
     choices: [
-      { id: "a", label: "Yes — I know exactly what I'd need to check", evidence: { 5: 3, 9: 1 } },
+      { id: "a", label: "Yes — I know exactly what I'd need to check", evidence: { 5: 3 } },
       { id: "b", label: "Only by doing it", evidence: { 9: 2, 7: 1 } },
       { id: "c", label: "Only someone else can tell me", evidence: { 8: 3 } },
       { id: "d", label: "Only time tells", evidence: { 7: 3 } },
@@ -828,7 +828,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     id: "chance-split",
     prompt: "Can you name both halves without picking a winner?",
     choices: [
-      { id: "a", label: "Yes — and both make sense", evidence: { 2: 3, 6: 1 } },
+      { id: "a", label: "Yes — and both make sense", evidence: { 2: 3 } },
       { id: "b", label: "Yes, but one half sounds like an excuse", evidence: { 6: 2, 5: 1 } },
       { id: "c", label: "One half is loud and I can't hear the other", evidence: { 3: 2, 7: 1 } },
       { id: "d", label: "They swap depending on the hour", evidence: { 3: 3 } },
@@ -919,7 +919,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "a", label: "Since today", evidence: { 5: 2, 7: 1 } },
       { id: "b", label: "A few days", evidence: { 3: 2, 7: 1 } },
       { id: "c", label: "Weeks or longer", evidence: { 3: 3 } },
-      { id: "d", label: "It comes back every few months", evidence: { 3: 3, 4: 1 } },
+      { id: "d", label: "It comes back every few months", evidence: { 3: 3 } },
       { id: "e", label: "No idea", evidence: { 1: 2 } },
     ],
   },
