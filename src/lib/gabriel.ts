@@ -1131,12 +1131,21 @@ export function buildSequence(
 
   // Top up with the shared closing questions only if the branch was short,
   // so the whole path stays around five or six taps.
+  const doorwayClosing = doorway.closing ? getQuestion(doorway.closing) : undefined;
+  const sharedClosing = CORE_QUESTIONS[CORE_QUESTIONS.length - 1];
   const remaining = 5 - sequence.length;
   if (remaining > 0) {
     sequence.push(...CORE_QUESTIONS.slice(0, Math.min(CORE_QUESTIONS.length, remaining)));
+    // A doorway with its own closer ends on that, not the shared final
+    // question the top-up would otherwise land on.
+    if (doorwayClosing) {
+      const last = sequence[sequence.length - 1];
+      if (last && sharedClosing && last.id === sharedClosing.id) sequence.pop();
+      if (doorwayClosing && !seen.has(doorwayClosing.id)) sequence.push(doorwayClosing);
+    }
   } else {
-    // Always end on the same closing question, whatever the branch length.
-    const closing = CORE_QUESTIONS[CORE_QUESTIONS.length - 1];
+    // Always end on a closing question, whatever the branch length.
+    const closing = doorwayClosing ?? sharedClosing;
     if (closing && !seen.has(closing.id)) sequence.push(closing);
   }
 
