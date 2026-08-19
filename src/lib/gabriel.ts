@@ -165,6 +165,13 @@ export interface Doorway {
    */
   universal: "always" | "ifAvoidance" | "never";
   /**
+   * PRESERVED-BUT-HIDDEN. When true the doorway keeps all of its questions,
+   * mappings and follow-ups intact but is not offered on the start screen.
+   * Nothing is deleted, so the branch can be renamed or rebuilt later.
+   * Never affects evidence, weights, thresholds or convergence.
+   */
+  hidden?: boolean;
+  /**
    * Optional id of a doorway-specific closing question (resolved from
    * BRANCH_QUESTIONS at runtime). When present it replaces the shared final
    * core question as the last question of the path, so a branch ends on
@@ -339,7 +346,7 @@ export const CORE_QUESTIONS: Question[] = [
 /* Doorways                                                            */
 /* ------------------------------------------------------------------ */
 
-export const DOORWAYS: Doorway[] = [
+export const ALL_DOORWAYS: Doorway[] = [
   {
     id: "lost",
     label: "I don't know what the hell to do today",
@@ -365,6 +372,7 @@ export const DOORWAYS: Doorway[] = [
   },
   {
     id: "chance",
+    hidden: true,
     label: "Should I take a chance?",
     sub: "Something's on the table",
     universal: "ifAvoidance",
@@ -392,6 +400,14 @@ export const DOORWAYS: Doorway[] = [
     label: "My brain is spiraling",
     sub: "It's moving fast and not going anywhere",
     universal: "ifAvoidance",
+    // Fixed six-page architecture, same shape as the drinking branch:
+    // three adaptive pages (what it's doing → how it's doing it → what it's
+    // actually about) then a fixed stage 2 (fact/built line → what stops it →
+    // what would actually end it). No new scoring framework: every choice
+    // maps into the existing 1–9 evidence weights.
+    stage2: "spiral-known",
+    prefixPages: 3,
+    totalPages: 6,
     questions: [
       {
         id: "spiral-1",
@@ -408,20 +424,9 @@ export const DOORWAYS: Doorway[] = [
           { id: "unknown", label: "I can't even tell what started it", evidence: { 1: 2 }, followUp: "spiral-unknown" },
         ],
       },
-      {
-        id: "spiral-known",
-        prompt: "What's actually known?",
-        note: "Just the line between what happened and what you've filled in.",
-        choices: [
-          { id: "a", label: "I know something happened", evidence: { 5: 3 } },
-          { id: "b", label: "I know how I feel, but not what the other person meant", evidence: { 2: 2, 8: 1 } },
-          { id: "c", label: "I have evidence, but I'm filling in some gaps", evidence: { 5: 2, 2: 1 } },
-          { id: "d", label: "I mostly have assumptions right now", evidence: { 2: 3 } },
-          { id: "e", label: "I genuinely don't know yet", evidence: { 1: 2, 5: 1 } },
-        ],
-      },
     ],
   },
+
   {
     id: "drink",
     label: "Why the fuck do I want a drink right now?",
@@ -475,6 +480,7 @@ export const DOORWAYS: Doorway[] = [
 
   {
     id: "gamble",
+    hidden: true,
     label: "I'm feeling lucky — should I gamble?",
     sub: "Playful, but let's be honest about it",
     universal: "ifAvoidance",
@@ -506,6 +512,7 @@ export const DOORWAYS: Doorway[] = [
   },
   {
     id: "talk",
+    hidden: true,
     label: "I want to talk to someone but don't know if now is right",
     sub: "The what may be settled; the when isn't",
     universal: "ifAvoidance",
@@ -875,9 +882,18 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
 
   /* --- "My brain is spiraling" ------------------------------------ */
+  /**
+   * Six fixed pages. Layer 2 (below) keeps the wording that passed the audit
+   * and now chains into a layer-3 question chosen by which thread the person
+   * is on, so what the spiral is *about* gets uncovered instead of assumed.
+   * Every mapping below is the existing 1–9 evidence vocabulary; no new
+   * framework, no weight above 3, no per-choice sum above 3, and answers that
+   * say the same thing in different words carry identical evidence.
+   */
   "spiral-replay": {
     id: "spiral-replay",
     prompt: "What does the replay keep landing on?",
+    next: "spiral-subject",
     choices: [
       { id: "a", label: "Something I said", evidence: { 8: 2, 6: 1 } },
       { id: "b", label: "Something they said", evidence: { 8: 2, 2: 1 } },
@@ -889,6 +905,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   "spiral-predict": {
     id: "spiral-predict",
     prompt: "How likely is the thing you're predicting, really?",
+    next: "spiral-stakes",
     choices: [
       { id: "a", label: "Likely — there's actual evidence", evidence: { 5: 3 } },
       { id: "b", label: "Possible, but I've stacked the worst case", evidence: { 5: 2, 2: 1 } },
@@ -900,6 +917,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   "spiral-meant": {
     id: "spiral-meant",
     prompt: "What are you working from?",
+    next: "spiral-subject",
     choices: [
       { id: "a", label: "Their exact words", evidence: { 5: 2, 8: 1 } },
       { id: "b", label: "Their tone", evidence: { 2: 2, 8: 1 } },
@@ -911,6 +929,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   "spiral-reassure": {
     id: "spiral-reassure",
     prompt: "What happens when you get the reassurance?",
+    next: "spiral-subject",
     choices: [
       { id: "a", label: "It helps for a while, then it wears off", evidence: { 3: 3 } },
       { id: "b", label: "I doubt it immediately", evidence: { 3: 2, 6: 1 } },
@@ -921,6 +940,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   "spiral-unsolvable": {
     id: "spiral-unsolvable",
     prompt: "What would have to happen for it to be answerable?",
+    next: "spiral-stakes",
     choices: [
       { id: "a", label: "Someone has to tell me something", evidence: { 8: 3 } },
       { id: "b", label: "Time has to pass", evidence: { 7: 3 } },
@@ -932,6 +952,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   "spiral-jump": {
     id: "spiral-jump",
     prompt: "Do the problems have anything in common?",
+    next: "spiral-fuel",
     choices: [
       { id: "a", label: "Yes — same person in most of them", evidence: { 2: 2, 8: 1 } },
       { id: "b", label: "Yes — they're all things I'm behind on", evidence: { 4: 3 } },
@@ -943,6 +964,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   "spiral-stuck": {
     id: "spiral-stuck",
     prompt: "How long has that one thought been running?",
+    next: "spiral-fuel",
     choices: [
       { id: "a", label: "Since today", evidence: { 5: 2, 7: 1 } },
       { id: "b", label: "A few days", evidence: { 3: 2, 7: 1 } },
@@ -954,6 +976,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   "spiral-unknown": {
     id: "spiral-unknown",
     prompt: "What was happening right before it started?",
+    next: "spiral-fuel",
     choices: [
       { id: "a", label: "I was alone and it got quiet", evidence: { 7: 3 } },
       { id: "b", label: "I read or saw something", evidence: { 3: 2, 5: 1 } },
@@ -962,6 +985,88 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "e", label: "Nothing I can point to", evidence: { 1: 2, 3: 1 } },
     ],
   },
+
+  /* Layer 3 — what the spiral is actually about (page 3). */
+  "spiral-subject": {
+    id: "spiral-subject",
+    prompt: "Strip the story off it. What are you afraid is actually true?",
+    note: "Say the blunt version, not the reasonable one.",
+    choices: [
+      { id: "a", label: "That I screwed it up and they've quietly written me off", evidence: { 6: 2, 2: 1 } },
+      { id: "b", label: "That they don't care about this as much as I do", evidence: { 2: 3 } },
+      { id: "c", label: "That I've read the whole thing wrong", evidence: { 5: 2, 8: 1 } },
+      { id: "d", label: "That something's ending and I can't stop it", evidence: { 7: 2, 5: 1 } },
+      { id: "e", label: "That if I actually respond, I'll say it badly", evidence: { 8: 2, 9: 1 } },
+      { id: "f", label: "Nothing's 'true'. I just can't put it down", evidence: { 3: 3 } },
+    ],
+  },
+  "spiral-stakes": {
+    id: "spiral-stakes",
+    prompt: "Run it to the end. If the worst version happened, what's actually on the line?",
+    choices: [
+      { id: "a", label: "Money, work, something with a number on it", evidence: { 5: 2, 4: 1 } },
+      { id: "b", label: "A person I'd have to live without", evidence: { 2: 2, 8: 1 } },
+      { id: "c", label: "How I'd have to see myself afterwards", evidence: { 6: 3 } },
+      { id: "d", label: "Nothing I can name. It just feels enormous", evidence: { 7: 2, 3: 1 } },
+      { id: "e", label: "I'd survive it. That's the weird part", evidence: { 9: 2, 5: 1 } },
+      { id: "f", label: "I won't let myself picture it that far", evidence: { 7: 3 }, avoids: true },
+    ],
+  },
+  "spiral-fuel": {
+    id: "spiral-fuel",
+    prompt: "What does it do the second you try to put it down?",
+    choices: [
+      { id: "a", label: "Starts again from the top", evidence: { 3: 3 } },
+      { id: "b", label: "Hands me a different thing to worry about", evidence: { 4: 2, 3: 1 } },
+      { id: "c", label: "Gets louder the second it's quiet", evidence: { 7: 3 } },
+      { id: "d", label: "Backs off only while my hands are busy", evidence: { 9: 2, 7: 1 } },
+      { id: "e", label: "Waits until I lie down at night", evidence: { 7: 2, 3: 1 } },
+      { id: "f", label: "No idea — I've never actually tried putting it down", evidence: { 1: 2, 3: 1 } },
+    ],
+  },
+
+  /* Stage 2 — fixed pages 4, 5, 6 for the spiral branch. */
+  "spiral-known": {
+    id: "spiral-known",
+    prompt: "Say only the part that actually happened. How much of this is that?",
+    note: "Not what it means. What occurred.",
+    next: "spiral-stop",
+    choices: [
+      { id: "a", label: "There's a real event. I'm not inventing this", evidence: { 5: 3 } },
+      { id: "b", label: "I know what I felt. I don't know what they meant", evidence: { 2: 2, 8: 1 } },
+      { id: "c", label: "Something real happened and I've built the rest", evidence: { 5: 2, 2: 1 } },
+      { id: "d", label: "Almost all of it is me guessing", evidence: { 2: 3 } },
+      { id: "e", label: "I couldn't separate the two right now", evidence: { 1: 2, 5: 1 } },
+    ],
+  },
+  "spiral-stop": {
+    id: "spiral-stop",
+    prompt: "What has actually stopped it before — not what should, what has?",
+    next: "spiral-need",
+    choices: [
+      { id: "a", label: "Somebody said the one thing I needed to hear", evidence: { 8: 3 } },
+      { id: "b", label: "It wore itself out after a day or two", evidence: { 7: 3 } },
+      { id: "c", label: "I did the thing I was dreading and it went quiet", evidence: { 9: 3 } },
+      { id: "d", label: "Writing it down or saying it out loud", evidence: { 8: 2, 6: 1 } },
+      { id: "e", label: "Nothing stops it — it goes underground and comes back", evidence: { 3: 3 } },
+      { id: "f", label: "Cutting a decision loose so there was nothing left to weigh", evidence: { 4: 2, 9: 1 } },
+    ],
+  },
+  "spiral-need": {
+    id: "spiral-need",
+    prompt: "So what do you actually need here? Not what would be nice.",
+    choices: [
+      { id: "a", label: "One piece of information I don't have yet", evidence: { 5: 3 } },
+      { id: "b", label: "To hear it straight from the one person involved", evidence: { 8: 3 } },
+      { id: "c", label: "To decide something and stop renegotiating it", evidence: { 4: 2, 9: 1 } },
+      { id: "d", label: "To do one small thing today and let the rest sit", evidence: { 9: 3 } },
+      { id: "e", label: "To be alright with not knowing for a while", evidence: { 7: 2, 5: 1 } },
+      { id: "f", label: "To quit being this hard on myself about it", evidence: { 6: 3 } },
+      { id: "g", label: "I still don't know", evidence: { 1: 2 } },
+    ],
+  },
+
+
 
   /* --- "Why the fuck do I want a drink right now?" ----------------- */
 
@@ -1432,8 +1537,14 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
 
 };
 
+/**
+ * Doorways offered on the start screen. Hidden branches stay in
+ * `ALL_DOORWAYS` (and remain resolvable by id) so no work is lost.
+ */
+export const DOORWAYS: Doorway[] = ALL_DOORWAYS.filter((d) => !d.hidden);
+
 export function getDoorway(id: string | undefined): Doorway | undefined {
-  return DOORWAYS.find((d) => d.id === id);
+  return ALL_DOORWAYS.find((d) => d.id === id);
 }
 
 /* ------------------------------------------------------------------ */
