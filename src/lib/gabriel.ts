@@ -165,6 +165,13 @@ export interface Doorway {
    */
   universal: "always" | "ifAvoidance" | "never";
   /**
+   * PRESERVED-BUT-HIDDEN. When true the doorway keeps all of its questions,
+   * mappings and follow-ups intact but is not offered on the start screen.
+   * Nothing is deleted, so the branch can be renamed or rebuilt later.
+   * Never affects evidence, weights, thresholds or convergence.
+   */
+  hidden?: boolean;
+  /**
    * Optional id of a doorway-specific closing question (resolved from
    * BRANCH_QUESTIONS at runtime). When present it replaces the shared final
    * core question as the last question of the path, so a branch ends on
@@ -339,7 +346,7 @@ export const CORE_QUESTIONS: Question[] = [
 /* Doorways                                                            */
 /* ------------------------------------------------------------------ */
 
-export const DOORWAYS: Doorway[] = [
+export const ALL_DOORWAYS: Doorway[] = [
   {
     id: "lost",
     label: "I don't know what the hell to do today",
@@ -365,6 +372,7 @@ export const DOORWAYS: Doorway[] = [
   },
   {
     id: "chance",
+    hidden: true,
     label: "Should I take a chance?",
     sub: "Something's on the table",
     universal: "ifAvoidance",
@@ -475,6 +483,7 @@ export const DOORWAYS: Doorway[] = [
 
   {
     id: "gamble",
+    hidden: true,
     label: "I'm feeling lucky — should I gamble?",
     sub: "Playful, but let's be honest about it",
     universal: "ifAvoidance",
@@ -506,6 +515,7 @@ export const DOORWAYS: Doorway[] = [
   },
   {
     id: "talk",
+    hidden: true,
     label: "I want to talk to someone but don't know if now is right",
     sub: "The what may be settled; the when isn't",
     universal: "ifAvoidance",
@@ -1432,8 +1442,14 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
 
 };
 
+/**
+ * Doorways offered on the start screen. Hidden branches stay in
+ * `ALL_DOORWAYS` (and remain resolvable by id) so no work is lost.
+ */
+export const DOORWAYS: Doorway[] = ALL_DOORWAYS.filter((d) => !d.hidden);
+
 export function getDoorway(id: string | undefined): Doorway | undefined {
-  return DOORWAYS.find((d) => d.id === id);
+  return ALL_DOORWAYS.find((d) => d.id === id);
 }
 
 /* ------------------------------------------------------------------ */
