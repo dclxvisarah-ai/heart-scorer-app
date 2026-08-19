@@ -1108,7 +1108,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     note: "Not a trick question. Sometimes it delivers.",
     choices: [
       { id: "a", label: "Very. Same result every time — I could set my watch by it.", evidence: { 3: 3 } },
-      { id: "b", label: "The first one lands. After that I'm chasing it, and I know the difference.", evidence: { 5: 3 } },
+      { id: "b", label: "The first one does what I want. After that I'm chasing it, and I know the difference.", evidence: { 5: 3 } },
       { id: "c", label: "It works for an hour, then I feel worse — and I still pick it. That's mine.", evidence: { 6: 2, 5: 1 } },
       { id: "d", label: "Lately it doesn't work at all, and I've quit pretending it does.", evidence: { 5: 2, 2: 1 } },
       { id: "e", label: "I stopped checking a long time ago. It's automatic now.", evidence: { 3: 2, 1: 1 } },
