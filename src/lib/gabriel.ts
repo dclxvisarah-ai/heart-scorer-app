@@ -443,32 +443,29 @@ export const ALL_DOORWAYS: Doorway[] = [
           "When the urge hits, what sounds so damn appealing about saying \u201cfuck it\u201d and having one?",
         note: "You already know it's bad for you. You already know the consequences. You already know what tomorrow might feel like. So that's not the question.",
         choices: [
-          // 2 — holds the wanted outcome and the known cost at once
-          { id: "good", label: "I know it'll feel good, and I know I'll regret it. Both are true.", evidence: { 2: 3 }, followUp: "drink-reward" },
+          // 2 — holds the wanted outcome and the known cost at once; the cost is
+          // named as known, not feared, which is why 5 rides along quietly
+          { id: "good", label: "I know it'll feel good, and I know I'll regret it. Both are true.", evidence: { 2: 3, 5: 1 }, followUp: "drink-reward" },
           // 1 — knows the feeling, doesn't know the cause; honest first question
           { id: "better", label: "I feel bad and I want to feel better. Ask me why I feel bad and I've got nothing.", evidence: { 1: 2, 5: 1 }, followUp: "drink-better" },
-          // 6 — being with people without prosecuting himself
-          { id: "confidence", label: "I want to be around people without running a case against myself the whole time.", evidence: { 6: 3 }, followUp: "drink-confidence" },
+          // 6 — being with people without prosecuting himself; the room is
+          // something he wants to actually receive, hence the quiet 8
+          { id: "confidence", label: "I want to be around people without running a case against myself the whole time.", evidence: { 6: 3, 8: 1 }, followUp: "drink-confidence" },
           // 4 — wants a container/marker on a shapeless day
           { id: "calm", label: "Nothing today had edges. I want something that closes the day out.", evidence: { 4: 3 }, followUp: "drink-calm" },
-          // 3 — recognizes the same thought recurring
-          { id: "nothink", label: "I've been chewing the same thought since this morning and it hasn't moved.", evidence: { 3: 3 }, followUp: "drink-nothink", avoids: true },
-          // 1 — names the fear plainly without knowing what's under it
-          { id: "scared", label: "I'm scared to go without it. I'd rather say that than pretend I'm not.", evidence: { 1: 2, 6: 1 }, followUp: "drink-without" },
           // 8 — receiving what the body reports before overruling it
           { id: "shit", label: "My body doesn't feel right without it. I want to hear that straight before I decide anything.", evidence: { 8: 3 }, followUp: "drink-without" },
-          // 3 — recognizes the recurring shape, not just the habit's subject
-          { id: "routine", label: "Same hour, same reach, every day. I can see the shape of it.", evidence: { 3: 3 }, followUp: "drink-routine" },
-          // 1 — genuine unknown about what else would count
-          { id: "forward", label: "I want something to look forward to and I couldn't tell you what else would count.", evidence: { 1: 2, 4: 1 }, followUp: "drink-forward" },
+          // 3 — recognizes the recurring shape; the fixed hour is also a
+          // container, which is the 4 riding underneath the pattern
+          { id: "routine", label: "Same hour, same reach, every day. I can see the shape of it.", evidence: { 3: 3, 4: 1 }, followUp: "drink-routine" },
           // 2 — two selves held at once, neither disowned
           { id: "myself", label: "I don't feel like me — and I'm not sure the drinking version is me either.", evidence: { 2: 2, 1: 1 }, followUp: "drink-myself" },
           // 7 — can tolerate the empty hour, and knows it
           { id: "bored", label: "Nothing's happening. Part of me knows I could just let the hour be empty.", evidence: { 7: 3 }, followUp: "drink-bored" },
           // 6 — owns the move without turning it into a verdict
           { id: "escape", label: "I want out of how I feel. I'm doing that on purpose and I'm not going to call myself weak for it.", evidence: { 6: 3 }, followUp: "drink-escape", avoids: true },
-          // 2 — good life and the urge, both true
-          { id: "well", label: "My life is genuinely good right now and I still want one. Both are true.", evidence: { 2: 3 }, followUp: "drink-good-life" },
+          // 9 — names an actual undone step and where he goes instead of taking it
+          { id: "instead", label: "There's one thing I said I'd do tonight. The drink is where I go instead of doing it.", evidence: { 9: 3 }, followUp: "drink-bored", avoids: true },
           // 5 — separates the want from the story he could build on it
           { id: "plain", label: "I just fucking want one. I'm not going to build a story on top of it.", evidence: { 5: 3 }, followUp: "drink-plain-hour" },
           // 1 — the first honest question
@@ -1096,6 +1093,10 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "d", label: "The off switch. Not the taste, the off switch — and I'll own that that's what I'm buying.", evidence: { 6: 2, 5: 1 }, avoids: true },
       { id: "e", label: "Both, and I've never actually pulled them apart.", evidence: { 1: 2, 3: 1 } },
       { id: "g", label: "I'd have to stop and hear what I actually want before I answer that.", evidence: { 8: 3 } },
+      // 7 — the hour itself is tolerable; the drink isn't doing the work
+      { id: "h", label: "Neither, really. It's the hour — and I could be in it without a drink. I just haven't been.", evidence: { 7: 3 } },
+      // 9 — wants the night carried into tomorrow rather than paid for
+      { id: "i", label: "What I actually want is to get to tomorrow without paying for tonight.", evidence: { 9: 3 } },
       { id: "f", label: "I don't know.", evidence: { 1: 2 } },
     ],
   },
@@ -1107,7 +1108,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     note: "Not a trick question. Sometimes it delivers.",
     choices: [
       { id: "a", label: "Very. Same result every time — I could set my watch by it.", evidence: { 3: 3 } },
-      { id: "b", label: "The first one lands. After that I'm chasing it, and I know the difference.", evidence: { 5: 3 } },
+      { id: "b", label: "The first one does what I want. After that I'm chasing it, and I know the difference.", evidence: { 5: 3 } },
       { id: "c", label: "It works for an hour, then I feel worse — and I still pick it. That's mine.", evidence: { 6: 2, 5: 1 } },
       { id: "d", label: "Lately it doesn't work at all, and I've quit pretending it does.", evidence: { 5: 2, 2: 1 } },
       { id: "e", label: "I stopped checking a long time ago. It's automatic now.", evidence: { 3: 2, 1: 1 } },
@@ -1128,6 +1129,8 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "d", label: "Angry — at something I haven't actually let the other person finish saying.", evidence: { 8: 3 } },
       { id: "e", label: "Lonely. I want company and I want to be left alone. Both.", evidence: { 2: 3 } },
       { id: "f", label: "Fine, honestly. Better would just be better — that's the whole of it.", evidence: { 5: 2, 2: 1 } },
+      // 9 — the setting is a stalled step, and he names the step
+      { id: "h", label: "Stalled. There's one thing I'd have to actually do tonight for this to shift.", evidence: { 9: 3 } },
       { id: "g", label: "I can't name it. That's the honest answer.", evidence: { 1: 2 } },
     ],
     next: "drink-layer2",
@@ -1161,23 +1164,6 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "e", label: "Something unresolved. There's one step in it I'm not taking.", evidence: { 9: 3 }, avoids: true },
       { id: "f", label: "Nothing external. My body's switched on, and I can stay in it.", evidence: { 7: 3 } },
       { id: "g", label: "No idea, and I'd rather say that than invent a reason.", evidence: { 5: 2, 1: 1 } },
-    ],
-    next: "drink-layer2",
-  },
-
-  /* cognitive escape */
-  "drink-nothink": {
-    id: "drink-nothink",
-    prompt: "What's the thought that keeps coming back?",
-    note: "You don't have to be specific. Just point at it.",
-    choices: [
-      { id: "a", label: "Something I did. I own it, and I don't need to keep sentencing myself for it.", evidence: { 6: 3 } },
-      { id: "b", label: "Something someone else did — I've been arguing with my version of them, not the real one.", evidence: { 8: 3 } },
-      { id: "c", label: "A decision I keep reopening because I never set a rule for it.", evidence: { 4: 3 } },
-      { id: "d", label: "Money, or how it all works out. I can't tell what I know from what I'm assuming.", evidence: { 5: 3 } },
-      { id: "e", label: "Same thought, same time of day, every day.", evidence: { 3: 3 } },
-      { id: "f", label: "All of it at once — and I can let it be loud without acting on it.", evidence: { 7: 3 } },
-      { id: "g", label: "I'd rather not name it yet. That's where I actually am.", evidence: { 1: 2 } },
     ],
     next: "drink-layer2",
   },
@@ -1227,21 +1213,6 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "d", label: "It's the marker. It ends the day.", evidence: { 4: 3 } },
       { id: "e", label: "It's me. And I can say that without building a case against myself.", evidence: { 6: 3 } },
       { id: "f", label: "I've never separated them. That's the first honest thing here.", evidence: { 1: 2, 5: 1 } },
-    ],
-    next: "drink-layer2",
-  },
-
-  /* anticipation */
-  "drink-forward": {
-    id: "drink-forward",
-    prompt: "What else is on the list of things to look forward to right now?",
-    choices: [
-      { id: "a", label: "Plenty — and I default to this one every single time anyway.", evidence: { 3: 3 } },
-      { id: "b", label: "A couple of things, further out. I could put one on the calendar tonight.", evidence: { 9: 3 } },
-      { id: "c", label: "People, mostly. I'd have to reach out and actually listen.", evidence: { 8: 2, 2: 1 } },
-      { id: "d", label: "Nothing I've planned. Nothing has a shape yet.", evidence: { 4: 2, 1: 1 } },
-      { id: "e", label: "Nothing — and I can say that plainly without deciding what it means about me.", evidence: { 5: 2, 1: 1 } },
-      { id: "f", label: "I haven't thought about it. That's the honest start.", evidence: { 1: 2 } },
     ],
     next: "drink-layer2",
   },
@@ -1307,23 +1278,6 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "f", label: "Dread about something coming. There's one step that would shrink it.", evidence: { 9: 3 } },
       { id: "g", label: "Emptiness. Same hour, most nights.", evidence: { 3: 3 } },
       { id: "h", label: "I feel it and I can't name it. That's where I'm starting.", evidence: { 1: 2 } },
-    ],
-    next: "drink-layer2",
-  },
-
-  /* unexplained incongruence */
-  "drink-good-life": {
-    id: "drink-good-life",
-    prompt: "Okay, then let's not invent a problem. What feels strangest about wanting it when nothing seems wrong?",
-    choices: [
-      { id: "a", label: "Things are good and I still want one. Two true things at once.", evidence: { 2: 3 } },
-      { id: "b", label: "I'm restless inside a good life — and I could just be restless without fixing it.", evidence: { 7: 3 } },
-      { id: "c", label: "I keep forecasting what'll go wrong, and I know it's a forecast, not a fact.", evidence: { 5: 3 } },
-      { id: "d", label: "With nothing to fix, I don't know what to do with myself. First time I've noticed that.", evidence: { 1: 2, 4: 1 } },
-      { id: "e", label: "Same hour, same reach — good day or bad day, it doesn't matter.", evidence: { 3: 3 } },
-      { id: "f", label: "I want one, nothing needs it, and there's something else I'd rather actually do.", evidence: { 9: 3 } },
-      { id: "g", label: "Nothing feels strange. I want one, and I'll say that plainly.", evidence: { 5: 2, 2: 1 } },
-      { id: "h", label: "I honestly don't know.", evidence: { 1: 2 } },
     ],
     next: "drink-layer2",
   },
@@ -1448,7 +1402,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     prompt: "Then what does the drink change about the thing you're already doing?",
     choices: [
       { id: "a", label: "It makes boring shit tolerable — though I could tolerate it.", evidence: { 7: 3 }, followUp: "drink-boredom" },
-      { id: "b", label: "Things land better, and I'd rather carry that into how I actually spend the night.", evidence: { 9: 3 }, followUp: "drink-want" },
+      { id: "b", label: "Everything hits better, and I'd rather carry that into how I actually spend the night.", evidence: { 9: 3 }, followUp: "drink-want" },
       { id: "c", label: "It makes the boredom easier to avoid. Without it I'd actually have to sit through the boring part — that's the trade.", evidence: { 7: 2, 5: 1 }, followUp: "drink-boredom", avoids: true },
       { id: "d", label: "It gives a shapeless day something to point at.", evidence: { 4: 3 }, followUp: "drink-inertia" },
       { id: "e", label: "TV, music, food, sex, gaming — all of it hits differently. Two good things at once.", evidence: { 2: 3 }, followUp: "drink-want" },
