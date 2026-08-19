@@ -12,6 +12,8 @@ import {
   buildSequence,
   evaluatePattern,
   getDeeperProbe,
+  getNineBridge,
+
   getDoorway,
   type AnswerMap,
   type Question,
