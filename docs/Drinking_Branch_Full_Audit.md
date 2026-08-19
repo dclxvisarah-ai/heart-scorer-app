@@ -10,7 +10,7 @@ Framework: **immutable and untouched.** 1–9 meanings, Tree mapping, evidence f
 `prefixPages = 3` → `stage2 = drink-lost` → `totalPages = 6`.
 
 - **P1** `drink-1` — the urge's stated appeal.
-- **P2** one of 9 answer-specific follow-ups (`drink-reward`, `-better`, `-confidence`, `-calm`, `-without`, `-routine`, `-myself`, `-bored`, `-escape`, `-plain-hour`, `-unclear`).
+- **P2** one of 11 answer-specific follow-ups (`drink-reward`, `-better`, `-confidence`, `-calm`, `-without`, `-routine`, `-myself`, `-bored`, `-escape`, `-plain-hour`, `-unclear`).
 - **P3** `drink-layer2` (or the second page of the two-page chains `drink-routine-2` / `drink-myself-2`).
 - **P4** `drink-lost` — what would actually be lost.
 - **P5** `drink-power` / `drink-gone` / `drink-changes` / `drink-missing` / `drink-boredom`.
