@@ -385,29 +385,52 @@ export const DOORWAYS: Doorway[] = [
   },
   {
     id: "drink",
-    label: "I feel like I want a drink and I don't know why",
-    sub: "Could be nothing. Could be worth a look",
+    label: "Why the fuck do I want a drink right now?",
+    sub: "No lecture. Just a look at what the urge is actually for",
     universal: "ifAvoidance",
     closing: "drink-closing",
     questions: [
       {
         id: "drink-1",
-        prompt: "Which is closest to the strange part?",
-        note: "No assumption here that anything is wrong.",
+        prompt:
+          "When the urge hits, what sounds so damn appealing about saying \u201cfuck it\u201d and having one?",
+        note: "You already know it's bad for you. You already know the consequences. You already know what tomorrow might feel like. So that's not the question.",
         choices: [
-          { id: "well", label: "My life is actually going well, so I don't understand the urge", evidence: { 7: 2, 2: 1 }, followUp: "drink-well" },
-          { id: "stress", label: "I've been stressed and I want relief", evidence: { 7: 2, 6: 1 }, followUp: "drink-stress" },
-          { id: "bored", label: "I'm bored or restless", evidence: { 7: 3 }, followUp: "drink-bored" },
-          { id: "routine", label: "It's simply part of my routine", evidence: { 3: 2, 4: 1 }, followUp: "drink-habit-1" },
-          { id: "change", label: "I want to change how I feel", evidence: { 7: 1, 9: 1 }, followUp: "drink-change" },
-          { id: "happened", label: "Something happened and I don't want to think about it", evidence: { 3: 1, 7: 1 }, followUp: "drink-happened", avoids: true },
-          { id: "plain", label: "Nothing happened. I just want one", evidence: { 2: 1, 7: 1 }, followUp: "drink-plain" },
-          { id: "good", label: "I've been feeling unusually good and I don't know how to sit with it", evidence: { 7: 2, 6: 1 }, followUp: "drink-well" },
-          { id: "unclear", label: "I honestly can't tell", evidence: { 1: 2 }, followUp: "drink-unclear" },
+          // expected reward
+          { id: "good", label: "I know I'll feel good.", evidence: { 9: 2, 2: 1 }, followUp: "drink-reward" },
+          // emotional regulation
+          { id: "better", label: "It makes me feel better.", evidence: { 7: 2, 6: 1 }, followUp: "drink-better" },
+          // identity / state borrowing
+          { id: "confidence", label: "I want to feel confident today.", evidence: { 6: 2, 2: 1 }, followUp: "drink-confidence" },
+          // arousal down-regulation
+          { id: "calm", label: "I want to calm the fuck down.", evidence: { 7: 2, 3: 1 }, followUp: "drink-calm" },
+          // cognitive escape
+          { id: "nothink", label: "I don't want to think anymore.", evidence: { 3: 2, 7: 1 }, followUp: "drink-nothink", avoids: true },
+          // anxiety about going without
+          { id: "scared", label: "I'm scared to go without it.", evidence: { 7: 2, 5: 1 }, followUp: "drink-without" },
+          // physical/somatic concern
+          { id: "shit", label: "I feel like shit without it.", evidence: { 7: 2, 9: 1 }, followUp: "drink-without" },
+          // automaticity / habit
+          { id: "routine", label: "It's just what I do. I don't even think about it anymore.", evidence: { 3: 3 }, followUp: "drink-routine" },
+          // anticipation
+          { id: "forward", label: "I want something to look forward to.", evidence: { 9: 2, 1: 1 }, followUp: "drink-forward" },
+          // identity
+          { id: "myself", label: "I want to feel more like myself.", evidence: { 6: 2, 1: 1 }, followUp: "drink-myself" },
+          // boredom
+          { id: "bored", label: "I'm bored as fuck.", evidence: { 7: 3 }, followUp: "drink-bored" },
+          // avoidance
+          { id: "escape", label: "I want to escape how I feel right now.", evidence: { 7: 2, 6: 1 }, followUp: "drink-escape", avoids: true },
+          // unexplained incongruence
+          { id: "well", label: "My life is actually good right now. I don't even know why I want one.", evidence: { 2: 2, 7: 1 }, followUp: "drink-good-life" },
+          // undifferentiated want
+          { id: "plain", label: "Honestly? I just fucking want one.", evidence: { 2: 1, 7: 1 }, followUp: "drink-plain-hour" },
+          // uncertainty
+          { id: "unclear", label: "I don't know. That's literally why I'm here.", evidence: { 1: 2 }, followUp: "drink-unclear" },
         ],
       },
     ],
   },
+
   {
     id: "gamble",
     label: "I'm feeling lucky — should I gamble?",
