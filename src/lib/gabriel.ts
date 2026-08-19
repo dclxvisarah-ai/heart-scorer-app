@@ -1200,19 +1200,194 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     next: "drink-layer2",
   },
 
-  "drink-closing": {
-    id: "drink-closing",
-    prompt: "And if you didn't drink right now, what would you have to experience instead?",
-    note: "Last one.",
+  /* ---------------- PAGE 4: what would actually be lost ------------ */
+
+  "drink-lost": {
+    id: "drink-lost",
+    prompt:
+      "Forget whether drinking is 'good' or 'bad' for a second. If it disappeared from your life tomorrow, what would you actually be losing?",
     choices: [
-      { id: "a", label: "I'd have to sit with a feeling I don't really want to feel.", evidence: { 7: 3 } },
-      { id: "b", label: "I'd have to break a routine that feels familiar.", evidence: { 3: 2, 4: 1 } },
-      { id: "c", label: "I'd have to figure out what to do with the time or energy instead.", evidence: { 1: 2, 4: 1 } },
-      { id: "d", label: "I'd have to deal with something I've been avoiding.", evidence: { 9: 2, 5: 1 } },
-      { id: "e", label: "Honestly, nothing is wrong — I just feel pulled toward the drink anyway.", evidence: { 2: 2, 7: 1 } },
-      { id: "f", label: "I still can't tell what I'm trying not to experience.", evidence: { 1: 2 } },
+      { id: "a", label: "The physical feeling.", evidence: { 9: 2, 2: 1 }, followUp: "drink-gone" },
+      { id: "b", label: "The ritual.", evidence: { 3: 2, 4: 1 }, followUp: "drink-gone" },
+      { id: "c", label: "The excuse to check out for a while.", evidence: { 7: 3 }, followUp: "drink-changes", avoids: true },
+      { id: "d", label: "The confidence it gives me.", evidence: { 6: 2, 2: 1 }, followUp: "drink-power" },
+      { id: "e", label: "The people and places connected to it.", evidence: { 2: 3 }, followUp: "drink-gone" },
+      { id: "f", label: "The version of myself I get to be when I drink.", evidence: { 6: 3 }, followUp: "drink-power" },
+      { id: "g", label: "The ability to stop thinking for a while.", evidence: { 3: 2, 7: 1 }, followUp: "drink-changes", avoids: true },
+      { id: "h", label: "The routine I know exactly how to follow.", evidence: { 4: 2, 3: 1 }, followUp: "drink-gone" },
+      { id: "i", label: "Something I genuinely fucking enjoy.", evidence: { 2: 2, 9: 1 }, followUp: "drink-power" },
+      { id: "j", label: "Nothing important. That's what makes this confusing.", evidence: { 2: 2, 1: 1 }, followUp: "drink-power" },
+      { id: "k", label: "My fear of what happens when I stop.", evidence: { 7: 2, 5: 1 }, followUp: "drink-power" },
+      { id: "l", label: "More than I want to admit.", evidence: { 5: 2, 7: 1 }, followUp: "drink-power" },
     ],
   },
+
+  /* PAGE 5a: which one has more power */
+  "drink-power": {
+    id: "drink-power",
+    prompt: "Be honest. Which one has more power over you right now?",
+    choices: [
+      { id: "a", label: "The life I'm actually trying to build.", evidence: { 9: 3 }, followUp: "drink-want" },
+      { id: "b", label: "The life I get when I drink.", evidence: { 6: 2, 7: 1 }, followUp: "drink-fear" },
+      { id: "c", label: "The fear of what happens if I stop.", evidence: { 7: 2, 5: 1 }, followUp: "drink-fear" },
+      { id: "d", label: "The comfort of not having to decide.", evidence: { 4: 2, 3: 1 }, followUp: "drink-inertia" },
+      { id: "e", label: "Honestly? It changes depending on the fucking day.", evidence: { 2: 2, 3: 1 }, followUp: "drink-consequence" },
+    ],
+  },
+
+  /* ---------------- PAGE 5b: if the drink disappeared -------------- */
+
+  "drink-gone": {
+    id: "drink-gone",
+    prompt:
+      "You wake up tomorrow and the urge is completely gone. Your life otherwise stays exactly the same. What feels weirdest?",
+    choices: [
+      { id: "a", label: "I'd have no idea what to do with that time.", evidence: { 7: 2, 1: 1 }, followUp: "drink-missing" },
+      { id: "b", label: "I'd be relieved, but I'd also feel weird as hell.", evidence: { 2: 2, 9: 1 }, followUp: "drink-want" },
+      { id: "c", label: "I'd probably start looking for another reason to feel different.", evidence: { 3: 2, 7: 1 }, followUp: "drink-want", avoids: true },
+      { id: "d", label: "I'd be scared because I know what happens when I stop.", evidence: { 7: 2, 5: 1 }, followUp: "drink-fear" },
+      { id: "e", label: "I'd miss my favorite gas station or liquor store clerk who knows exactly what I get.", evidence: { 2: 2, 3: 1 }, followUp: "drink-missing" },
+      { id: "f", label: "I'd miss having that first thing of the day that was just mine.", evidence: { 4: 2, 6: 1 }, followUp: "drink-missing" },
+      { id: "g", label: "I'd be pissed that something I actually enjoy was suddenly gone.", evidence: { 2: 2, 6: 1 }, followUp: "drink-consequence" },
+      { id: "h", label: "I'd probably discover I miss the ritual more than the drink.", evidence: { 3: 2, 4: 1 }, followUp: "drink-missing" },
+      { id: "i", label: "I'd miss the version of me that comes out after I drink.", evidence: { 6: 3 }, followUp: "drink-fear" },
+      { id: "j", label: "I'd have more money, more time, and probably a better day — and somehow I'd still fucking miss it.", evidence: { 3: 2, 5: 1 }, followUp: "drink-consequence" },
+      { id: "k", label: "I'd be more afraid of what happens to my life without it than I am of what it's doing to my life with it.", evidence: { 7: 2, 5: 1 }, followUp: "drink-fear" },
+      { id: "l", label: "Honestly, I don't think I'd miss the drink. I'd miss having something to automatically reach for.", evidence: { 3: 3 }, followUp: "drink-missing" },
+      { id: "m", label: "I'd still do everything I normally do. I'd just be doing it without the drink.", evidence: { 4: 2, 2: 1 }, followUp: "drink-changes" },
+    ],
+  },
+
+  /* the "free time hypothesis is wrong" branch */
+  "drink-missing": {
+    id: "drink-missing",
+    prompt: "Wait — what would actually be missing?",
+    choices: [
+      { id: "a", label: "The time itself? No. I'd still be doing the same shit.", evidence: { 4: 2, 5: 1 } },
+      { id: "b", label: "Having something to look forward to.", evidence: { 9: 2, 1: 1 } },
+      { id: "c", label: "That little ritual that tells me the day has started or ended.", evidence: { 3: 2, 4: 1 } },
+      { id: "d", label: "The excuse to stop being productive for a while.", evidence: { 7: 2, 4: 1 } },
+      { id: "e", label: "The feeling that I'm finally off duty.", evidence: { 7: 3 } },
+      { id: "f", label: "Having something that's just mine.", evidence: { 6: 3 } },
+      { id: "g", label: "The comfort of doing something I don't have to think about.", evidence: { 3: 3 } },
+      { id: "h", label: "The drink is basically my security blanket.", evidence: { 7: 2, 6: 1 } },
+      { id: "i", label: "Honestly, nothing. I just automatically put drinking in that space.", evidence: { 3: 2, 2: 1 } },
+      { id: "j", label: "I don't know. That's actually something I haven't thought about.", evidence: { 1: 2, 8: 1 } },
+    ],
+  },
+
+  /* the enhancer branch: the activity is already happening */
+  "drink-changes": {
+    id: "drink-changes",
+    prompt: "Then what does the drink change about the thing you're already doing?",
+    choices: [
+      { id: "a", label: "It makes boring shit tolerable.", evidence: { 7: 2, 3: 1 }, followUp: "drink-boredom" },
+      { id: "b", label: "It makes me enjoy things more.", evidence: { 2: 2, 9: 1 }, followUp: "drink-want" },
+      { id: "c", label: "It makes me stop caring that I'm bored.", evidence: { 7: 3 }, followUp: "drink-boredom", avoids: true },
+      { id: "d", label: "It gives me something to look forward to while I'm doing the same shit.", evidence: { 4: 2, 9: 1 }, followUp: "drink-inertia" },
+      { id: "e", label: "It makes TV, music, food, sex, gaming, whatever hit differently.", evidence: { 2: 2, 6: 1 }, followUp: "drink-want" },
+      { id: "f", label: "It lets me shut my brain up while I'm doing it.", evidence: { 3: 3 }, followUp: "drink-boredom", avoids: true },
+      { id: "g", label: "It makes being alone feel less alone.", evidence: { 2: 2, 7: 1 }, followUp: "drink-fear" },
+      { id: "h", label: "It doesn't change anything. I just fucking want the drink.", evidence: { 2: 2, 3: 1 }, followUp: "drink-consequence" },
+      { id: "i", label: "I don't know — it just feels wrong to do the activity without it now.", evidence: { 3: 2, 1: 1 }, followUp: "drink-missing" },
+      { id: "j", label: "The activity isn't the point. The drinking is.", evidence: { 5: 2, 3: 1 }, followUp: "drink-fear" },
+    ],
+  },
+
+  "drink-boredom": {
+    id: "drink-boredom",
+    prompt: "If the drink could make one part of that experience disappear, what would you choose?",
+    choices: [
+      { id: "a", label: "The boredom.", evidence: { 7: 3 } },
+      { id: "b", label: "The anxiety.", evidence: { 7: 2, 3: 1 } },
+      { id: "c", label: "The silence in my head.", evidence: { 3: 3 } },
+      { id: "d", label: "The feeling that I'm wasting my life.", evidence: { 9: 2, 5: 1 } },
+      { id: "e", label: "The feeling that I should be doing something else.", evidence: { 9: 2, 4: 1 } },
+      { id: "f", label: "The loneliness.", evidence: { 2: 3 } },
+      { id: "g", label: "The pressure to enjoy myself.", evidence: { 6: 2, 4: 1 } },
+      { id: "h", label: "Nothing. I just like being buzzed.", evidence: { 2: 2, 9: 1 } },
+    ],
+  },
+
+  /* ---------------- PAGE 6 variants -------------------------------- */
+
+  "drink-fear": {
+    id: "drink-fear",
+    prompt:
+      "Here's the part nobody asks: if drinking disappeared tomorrow, which possibility would scare you the most?",
+    note: "Last one.",
+    choices: [
+      { id: "a", label: "I might actually become healthy, and then I'd have no excuse for how I live.", evidence: { 9: 2, 5: 1 } },
+      { id: "b", label: "I might succeed, and I'm not sure I know how to be that person.", evidence: { 1: 2, 6: 1 } },
+      { id: "c", label: "I'd have to take the mask off and be fully myself.", evidence: { 6: 3 } },
+      { id: "d", label: "I'd be alone without my drinking buddy — the drink is basically my best friend.", evidence: { 2: 2, 7: 1 } },
+      { id: "e", label: "I'm scared of going to meetings and being seen like that.", evidence: { 6: 2, 2: 1 } },
+      { id: "f", label: "I'm scared I'd fail, relapse, and prove I couldn't do it.", evidence: { 4: 2, 6: 1 } },
+      { id: "g", label: "I'm scared I won't be able to drink in moderation.", evidence: { 4: 3 } },
+      { id: "h", label: "I'm scared to even try because then I could fail.", evidence: { 1: 2, 4: 1 } },
+      { id: "i", label: "I'm scared I'd actually love being sober and have to admit how much time I lost.", evidence: { 5: 2, 9: 1 } },
+      { id: "j", label: "I'm scared nothing would change and I'd have to figure out what the real problem is.", evidence: { 5: 2, 3: 1 } },
+      { id: "k", label: "I'm not afraid of any of that. I fucking want my life back.", evidence: { 9: 3 } },
+      { id: "l", label: "I don't know what scares me more — the drink or the idea of not having it.", evidence: { 1: 2, 2: 1 } },
+    ],
+  },
+
+  "drink-want": {
+    id: "drink-want",
+    prompt:
+      "Now flip it. If you could keep the parts of your life you actually want, what are you secretly hoping you get back?",
+    note: "Last one.",
+    choices: [
+      { id: "a", label: "My health.", evidence: { 9: 3 } },
+      { id: "b", label: "My confidence.", evidence: { 6: 3 } },
+      { id: "c", label: "My money.", evidence: { 4: 2, 9: 1 } },
+      { id: "d", label: "My energy.", evidence: { 9: 2, 1: 1 } },
+      { id: "e", label: "My relationships.", evidence: { 2: 3 } },
+      { id: "f", label: "My mornings.", evidence: { 1: 2, 4: 1 } },
+      { id: "g", label: "My ability to remember my life.", evidence: { 5: 2, 9: 1 } },
+      { id: "h", label: "My freedom from thinking about this shit all the time.", evidence: { 3: 3 } },
+      { id: "i", label: "The version of me I know is still in there.", evidence: { 6: 2, 1: 1 } },
+      { id: "j", label: "The ability to drink moderately without it running my life.", evidence: { 4: 3 } },
+      { id: "k", label: "I don't want to give drinking up. I want the consequences to disappear.", evidence: { 2: 2, 5: 1 } },
+      { id: "l", label: "Honestly? I want all of it back.", evidence: { 9: 2, 5: 1 } },
+    ],
+  },
+
+  "drink-inertia": {
+    id: "drink-inertia",
+    prompt:
+      "Be honest. Is part of this simply that drinking is easier than doing the thing you know you should do?",
+    note: "Last one.",
+    choices: [
+      { id: "a", label: "Yeah. Sometimes I choose the easier fucking option.", evidence: { 5: 2, 9: 1 } },
+      { id: "b", label: "It's not laziness. I'm exhausted.", evidence: { 7: 2, 4: 1 } },
+      { id: "c", label: "I want to do things — I just can't get myself moving.", evidence: { 1: 2, 9: 1 } },
+      { id: "d", label: "Drinking makes me feel like I'm doing something.", evidence: { 3: 2, 6: 1 } },
+      { id: "e", label: "I use it as my excuse not to start.", evidence: { 1: 2, 7: 1 } },
+      { id: "f", label: "I know exactly what I should be doing and don't want to do it.", evidence: { 9: 2, 5: 1 } },
+      { id: "g", label: "No. I'm productive as hell while I drink.", evidence: { 2: 2, 4: 1 } },
+      { id: "h", label: "That's not what's happening at all.", evidence: { 5: 2, 2: 1 } },
+      { id: "i", label: "Maybe. I've never separated those two things before.", evidence: { 8: 2, 1: 1 } },
+    ],
+  },
+
+  "drink-consequence": {
+    id: "drink-consequence",
+    prompt:
+      "If someone told you this habit could eventually take years from your life, which thought hits harder?",
+    note: "Last one. Reflection, not a verdict.",
+    choices: [
+      { id: "a", label: "Fuck that. I want my life.", evidence: { 9: 3 } },
+      { id: "b", label: "I know. I just don't care enough in the moment.", evidence: { 7: 2, 3: 1 } },
+      { id: "c", label: "I care, but the drink still wins sometimes.", evidence: { 2: 2, 4: 1 } },
+      { id: "d", label: "The idea of losing my life scares me more than giving up the drink.", evidence: { 9: 2, 5: 1 } },
+      { id: "e", label: "The idea of giving up the drink scares me more than the consequences.", evidence: { 7: 2, 6: 1 } },
+      { id: "f", label: "I understand the risk intellectually, but it doesn't feel real.", evidence: { 3: 2, 5: 1 } },
+      { id: "g", label: "That's exactly the problem. I know what I'm risking and I still reach for it.", evidence: { 5: 3 } },
+      { id: "h", label: "I don't know yet.", evidence: { 1: 2 } },
+    ],
+  },
+
 };
 
 export function getDoorway(id: string | undefined): Doorway | undefined {
