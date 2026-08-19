@@ -171,6 +171,8 @@ export interface Doorway {
   stage2?: string;
   prefixPages?: number;
   totalPages?: number;
+}
+
 
 
 /* ------------------------------------------------------------------ */
