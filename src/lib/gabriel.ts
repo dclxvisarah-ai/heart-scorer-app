@@ -155,12 +155,13 @@ export interface Doorway {
    */
   universal: "always" | "ifAvoidance" | "never";
   /**
-   * Optional doorway-specific closing question. When present it replaces the
-   * shared final core question as the last question of the path, so a branch
-   * ends on something specific to its own thread instead of the generic
-   * closer. Doorways without one keep the shared closer (unchanged behavior).
+   * Optional id of a doorway-specific closing question (resolved from
+   * BRANCH_QUESTIONS at runtime). When present it replaces the shared final
+   * core question as the last question of the path, so a branch ends on
+   * something specific to its own thread instead of the generic closer.
+   * Doorways without one keep the shared closer (unchanged behavior).
    */
-  closing?: Question;
+  closing?: string;
 }
 
 /* ------------------------------------------------------------------ */
