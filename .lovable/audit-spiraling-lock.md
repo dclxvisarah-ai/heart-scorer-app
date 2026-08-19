@@ -1,116 +1,60 @@
-# Spiraling branch — convergence + final-output audit and LOCK (2026-08-19)
+# Spiraling Branch — Instrument & Result Audit (LOCKED)
 
-Scope: `spiral` doorway only. No other branch touched. Immutable core untouched:
-`NUMBERS`, Tree mapping, `MIN_PRIMARY_WEIGHT = 2.4`, `MIN_LEAD = 0.35`,
-`MIN_SUPPORT_WEIGHT = 1.8`, normalization `raw / sqrt(max(available,1)) * 2`,
-Undetermined behavior. Verified programmatically after the edits (formula string
-and all three constants asserted intact).
+Doorway: **"My brain is spiraling"** (`spiral`)
+Date of pass: 2026-08-19
+Scope: Spiraling branch only (`src/lib/gabriel.ts`) + shared result presentation (`src/routes/index.tsx`).
+Framework: immutable. 1–9 meanings, Tree mapping, evidence formula, weights, thresholds and Undetermined behavior unchanged.
 
-## 1. Instrument audit
+## 1. Q1–Q6 psychological purpose audit
 
-15 questions, 84 responses, fixed six-page architecture (`prefixPages: 3`,
-`stage2: spiral-known`, `totalPages: 6`). Every response was checked for
-psychological mechanism → authentic information → fixed 1–9 mapping.
+Fixed six-page architecture: 3 adaptive opening pages (P1 → one of 8 P2 follow-ups → one of 3 P3 pages) then a fixed stage-2 chain (P4–P6). 15 reachable questions, 84 reachable options, every path exactly 6 pages.
 
-Findings:
+| Page | Question(s) | Mechanism | Authentic information elicited | Fixed 1–9 targets | Answer separation |
+|---|---|---|---|---|---|
+| Q1 | `spiral-1` "What is it actually doing right now?" | Names the *form* of the loop instead of its content — forces observation over reaction | Whether the loop is retrospective, predictive, other-mind reading, reassurance-seeking, unsolvable, catastrophic, scattered, fixed, or unreadable | 3 Pattern, 8 Listening, 7 Staying, 2 Duality, 5 Discernment, 4 Structure, 1 Beginning | 9 mutually exclusive loop shapes; no two share an evidence signature |
+| Q2 | `spiral-replay` / `-predict` / `-meant` / `-reassure` / `-unsolvable` / `-jump` / `-stuck` / `-unknown` | Tests the loop's *evidence base* — what the mind is actually working from | Whether the material is real information, inference, tone, timing, absence, or nothing at all | 5 (real evidence), 2 (inference/other), 8 (information from a person), 3 (repetition without content), 7 (time/duration), 4 (accumulation), 9 (action-dependent), 1 (unknown) | Each follow-up is specific to the Q1 shape — answering Q1 differently produces genuinely different Q2 material |
+| Q3 | `spiral-subject` / `-stakes` / `-fuel` | Strips the story: names the feared truth, the real stake, or the loop's self-restart behavior | Emotional load and what the loop protects the person from facing | 2, 6, 5, 7, 8, 9, 3, 4, 1 | Three distinct probes; content-level (subject), consequence-level (stakes), mechanical-level (fuel) |
+| Q4 | `spiral-known` | Fact vs interpretation split | How much of the spiral is event and how much is construction | 5 (fact), 2 (assumption), 8 (unheard from other), 1 (can't separate) | Ordered gradient from "real event" to "almost all guessing" |
+| Q5 | `spiral-stop` | Historical evidence, not intention — "what has stopped it, not what should" | The person's demonstrated regulation route | 8 (being told), 7 (time), 9 (doing the dreaded thing), 6 (articulating), 3 (nothing — recurs), 4 (deciding) | Each option is a materially different intervention with one primary function |
+| Q6 | `spiral-need` | Converts insight into a requirement — closes on need rather than feeling | What the person is actually asking for: information, contact, decision, action, tolerance of not knowing, self-relief, or nothing yet | 5, 8, 4, 9, 7, 6, 1 | Explicit "not what would be nice" framing; 7 options, no duplicate signatures |
 
-- **Banned wording** (`land` / `landed` / `landing`): 2 occurrences.
-  - `spiral-replay` prompt: "What does the replay keep landing on?"
-  - `spiral-replay/e`: "It doesn't land anywhere, it just runs"
-- **Same-question evidence collisions**: 2 initially (a third surfaced during the fix and was cleared; final audit: 0).
-  - `spiral-1`: `predict` and `unsolvable` both carried `{5:1, 7:2}` — two
-    distinct mechanisms (future simulation vs. premature closure on an
-    unanswerable question) with an identical signature.
-  - `spiral-stuck`: `c` ("Weeks or longer") and `d` ("comes back every few
-    months") both `{3:3}` — continuous duration and cyclical recurrence
-    scored identically.
-- **Responses that tell the user the number**: none found. No spiraling
-  response names a dimension, lesson, or mechanism label; all report
-  behavior or content.
-- **Weights**: no weight > 3, no per-choice sum > 3, no dangling
-  `next`/`followUp`, no duplicate labels.
-- **Per-page 1–9 availability** (observation, not a mandate to force options):
-  `spiral-1` no 6/9; `spiral-replay` no 1/4/5/7; `spiral-predict` no 4/6/8/9;
-  `spiral-meant` no 1/4/6/7/9; `spiral-reassure` no 1/2/4/5; `spiral-unsolvable`
-  no 2/3/6; `spiral-jump` no 6/9; `spiral-stuck` no 2/4/6/8/9; `spiral-unknown`
-  no 2/4/9; `spiral-subject` no 1/4; `spiral-stakes` no 1; `spiral-fuel` no
-  2/5/6/8; `spiral-known` no 3/4/6/7/9; `spiral-stop` no 1/2/5; `spiral-need`
-  no 2/3. These pages are psychologically natural as written; all nine numbers
-  are reachable at branch level (see §3), so no options were added for
-  mathematical symmetry.
+No stage repeats another's mechanism: form → evidence → load → fact/interpretation → demonstrated history → requirement.
 
-## 2. Instrument fixes applied (wording/routing only)
+## 2. Findings
 
-1. `spiral-replay` prompt → "What does the replay keep circling back to?"
-   (same psychological target: which object the replay fixes on).
-2. `spiral-replay/e` → "Nothing in particular — it just runs on repeat".
-   Mapping unchanged `{3:3}` — still pure recurrence with no content.
-3. `spiral-1/predict` → `{7:2, 3:1}` (was `{5:1, 7:2}`). Predicting a thing
-   that has not happened is running a familiar loop forward while unable to
-   stay in the present; discernment is not what it reveals. Collision with
-   `unsolvable` (`{7:2, 5:1}`, unchanged) resolved. Wording unchanged.
-4. `spiral-stuck/c` → "Weeks or longer, without much of a break", `{3:2, 7:1}`.
-   Continuous, unbroken duration is recurrence plus an inability to put it
-   down; cyclical return stays the pure `{3:3}` pattern response (`d`).
-5. `spiral-stuck/b` ("A few days") → `{7:3}` (was `{3:2, 7:1}`). A few days of
-   one thought is not yet a recognized recurring pattern — it is an inability
-   to set the thought down. This also cleared the new collision the fix in (4)
-   introduced with `b`; re-audited to 0 collisions.
+- Duplicate evidence signatures within a question: **0**.
+- Options with no evidence: **0**. Options exceeding max weight 3: **0**.
+- Banned wording (`land` / `landed` / `landing`) in Spiraling prompts, notes, labels or details: **0**.
+- Result presentation did not label the three required standard sections explicitly (number, missing clarity, next step).
 
-No prompts other than `spiral-replay` changed. No structural change: the fixed
-six-page architecture was preserved (the audit exposed no problem requiring it).
-No imagery added.
+## 3. Changes made
 
-## 3. Exhaustive stress test (post-fix)
+Result presentation only (`src/routes/index.tsx`), no scoring or question changes:
 
-Full enumeration of the spiraling branch:
+- Added explicit **"Your Gabriel Number"** label above the numeral, and above the Undetermined heading.
+- Undetermined heading reworded to "Undetermined — and that is an honest answer, not a failure."
+- The core-lesson block is now explicitly labelled **"The clarity you're missing"** (lesson text unchanged).
+- The closing card is now **"What to look at next"**, and now renders its humanized paragraph for Undetermined results as well as earned numbers (previously the paragraph was suppressed when undetermined).
 
-- **55,440 complete paths**, all exactly 6 pages — **0 page-length violations**.
-- **All 84 reachable response options exercised** (0 uncovered).
-- **All nine numbers reachable as primary**:
-  1: 2,179 · 2: 4,832 · 3: 6,655 · 4: 2,119 · 5: 6,790 · 6: 2,460 ·
-  7: 6,341 · 8: 5,282 · 9: 3,561.
-- **Undetermined: 27.5%** of paths — inside the validated 25–30% band; never
-  forced into a number.
-- **Deterministic scoring**: re-evaluating every path gave byte-identical
-  results.
-- **Back-button / stale answers**: editing any of the 6 pages preserves the
-  prefix and drops every later answer — 0 surviving stale answers.
-- **Duplicate selection idempotency**: re-selecting the same answer changes
-  nothing.
-- **Bogus / missing answer ids**: no throw; empty state yields no primary.
-- **Deeper probes**: 400 sampled undetermined paths → **400 resolved** (100%),
-  no dead ends.
-- **Framework guard**: constants and normalization formula asserted unchanged.
-- **Problems reported: 0.**
+Result sequence delivered: initial doorway question → Your Gabriel Number → The clarity you're missing → Why the pattern led there (reasoning + per-question contributions) → What to look at next (humanized explanation, carry-forward question, practical advice) → supporting threads.
 
-## 4. Final-output audit (universal result standard)
+## 4. Exhaustive stress test results
 
-Required sequence: initial question → Gabriel Number → core lesson → pattern
-summary → humanized explanation → practical next question/advice.
+- Reachable paths walked: **55,440** — page-length violations: **0** (every path exactly 6 pages).
+- Reachable options: **84**; exercised: **84**; uncovered: **0**. Reachable questions: **15**.
+- Primary distribution: 1:2179, 2:4832, 3:6655, 4:2119, 5:6790, 6:2460, 7:6341, 8:5282, 9:3561 — **all nine numbers reachable**.
+- Undetermined: **27.5%** — preserved, never forced.
+- Determinism: re-evaluating every one of the 55,440 outcomes produced identical results — 0 mismatches. Idempotency check passed.
+- Back navigation / stale answers: editing each of the 6 pages in turn preserved the prefix (0 prefix changes) and left no answer outside the active sequence (0 stale survivals).
+- Missing/bogus IDs: empty answer map → Undetermined, no throw; bogus choice ID and bogus question ID → no throw, valid result.
+- Deeper probes: 400 sampled Undetermined outcomes, **400 resolved** within ≤3 probes.
+- Result-standard completeness across all 55,440 outcomes: every outcome has reasoning, a next-step (human + question + advice) and, when a number is earned, a core lesson and a non-empty pattern summary — 0 failures.
+- Immutable constants verified present and unchanged: `MIN_PRIMARY_WEIGHT = 2.4`, `MIN_LEAD = 0.35`, `MIN_SUPPORT_WEIGHT = 1.8`; normalization `raw / Math.sqrt(Math.max(reach, 1)) * 2` intact.
 
-Before this pass the result showed only doorway label → number → meaning →
-core lesson → pattern reasoning. Missing: the reconnect to the initial question,
-the humanized explanation, and practical next question/advice.
+## 5. Imagery
 
-Presentation-only additions (non-scoring; no new scoring system, no new
-meanings):
+Deferred by design. No imagery added in this pass; imagery remains a later UX layer with no effect on scoring.
 
-- Result now opens with **"You came in with"** — the doorway question plus the
-  person's first answer, so the reading reconnects to why they entered.
-- New `NEXT_STEPS` map in `src/lib/gabriel.ts`: per number, a humanized
-  explanation, one carry-forward question, and one practical piece of advice.
-  Rendered as an **"In plain language"** card after the pattern summary.
-- `UNDETERMINED_NEXT`: honest wording for the undetermined outcome plus a
-  practical next question — no number is invented for closure.
+## 6. Verdict
 
-Verified end-to-end in the running app: doorway → 6 pages → result renders the
-full sequence with no console/page errors.
-
-## 5. Status
-
-**SPIRALING: LOCKED** — audit complete, all fixes are instrument-level, and the
-exhaustive 55,440-path stress test passes with 0 problems.
-
-Carried forward (flagged, out of this pass): the `DEEPER_PROBES` weight-4
-convention remains an explicit framework decision awaiting Sarah's approval.
+**SPIRALING: LOCKED.** Drinking and all other branches untouched in this pass.

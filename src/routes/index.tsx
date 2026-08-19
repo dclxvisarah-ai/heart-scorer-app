@@ -308,7 +308,8 @@ function GabrielsNumberPage() {
 
               {result.primary ? (
                 <>
-                  <div className="mt-5 flex items-baseline gap-4">
+                  <p className="eyebrow mt-6">Your Gabriel Number</p>
+                  <div className="mt-2 flex items-baseline gap-4">
                     <span className="numeral text-6xl text-teal sm:text-7xl">{result.primary}</span>
                     <div>
                       <p className="font-display text-xl leading-tight sm:text-2xl">
@@ -323,15 +324,18 @@ function GabrielsNumberPage() {
                   <p className="mt-5 text-sm leading-relaxed text-foreground">
                     {NUMBERS[result.primary].meaning}
                   </p>
-                  <p className="mt-3 rounded-xl border border-teal/30 bg-teal/8 px-4 py-3 text-sm leading-relaxed text-foreground">
-                    <span className="font-medium">Core lesson.</span>{" "}
-                    {NUMBERS[result.primary].lesson}
-                  </p>
+                  <div className="mt-4 rounded-xl border border-teal/30 bg-teal/8 px-4 py-3">
+                    <p className="eyebrow">The clarity you're missing</p>
+                    <p className="mt-1.5 text-sm leading-relaxed text-foreground">
+                      {NUMBERS[result.primary].lesson}
+                    </p>
+                  </div>
                 </>
               ) : (
                 <>
-                  <h2 className="mt-5 font-display text-2xl leading-tight sm:text-3xl">
-                    Your number is undetermined right now.
+                  <p className="eyebrow mt-6">Your Gabriel Number</p>
+                  <h2 className="mt-1 font-display text-2xl leading-tight sm:text-3xl">
+                    Undetermined — and that is an honest answer, not a failure.
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-foreground">{result.reasoning}</p>
                   {result.contested.length > 1 ? (
@@ -428,10 +432,8 @@ function GabrielsNumberPage() {
               const step = result.primary ? NEXT_STEPS[result.primary] : UNDETERMINED_NEXT;
               return (
                 <div className="card-cream p-5 sm:p-7">
-                  <h3 className="font-display text-lg">In plain language</h3>
-                  {result.primary ? (
-                    <p className="mt-3 text-sm leading-relaxed text-foreground">{step.human}</p>
-                  ) : null}
+                  <h3 className="font-display text-lg">What to look at next</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-foreground">{step.human}</p>
                   <p className="mt-4 rounded-xl border border-gold/50 bg-gold/10 px-4 py-3 text-sm leading-relaxed text-foreground">
                     <span className="font-medium">Carry this question with you.</span>{" "}
                     {step.question}
