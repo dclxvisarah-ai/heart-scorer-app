@@ -1,7 +1,7 @@
-# Gabriel's Number — Marketing Value Packet
-> Documentation artifact only. This file is for developer/investor review. It does not change, describe changes to, or alter any application behavior, scoring, questions, branches, UI, or the 1–9 framework.
+# Gabriel's Number — Investor & Potential-Market Value Packet
+> Documentation artifact only. This file is for developer/investor review. It does not change, describe changes to, or alter any application behavior, scoring, questions, branches, UI, or the 1–9 framework. This is not a consumer or personal/family document.
 ## 1. PRODUCT IN ONE SENTENCE
-Gabriel's Number is a reflection tool that uses situation-specific questions to collect weighted evidence and converge on a 1–9 number representing the user's current psychological pattern, with a corresponding symbolic/Tree of Life interpretation.
+Gabriel's Number is a reflection framework that produces situation-specific psychological instruments: a short, honest, tap-based branching sequence that accumulates weighted evidence and converges on a 1–9 number representing the user's current psychological pattern (or an honest "Undetermined" when the pattern has not yet separated). The same immutable 1–9 core generates distinct instruments for different situations.
 ## 2. ACTUAL SOURCE CODE
 The complete current contents of `src/lib/gabriel.ts`, verbatim:
 ```typescript
