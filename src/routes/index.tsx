@@ -424,6 +424,24 @@ function GabrielsNumberPage() {
               </div>
             ) : null}
 
+            {(() => {
+              const step = result.primary ? NEXT_STEPS[result.primary] : UNDETERMINED_NEXT;
+              return (
+                <div className="card-cream p-5 sm:p-7">
+                  <h3 className="font-display text-lg">In plain language</h3>
+                  {result.primary ? (
+                    <p className="mt-3 text-sm leading-relaxed text-foreground">{step.human}</p>
+                  ) : null}
+                  <p className="mt-4 rounded-xl border border-gold/50 bg-gold/10 px-4 py-3 text-sm leading-relaxed text-foreground">
+                    <span className="font-medium">Carry this question with you.</span>{" "}
+                    {step.question}
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-olive-soft">{step.advice}</p>
+                </div>
+              );
+            })()}
+
+
             {result.supporting.length > 0 ? (
               <div className="card-cream p-5 sm:p-7">
                 <h3 className="font-display text-lg">
