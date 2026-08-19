@@ -400,6 +400,14 @@ export const ALL_DOORWAYS: Doorway[] = [
     label: "My brain is spiraling",
     sub: "It's moving fast and not going anywhere",
     universal: "ifAvoidance",
+    // Fixed six-page architecture, same shape as the drinking branch:
+    // three adaptive pages (what it's doing → how it's doing it → what it's
+    // actually about) then a fixed stage 2 (fact/built line → what stops it →
+    // what would actually end it). No new scoring framework: every choice
+    // maps into the existing 1–9 evidence weights.
+    stage2: "spiral-known",
+    prefixPages: 3,
+    totalPages: 6,
     questions: [
       {
         id: "spiral-1",
@@ -416,20 +424,9 @@ export const ALL_DOORWAYS: Doorway[] = [
           { id: "unknown", label: "I can't even tell what started it", evidence: { 1: 2 }, followUp: "spiral-unknown" },
         ],
       },
-      {
-        id: "spiral-known",
-        prompt: "What's actually known?",
-        note: "Just the line between what happened and what you've filled in.",
-        choices: [
-          { id: "a", label: "I know something happened", evidence: { 5: 3 } },
-          { id: "b", label: "I know how I feel, but not what the other person meant", evidence: { 2: 2, 8: 1 } },
-          { id: "c", label: "I have evidence, but I'm filling in some gaps", evidence: { 5: 2, 2: 1 } },
-          { id: "d", label: "I mostly have assumptions right now", evidence: { 2: 3 } },
-          { id: "e", label: "I genuinely don't know yet", evidence: { 1: 2, 5: 1 } },
-        ],
-      },
     ],
   },
+
   {
     id: "drink",
     label: "Why the fuck do I want a drink right now?",
