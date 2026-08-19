@@ -141,7 +141,17 @@ export interface Question {
   choices: Choice[];
   /** Asked next regardless of which answer was chosen (linear chains). */
   next?: string;
+  /**
+   * AUDIT FLAG — non-scoring metadata. Set when a question fails the
+   * question-design standard (generic self-help wording, asks the person to
+   * name a psychological mechanism, or repeats a dimension without adding
+   * discrimination) and is queued for a creative rebuild. The string records
+   * the 1–9 information target that MUST be preserved by the rebuild.
+   * This field never affects evidence, weights, or convergence.
+   */
+  rebuild?: string;
 }
+
 
 export interface Doorway {
   id: string;
