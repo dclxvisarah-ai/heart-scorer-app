@@ -385,29 +385,52 @@ export const DOORWAYS: Doorway[] = [
   },
   {
     id: "drink",
-    label: "I feel like I want a drink and I don't know why",
-    sub: "Could be nothing. Could be worth a look",
+    label: "Why the fuck do I want a drink right now?",
+    sub: "No lecture. Just a look at what the urge is actually for",
     universal: "ifAvoidance",
     closing: "drink-closing",
     questions: [
       {
         id: "drink-1",
-        prompt: "Which is closest to the strange part?",
-        note: "No assumption here that anything is wrong.",
+        prompt:
+          "When the urge hits, what sounds so damn appealing about saying \u201cfuck it\u201d and having one?",
+        note: "You already know it's bad for you. You already know the consequences. You already know what tomorrow might feel like. So that's not the question.",
         choices: [
-          { id: "well", label: "My life is actually going well, so I don't understand the urge", evidence: { 7: 2, 2: 1 }, followUp: "drink-well" },
-          { id: "stress", label: "I've been stressed and I want relief", evidence: { 7: 2, 6: 1 }, followUp: "drink-stress" },
-          { id: "bored", label: "I'm bored or restless", evidence: { 7: 3 }, followUp: "drink-bored" },
-          { id: "routine", label: "It's simply part of my routine", evidence: { 3: 2, 4: 1 }, followUp: "drink-habit-1" },
-          { id: "change", label: "I want to change how I feel", evidence: { 7: 1, 9: 1 }, followUp: "drink-change" },
-          { id: "happened", label: "Something happened and I don't want to think about it", evidence: { 3: 1, 7: 1 }, followUp: "drink-happened", avoids: true },
-          { id: "plain", label: "Nothing happened. I just want one", evidence: { 2: 1, 7: 1 }, followUp: "drink-plain" },
-          { id: "good", label: "I've been feeling unusually good and I don't know how to sit with it", evidence: { 7: 2, 6: 1 }, followUp: "drink-well" },
-          { id: "unclear", label: "I honestly can't tell", evidence: { 1: 2 }, followUp: "drink-unclear" },
+          // expected reward
+          { id: "good", label: "I know I'll feel good.", evidence: { 9: 2, 2: 1 }, followUp: "drink-reward" },
+          // emotional regulation
+          { id: "better", label: "It makes me feel better.", evidence: { 7: 2, 6: 1 }, followUp: "drink-better" },
+          // identity / state borrowing
+          { id: "confidence", label: "I want to feel confident today.", evidence: { 6: 2, 2: 1 }, followUp: "drink-confidence" },
+          // arousal down-regulation
+          { id: "calm", label: "I want to calm the fuck down.", evidence: { 7: 2, 3: 1 }, followUp: "drink-calm" },
+          // cognitive escape
+          { id: "nothink", label: "I don't want to think anymore.", evidence: { 3: 2, 7: 1 }, followUp: "drink-nothink", avoids: true },
+          // anxiety about going without
+          { id: "scared", label: "I'm scared to go without it.", evidence: { 7: 2, 5: 1 }, followUp: "drink-without" },
+          // physical/somatic concern
+          { id: "shit", label: "I feel like shit without it.", evidence: { 7: 2, 9: 1 }, followUp: "drink-without" },
+          // automaticity / habit
+          { id: "routine", label: "It's just what I do. I don't even think about it anymore.", evidence: { 3: 3 }, followUp: "drink-routine" },
+          // anticipation
+          { id: "forward", label: "I want something to look forward to.", evidence: { 9: 2, 1: 1 }, followUp: "drink-forward" },
+          // identity
+          { id: "myself", label: "I want to feel more like myself.", evidence: { 6: 2, 1: 1 }, followUp: "drink-myself" },
+          // boredom
+          { id: "bored", label: "I'm bored as fuck.", evidence: { 7: 3 }, followUp: "drink-bored" },
+          // avoidance
+          { id: "escape", label: "I want to escape how I feel right now.", evidence: { 7: 2, 6: 1 }, followUp: "drink-escape", avoids: true },
+          // unexplained incongruence
+          { id: "well", label: "My life is actually good right now. I don't even know why I want one.", evidence: { 2: 2, 7: 1 }, followUp: "drink-good-life" },
+          // undifferentiated want
+          { id: "plain", label: "Honestly? I just fucking want one.", evidence: { 2: 1, 7: 1 }, followUp: "drink-plain-hour" },
+          // uncertainty
+          { id: "unclear", label: "I don't know. That's literally why I'm here.", evidence: { 1: 2 }, followUp: "drink-unclear" },
         ],
       },
     ],
   },
+
   {
     id: "gamble",
     label: "I'm feeling lucky — should I gamble?",
@@ -898,156 +921,285 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     ],
   },
 
-  /* --- "I want a drink and I don't know why" ---------------------- */
-  "drink-well": {
-    id: "drink-well",
-    prompt: "What feels hardest to simply experience right now?",
-    note: "Not looking for a hidden problem. Sometimes good is just unfamiliar.",
+  /* --- "Why the fuck do I want a drink right now?" ----------------- */
+
+  /**
+   * Second layer shared by most drinking answers. Keeps the thread on the
+   * drink itself instead of drifting into generic clarity language, and
+   * quietly separates the substance from the state it is standing in for.
+   */
+  "drink-layer2": {
+    id: "drink-layer2",
+    prompt: "Be honest: is it the drink you want, or the feeling on the other side of it?",
     choices: [
-      { id: "a", label: "Feeling good without waiting for something to go wrong", evidence: { 7: 3 } },
-      { id: "b", label: "Having nothing I need to fix", evidence: { 7: 2, 4: 1 } },
-      { id: "c", label: "Being still", evidence: { 7: 3 } },
-      { id: "d", label: "Feeling successful or comfortable", evidence: { 6: 3 } },
-      { id: "e", label: "Not knowing what comes next", evidence: { 5: 2, 7: 1 } },
-      { id: "f", label: "Having too much freedom", evidence: { 4: 3 } },
-      { id: "g", label: "Nothing feels difficult — I just have the urge", evidence: { 2: 2, 9: 1 } },
-      { id: "h", label: "I don't know yet", evidence: { 1: 2 } },
+      { id: "a", label: "The feeling. The drink is just how I get there.", evidence: { 7: 2, 6: 1 } },
+      { id: "b", label: "The drink itself. I actually like it.", evidence: { 2: 2, 9: 1 } },
+      { id: "c", label: "The moment around it — the pause, the people, the hour.", evidence: { 3: 2, 2: 1 } },
+      { id: "d", label: "The off switch. Not the taste, the off switch.", evidence: { 7: 2, 3: 1 }, avoids: true },
+      { id: "e", label: "Both, and I can't separate them anymore.", evidence: { 3: 2, 2: 1 } },
+      { id: "f", label: "I don't know.", evidence: { 1: 2 } },
     ],
   },
-  "drink-stress": {
-    id: "drink-stress",
-    prompt: "Where is the stress actually coming from?",
+
+  /* expected reward */
+  "drink-reward": {
+    id: "drink-reward",
+    prompt: "How reliable is that good feeling, really?",
+    note: "Not a trick question. Sometimes it delivers.",
     choices: [
-      { id: "a", label: "Work or money", evidence: { 4: 3 } },
-      { id: "b", label: "A person", evidence: { 8: 2, 2: 1 } },
-      { id: "c", label: "Too many small things at once", evidence: { 4: 2, 3: 1 } },
-      { id: "d", label: "Something unresolved that's just sitting there", evidence: { 9: 2, 7: 1 }, avoids: true },
-      { id: "e", label: "It's background, not one thing", evidence: { 7: 2, 3: 1 } },
+      { id: "a", label: "Very. It works basically every time.", evidence: { 3: 2, 2: 1 } },
+      { id: "b", label: "The first one works. After that it's downhill.", evidence: { 5: 2, 3: 1 } },
+      { id: "c", label: "It works for an hour, then I feel worse.", evidence: { 5: 2, 9: 1 } },
+      { id: "d", label: "Lately it doesn't really work at all.", evidence: { 5: 3 } },
+      { id: "e", label: "I've stopped checking. I just do it.", evidence: { 3: 3 } },
+      { id: "f", label: "I don't know.", evidence: { 1: 2 } },
     ],
+    next: "drink-layer2",
   },
-  "drink-bored": {
-    id: "drink-bored",
-    prompt: "What would fill the same slot as the drink tonight?",
+
+  /* emotional regulation */
+  "drink-better": {
+    id: "drink-better",
+    prompt: "Better than what, though? What's the current setting?",
     choices: [
-      { id: "a", label: "Honestly, plenty of things — I just default", evidence: { 3: 2, 9: 1 } },
-      { id: "b", label: "Company. It's about people, not the drink", evidence: { 2: 3 } },
-      { id: "c", label: "Nothing has the same edge to it", evidence: { 7: 3 } },
-      { id: "d", label: "Something I'd have to plan, which is the problem", evidence: { 4: 3 } },
-      { id: "e", label: "I don't know", evidence: { 1: 2 } },
+      { id: "a", label: "Wired and can't come down.", evidence: { 7: 2, 3: 1 } },
+      { id: "b", label: "Flat. Nothing much at all.", evidence: { 7: 2, 1: 1 } },
+      { id: "c", label: "Sad, and I'd rather not be.", evidence: { 7: 2, 6: 1 } },
+      { id: "d", label: "Angry or irritated.", evidence: { 6: 2, 8: 1 } },
+      { id: "e", label: "Lonely.", evidence: { 2: 2, 8: 1 } },
+      { id: "f", label: "Fine, honestly. Better would just be better.", evidence: { 2: 2, 9: 1 } },
+      { id: "g", label: "I can't name it, it's just off.", evidence: { 1: 2, 7: 1 } },
     ],
+    next: "drink-layer2",
   },
-  "drink-change": {
-    id: "drink-change",
-    prompt: "What do you want to feel instead?",
-    note: "Not why. Just which direction.",
+
+  /* identity / state borrowing */
+  "drink-confidence": {
+    id: "drink-confidence",
+    prompt: "Confidence to do what?",
     choices: [
-      { id: "a", label: "Calmer", evidence: { 7: 2, 6: 1 } },
-      { id: "b", label: "Less bored", evidence: { 7: 3 } },
-      { id: "c", label: "Less restless", evidence: { 7: 2, 3: 1 } },
-      { id: "d", label: "More social", evidence: { 2: 3 } },
-      { id: "e", label: "More relaxed", evidence: { 7: 2, 9: 1 } },
-      { id: "f", label: "More excited", evidence: { 1: 2, 9: 1 } },
-      { id: "g", label: "Less aware of myself", evidence: { 6: 3 }, avoids: true },
-      { id: "h", label: "I don't know", evidence: { 1: 2 } },
+      { id: "a", label: "Face people.", evidence: { 2: 2, 8: 1 } },
+      { id: "b", label: "Get through the day.", evidence: { 7: 2, 4: 1 } },
+      { id: "c", label: "Say what I actually think.", evidence: { 8: 3 } },
+      { id: "d", label: "Stop overthinking everything.", evidence: { 3: 3 } },
+      { id: "e", label: "Feel comfortable in my own skin.", evidence: { 6: 3 } },
+      { id: "f", label: "Do something I've been putting off.", evidence: { 9: 2, 4: 1 }, avoids: true },
+      { id: "g", label: "I don't know. I just feel more confident when I drink.", evidence: { 1: 2, 6: 1 } },
     ],
+    next: "drink-layer2",
   },
-  "drink-happened": {
-    id: "drink-happened",
-    prompt: "What's the part you'd rather not think about?",
+
+  /* arousal down-regulation */
+  "drink-calm": {
+    id: "drink-calm",
+    prompt: "What's got you wound up?",
     choices: [
-      { id: "a", label: "Something someone said", evidence: { 8: 3 } },
-      { id: "b", label: "Something I said or did", evidence: { 6: 3 } },
-      { id: "c", label: "News I got", evidence: { 5: 2, 7: 1 } },
-      { id: "d", label: "Something that isn't resolved yet", evidence: { 7: 2, 5: 1 } },
-      { id: "e", label: "I'd rather not name it here either", evidence: { 7: 2, 1: 1 } },
+      { id: "a", label: "Work, money, logistics.", evidence: { 4: 3 } },
+      { id: "b", label: "A person, or something they said.", evidence: { 8: 2, 2: 1 } },
+      { id: "c", label: "Too many small things stacked up.", evidence: { 4: 2, 3: 1 } },
+      { id: "d", label: "My own head. Nothing external.", evidence: { 3: 3 } },
+      { id: "e", label: "Something unresolved just sitting there.", evidence: { 9: 2, 7: 1 }, avoids: true },
+      { id: "f", label: "Nothing specific. My body is just switched on.", evidence: { 7: 2, 6: 1 } },
+      { id: "g", label: "No idea.", evidence: { 1: 2 } },
     ],
+    next: "drink-layer2",
   },
-  "drink-plain": {
-    id: "drink-plain",
-    prompt: "Fair. What's the drink connected to, if anything?",
+
+  /* cognitive escape */
+  "drink-nothink": {
+    id: "drink-nothink",
+    prompt: "What's the thought that keeps coming back?",
+    note: "You don't have to be specific. Just point at it.",
     choices: [
-      { id: "a", label: "The end of the workday", evidence: { 3: 2, 4: 1 } },
-      { id: "b", label: "Taste — I actually like it", evidence: { 2: 2, 9: 1 } },
-      { id: "c", label: "People I'd be with", evidence: { 2: 3 } },
-      { id: "d", label: "The hour, more than anything", evidence: { 3: 3 } },
-      { id: "e", label: "Nothing. It's just a want", evidence: { 7: 1, 2: 1 } },
+      { id: "a", label: "Something I did or said.", evidence: { 6: 3 } },
+      { id: "b", label: "Something someone else did.", evidence: { 8: 3 } },
+      { id: "c", label: "A decision I haven't made.", evidence: { 4: 2, 5: 1 } },
+      { id: "d", label: "Money, or how things are going to work out.", evidence: { 5: 2, 4: 1 } },
+      { id: "e", label: "Something about me I don't like.", evidence: { 6: 2, 7: 1 } },
+      { id: "f", label: "It's not one thought. It's all of it at once.", evidence: { 3: 3 } },
+      { id: "g", label: "I'd rather not name it.", evidence: { 7: 2, 1: 1 } },
     ],
+    next: "drink-layer2",
   },
-  "drink-unclear": {
-    id: "drink-unclear",
-    prompt: "When did you first notice the pull today?",
+
+  /* anxiety / physical dependence concern — held without diagnosis */
+  "drink-without": {
+    id: "drink-without",
+    prompt: "When you picture going without it, what shows up first?",
+    note: "No diagnosis here, and nothing you say gets turned into advice.",
     choices: [
-      { id: "a", label: "When the day stopped moving", evidence: { 7: 2, 3: 1 } },
-      { id: "b", label: "Right after something specific happened", evidence: { 3: 2, 5: 1 }, avoids: true },
-      { id: "c", label: "Around other people", evidence: { 2: 3 } },
-      { id: "d", label: "It's been there all day, low", evidence: { 7: 2, 3: 1 } },
-      { id: "e", label: "I can't place it", evidence: { 1: 2 } },
+      { id: "a", label: "My body. I don't feel right without it.", evidence: { 7: 2, 9: 1 } },
+      { id: "b", label: "I know I might feel sick in a few days without it.", evidence: { 9: 2, 5: 1 } },
+      { id: "c", label: "The hours. I don't know how I'd fill them.", evidence: { 4: 2, 1: 1 } },
+      { id: "d", label: "Everything I've been not-feeling shows up at once.", evidence: { 7: 3 }, avoids: true },
+      { id: "e", label: "I'd be afraid I'd cave anyway.", evidence: { 6: 2, 7: 1 } },
+      { id: "f", label: "That it would prove something I don't want proven.", evidence: { 6: 2, 5: 1 } },
+      { id: "g", label: "I honestly don't know.", evidence: { 1: 2 } },
     ],
+    next: "drink-layer2",
   },
-  "drink-habit-1": {
-    id: "drink-habit-1",
-    prompt: "What does the routine give you?",
+
+  /* automaticity / habit */
+  "drink-routine": {
+    id: "drink-routine",
+    prompt: "If you woke up tomorrow and the routine simply wasn't there, what would feel weirdest?",
     choices: [
-      { id: "a", label: "Something familiar", evidence: { 3: 3 } },
-      { id: "b", label: "Something to look forward to", evidence: { 9: 2, 2: 1 } },
-      { id: "c", label: "A way to change how I feel", evidence: { 7: 2, 6: 1 } },
-      { id: "d", label: "A way to mark the beginning or end of something", evidence: { 4: 3 } },
-      { id: "e", label: "A break from myself", evidence: { 6: 3 } },
-      { id: "f", label: "A sense of control", evidence: { 4: 2, 5: 1 } },
-      { id: "g", label: "Something I don't have to think about", evidence: { 3: 2, 7: 1 } },
-      { id: "h", label: "I don't know yet", evidence: { 1: 2 } },
+      { id: "a", label: "I know I might feel sick in a few days without it.", evidence: { 9: 2, 5: 1 } },
+      { id: "b", label: "Not having my usual thing to look forward to.", evidence: { 9: 2, 2: 1 } },
+      { id: "c", label: "Having to figure out what to do instead.", evidence: { 1: 2, 4: 1 } },
+      { id: "d", label: "Feeling like something is missing.", evidence: { 7: 2, 2: 1 } },
+      { id: "e", label: "Having to actually be present.", evidence: { 7: 2, 9: 1 }, avoids: true },
+      { id: "f", label: "I'd be afraid I'd cave later.", evidence: { 6: 2, 7: 1 } },
+      { id: "g", label: "I'd probably be fine, but it would still feel strange.", evidence: { 3: 2, 5: 1 } },
+      { id: "h", label: "Honestly, I don't know.", evidence: { 1: 2 } },
     ],
-    next: "drink-habit-2",
+    next: "drink-routine-2",
   },
-  "drink-habit-2": {
-    id: "drink-habit-2",
-    prompt: "If you didn't do the routine, what might you have to experience instead?",
-    choices: [
-      { id: "a", label: "Boredom", evidence: { 7: 3 } },
-      { id: "b", label: "Restlessness", evidence: { 7: 2, 3: 1 } },
-      { id: "c", label: "Stillness", evidence: { 7: 3 } },
-      { id: "d", label: "My thoughts", evidence: { 3: 3 } },
-      { id: "e", label: "An emotion", evidence: { 7: 2, 6: 1 } },
-      { id: "f", label: "A responsibility", evidence: { 9: 2, 4: 1 } },
-      { id: "g", label: "An uncomfortable conversation", evidence: { 8: 3 } },
-      { id: "h", label: "A version of myself I don't recognize", evidence: { 6: 2, 1: 1 } },
-      { id: "i", label: "Nothing particularly uncomfortable", evidence: { 2: 2, 9: 1 } },
-      { id: "j", label: "I honestly don't know", evidence: { 1: 2 } },
-    ],
-    next: "drink-habit-3",
-  },
-  "drink-habit-3": {
-    id: "drink-habit-3",
-    prompt: "What else might change if the routine changed?",
+  "drink-routine-2": {
+    id: "drink-routine-2",
+    prompt: "How much of it is the hour, and how much of it is you?",
     note: "Both directions count. This isn't a nudge to stop.",
     choices: [
-      { id: "a", label: "I might have more money", evidence: { 5: 2, 4: 1 } },
-      { id: "b", label: "I might feel better physically during the day", evidence: { 9: 3 } },
-      { id: "c", label: "I might have more energy", evidence: { 9: 2, 7: 1 } },
-      { id: "d", label: "My mornings might feel different", evidence: { 4: 2, 9: 1 } },
-      { id: "e", label: "I might sleep better", evidence: { 9: 2, 4: 1 } },
-      { id: "f", label: "I might be more present with people", evidence: { 8: 2, 2: 1 } },
-      { id: "g", label: "I might have more time", evidence: { 4: 3 } },
-      { id: "h", label: "I might trust myself more", evidence: { 6: 3 } },
-      { id: "i", label: "I might discover I don't miss it as much as I thought", evidence: { 2: 2, 5: 1 } },
-      { id: "j", label: "My life might feel unfamiliar for a while", evidence: { 7: 2, 1: 1 } },
-      { id: "k", label: "I might have to figure out what I actually want instead", evidence: { 1: 3 } },
-      { id: "l", label: "I don't know what would change", evidence: { 1: 2 } },
+      { id: "a", label: "Mostly the hour. Same time, every time.", evidence: { 3: 3 } },
+      { id: "b", label: "Mostly the day I've had.", evidence: { 7: 2, 4: 1 } },
+      { id: "c", label: "Mostly who I'm with.", evidence: { 2: 3 } },
+      { id: "d", label: "It's the marker. It ends the day.", evidence: { 4: 3 } },
+      { id: "e", label: "It's me. It doesn't need a reason anymore.", evidence: { 3: 2, 6: 1 } },
+      { id: "f", label: "I've never separated them.", evidence: { 1: 2, 3: 1 } },
     ],
-    next: "drink-habit-4",
+    next: "drink-layer2",
   },
-  "drink-habit-4": {
-    id: "drink-habit-4",
-    prompt: "Which feels more true right now?",
-    note: "Neither answer is the right one.",
+
+  /* anticipation */
+  "drink-forward": {
+    id: "drink-forward",
+    prompt: "What else is on the list of things to look forward to right now?",
     choices: [
-      { id: "a", label: "What I'd lose feels more real than what I'd gain", evidence: { 7: 2, 3: 1 } },
-      { id: "b", label: "What I'd gain feels more real than what I'd lose", evidence: { 9: 3 } },
-      { id: "c", label: "Both feel real, and that's the whole tension", evidence: { 2: 3, 6: 1 } },
-      { id: "d", label: "Neither feels real. It's just a habit", evidence: { 3: 3 } },
-      { id: "e", label: "I don't want to answer this today", evidence: { 7: 2, 1: 1 } },
+      { id: "a", label: "Plenty. This one is just the easiest.", evidence: { 3: 2, 9: 1 } },
+      { id: "b", label: "A couple of things, but they're further away.", evidence: { 5: 2, 4: 1 } },
+      { id: "c", label: "People, mostly.", evidence: { 2: 3 } },
+      { id: "d", label: "Nothing I've actually planned.", evidence: { 4: 2, 1: 1 } },
+      { id: "e", label: "Honestly, nothing. That's the problem.", evidence: { 7: 2, 1: 1 } },
+      { id: "f", label: "I haven't thought about it.", evidence: { 1: 2 } },
     ],
+    next: "drink-layer2",
   },
+
+  /* identity */
+  "drink-myself": {
+    id: "drink-myself",
+    prompt: "When you say \u201cmore like myself,\u201d which version of you are you missing?",
+    choices: [
+      { id: "a", label: "The confident one.", evidence: { 6: 2, 2: 1 } },
+      { id: "b", label: "The social one.", evidence: { 2: 3 } },
+      { id: "c", label: "The carefree one.", evidence: { 7: 2, 1: 1 } },
+      { id: "d", label: "The one who doesn't overthink everything.", evidence: { 3: 3 } },
+      { id: "e", label: "The one who doesn't give a shit what people think.", evidence: { 6: 2, 8: 1 } },
+      { id: "f", label: "The one who feels relaxed.", evidence: { 7: 2, 9: 1 } },
+      { id: "g", label: "The one who can actually enjoy things.", evidence: { 9: 2, 2: 1 } },
+      { id: "h", label: "I don't know which version. I just know I miss it.", evidence: { 1: 2, 6: 1 } },
+    ],
+    next: "drink-myself-2",
+  },
+  "drink-myself-2": {
+    id: "drink-myself-2",
+    prompt: "When was that version last around, without a drink involved?",
+    choices: [
+      { id: "a", label: "Recently. It comes and goes.", evidence: { 3: 2, 5: 1 } },
+      { id: "b", label: "A while ago, and I know roughly when it changed.", evidence: { 5: 2, 3: 1 } },
+      { id: "c", label: "Years.", evidence: { 1: 2, 7: 1 } },
+      { id: "d", label: "Only when things around me are easy.", evidence: { 4: 2, 7: 1 } },
+      { id: "e", label: "Only around certain people.", evidence: { 2: 2, 8: 1 } },
+      { id: "f", label: "I'm not sure it existed without one.", evidence: { 6: 2, 1: 1 } },
+      { id: "g", label: "I can't remember.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* boredom */
+  "drink-bored": {
+    id: "drink-bored",
+    prompt: "What would fill the same slot tonight, if the drink were off the table?",
+    choices: [
+      { id: "a", label: "Plenty of things — I just default to this one.", evidence: { 3: 2, 9: 1 } },
+      { id: "b", label: "Company. It's about people, not the drink.", evidence: { 2: 3 } },
+      { id: "c", label: "Nothing has the same edge to it.", evidence: { 7: 3 } },
+      { id: "d", label: "Something I'd have to plan, which is the problem.", evidence: { 4: 3 } },
+      { id: "e", label: "Screens, probably. Same slot, different thing.", evidence: { 3: 2, 7: 1 } },
+      { id: "f", label: "I don't know.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* avoidance */
+  "drink-escape": {
+    id: "drink-escape",
+    prompt: "What's the feeling you'd be getting away from?",
+    note: "Naming it here doesn't obligate you to do anything about it.",
+    choices: [
+      { id: "a", label: "Anxiety.", evidence: { 7: 2, 5: 1 } },
+      { id: "b", label: "Sadness.", evidence: { 7: 2, 6: 1 } },
+      { id: "c", label: "Shame or regret.", evidence: { 6: 3 } },
+      { id: "d", label: "Anger.", evidence: { 8: 2, 6: 1 } },
+      { id: "e", label: "Loneliness.", evidence: { 2: 2, 8: 1 } },
+      { id: "f", label: "Dread about something coming up.", evidence: { 5: 2, 4: 1 } },
+      { id: "g", label: "Emptiness.", evidence: { 7: 2, 1: 1 } },
+      { id: "h", label: "I can feel it but I can't name it.", evidence: { 1: 2, 7: 1 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* unexplained incongruence */
+  "drink-good-life": {
+    id: "drink-good-life",
+    prompt: "Okay, then let's not invent a problem. What feels strangest about wanting it when nothing seems wrong?",
+    choices: [
+      { id: "a", label: "I'm not used to things going this well.", evidence: { 7: 2, 6: 1 } },
+      { id: "b", label: "I feel restless even though I'm happy.", evidence: { 7: 3 } },
+      { id: "c", label: "I keep waiting for something to go wrong.", evidence: { 5: 2, 7: 1 } },
+      { id: "d", label: "I don't know what to do with myself when there's nothing to fix.", evidence: { 4: 2, 1: 1 } },
+      { id: "e", label: "I want to change how I feel even though I don't hate how I feel.", evidence: { 2: 2, 9: 1 } },
+      { id: "f", label: "I think it's just a habit.", evidence: { 3: 3 } },
+      { id: "g", label: "Nothing feels strange. I just want one.", evidence: { 2: 2, 7: 1 } },
+      { id: "h", label: "I honestly don't know.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* undifferentiated want */
+  "drink-plain-hour": {
+    id: "drink-plain-hour",
+    prompt: "Okay. Fair enough. If you got exactly what you want from that drink, what would you want the next hour to feel like?",
+    choices: [
+      { id: "a", label: "Easier.", evidence: { 7: 2, 4: 1 } },
+      { id: "b", label: "More fun.", evidence: { 9: 2, 2: 1 } },
+      { id: "c", label: "Quieter.", evidence: { 3: 2, 7: 1 } },
+      { id: "d", label: "More confident.", evidence: { 6: 2, 2: 1 }, followUp: "drink-confidence" },
+      { id: "e", label: "Less fucking boring.", evidence: { 7: 3 } },
+      { id: "f", label: "Less emotional.", evidence: { 7: 2, 6: 1 }, avoids: true },
+      { id: "g", label: "More social.", evidence: { 2: 3 } },
+      { id: "h", label: "More normal.", evidence: { 3: 2, 6: 1 } },
+      { id: "i", label: "I don't care how I feel. I just want the drink.", evidence: { 2: 1, 3: 1 } },
+      { id: "j", label: "I have no idea.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
+  /* uncertainty */
+  "drink-unclear": {
+    id: "drink-unclear",
+    prompt: "Then let's start smaller. When did you first notice the pull today?",
+    choices: [
+      { id: "a", label: "When the day stopped moving.", evidence: { 7: 2, 3: 1 } },
+      { id: "b", label: "Right after something specific happened.", evidence: { 3: 2, 5: 1 }, avoids: true },
+      { id: "c", label: "Around other people.", evidence: { 2: 3 } },
+      { id: "d", label: "It's been there all day, low.", evidence: { 7: 2, 3: 1 } },
+      { id: "e", label: "The second I had nothing to do.", evidence: { 7: 3 } },
+      { id: "f", label: "I can't place it.", evidence: { 1: 2 } },
+    ],
+    next: "drink-layer2",
+  },
+
   "drink-closing": {
     id: "drink-closing",
     prompt: "And if you didn't drink right now, what would you have to experience instead?",
