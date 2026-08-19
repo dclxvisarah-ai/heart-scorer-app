@@ -6,7 +6,9 @@ import { NumberPanel } from "@/components/NumberPanel";
 import {
   DOORWAYS,
   FRAMING_LINES,
+  NEXT_STEPS,
   NUMBERS,
+  UNDETERMINED_NEXT,
   buildSequence,
   evaluatePattern,
   getDeeperProbe,
@@ -134,6 +136,13 @@ function GabrielsNumberPage() {
 
 
   const current = sequence[index];
+  /** Reconnects the result to the way the person actually came in. */
+  const firstAnswerLabel = (() => {
+    const first = sequence[0];
+    if (!first) return undefined;
+    const chosen = first.choices.find((c) => c.id === answers[first.id]);
+    return chosen ? `${first.prompt} — ${chosen.label}` : undefined;
+  })();
   const nextProbe = result && !result.primary ? getDeeperProbe(result.contested, deeperIds) : undefined;
 
   return (
