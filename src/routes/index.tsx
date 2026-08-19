@@ -233,10 +233,17 @@ function GabrielsNumberPage() {
               />
             </div>
 
+            {current.rebuild ? (
+              <p className="mt-4 rounded-lg border border-gold/60 bg-gold/10 px-3 py-2 text-[11px] leading-relaxed tracking-wide text-olive-soft uppercase">
+                Requires rebuild — internal flag
+              </p>
+            ) : null}
+
             <h2 className="mt-5 font-display text-xl leading-snug sm:text-2xl">{current.prompt}</h2>
             {current.note ? (
               <p className="mt-2 text-sm text-muted-foreground">{current.note}</p>
             ) : null}
+
 
             <div className="mt-5 flex flex-col gap-2.5">
               {current.choices.map((choice) => {
