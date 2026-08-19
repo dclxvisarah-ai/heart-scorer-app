@@ -1456,7 +1456,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "g", label: "Being alone feels less alone — and I haven't called anyone.", evidence: { 8: 2, 2: 1 }, followUp: "drink-fear" },
       { id: "h", label: "It changes nothing. I want the drink, and I'll own that.", evidence: { 6: 3 }, followUp: "drink-consequence" },
       { id: "i", label: "It feels wrong to do the thing without it now — which is news to me.", evidence: { 1: 2, 3: 1 }, followUp: "drink-missing" },
-      { id: "j", label: "The activity isn't the point. The drinking is — I can see that clearly now.", evidence: { 5: 3 }, followUp: "drink-fear" },
+      { id: "j", label: "The activity isn't really the point anymore. The drinking is — and I can tell the difference now.", evidence: { 5: 3 }, followUp: "drink-fear" },
     ],
   },
 
