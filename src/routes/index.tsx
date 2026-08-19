@@ -6,7 +6,9 @@ import { NumberPanel } from "@/components/NumberPanel";
 import {
   DOORWAYS,
   FRAMING_LINES,
+  NEXT_STEPS,
   NUMBERS,
+  UNDETERMINED_NEXT,
   buildSequence,
   evaluatePattern,
   getDeeperProbe,
@@ -134,6 +136,13 @@ function GabrielsNumberPage() {
 
 
   const current = sequence[index];
+  /** Reconnects the result to the way the person actually came in. */
+  const firstAnswerLabel = (() => {
+    const first = sequence[0];
+    if (!first) return undefined;
+    const chosen = first.choices.find((c) => c.id === answers[first.id]);
+    return chosen ? `${first.prompt} — ${chosen.label}` : undefined;
+  })();
   const nextProbe = result && !result.primary ? getDeeperProbe(result.contested, deeperIds) : undefined;
 
   return (
@@ -289,11 +298,17 @@ function GabrielsNumberPage() {
         {stage === "result" && result && doorway ? (
           <section className="animate-rise flex flex-col gap-4">
             <div className="card-cream p-5 sm:p-7">
-              <p className="eyebrow">{doorway.label}</p>
+              <p className="eyebrow">You came in with</p>
+              <p className="mt-1 font-display text-lg leading-snug sm:text-xl">
+                “{doorway.label}”
+              </p>
+              {firstAnswerLabel ? (
+                <p className="mt-1 text-sm text-olive-soft">{firstAnswerLabel}</p>
+              ) : null}
 
               {result.primary ? (
                 <>
-                  <div className="mt-4 flex items-baseline gap-4">
+                  <div className="mt-5 flex items-baseline gap-4">
                     <span className="numeral text-6xl text-teal sm:text-7xl">{result.primary}</span>
                     <div>
                       <p className="font-display text-xl leading-tight sm:text-2xl">
@@ -315,7 +330,7 @@ function GabrielsNumberPage() {
                 </>
               ) : (
                 <>
-                  <h2 className="mt-4 font-display text-2xl leading-tight sm:text-3xl">
+                  <h2 className="mt-5 font-display text-2xl leading-tight sm:text-3xl">
                     Your number is undetermined right now.
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-foreground">{result.reasoning}</p>
@@ -329,6 +344,10 @@ function GabrielsNumberPage() {
                       at once — a real state, not a failed reading.
                     </p>
                   ) : null}
+                  <p className="mt-3 text-sm leading-relaxed text-foreground">
+                    {UNDETERMINED_NEXT.human}
+                  </p>
+
 
                   {leftHere ? (
                     <p className="mt-4 rounded-xl border border-hairline bg-background/50 px-4 py-3 text-sm leading-relaxed text-olive-soft">
@@ -404,6 +423,24 @@ function GabrielsNumberPage() {
                 ) : null}
               </div>
             ) : null}
+
+            {(() => {
+              const step = result.primary ? NEXT_STEPS[result.primary] : UNDETERMINED_NEXT;
+              return (
+                <div className="card-cream p-5 sm:p-7">
+                  <h3 className="font-display text-lg">In plain language</h3>
+                  {result.primary ? (
+                    <p className="mt-3 text-sm leading-relaxed text-foreground">{step.human}</p>
+                  ) : null}
+                  <p className="mt-4 rounded-xl border border-gold/50 bg-gold/10 px-4 py-3 text-sm leading-relaxed text-foreground">
+                    <span className="font-medium">Carry this question with you.</span>{" "}
+                    {step.question}
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-olive-soft">{step.advice}</p>
+                </div>
+              );
+            })()}
+
 
             {result.supporting.length > 0 ? (
               <div className="card-cream p-5 sm:p-7">

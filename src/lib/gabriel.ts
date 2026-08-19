@@ -414,7 +414,7 @@ export const ALL_DOORWAYS: Doorway[] = [
         prompt: "What is it actually doing right now?",
         choices: [
           { id: "replay", label: "Replaying something that already happened", evidence: { 3: 2, 8: 1 }, followUp: "spiral-replay" },
-          { id: "predict", label: "Predicting something that hasn't happened", evidence: { 5: 1, 7: 2 }, followUp: "spiral-predict" },
+          { id: "predict", label: "Predicting something that hasn't happened", evidence: { 7: 2, 3: 1 }, followUp: "spiral-predict" },
           { id: "meant", label: "Trying to figure out what someone else meant", evidence: { 8: 2, 2: 1 }, followUp: "spiral-meant" },
           { id: "reassure", label: "Searching for reassurance", evidence: { 2: 2, 7: 1 }, followUp: "spiral-reassure" },
           { id: "unsolvable", label: "Trying to solve a problem that doesn't have an answer yet", evidence: { 7: 2, 5: 1 }, followUp: "spiral-unsolvable" },
@@ -892,14 +892,14 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
    */
   "spiral-replay": {
     id: "spiral-replay",
-    prompt: "What does the replay keep landing on?",
+    prompt: "What does the replay keep circling back to?",
     next: "spiral-subject",
     choices: [
       { id: "a", label: "Something I said", evidence: { 8: 2, 6: 1 } },
       { id: "b", label: "Something they said", evidence: { 8: 2, 2: 1 } },
       { id: "c", label: "The moment I should have said something and didn't", evidence: { 9: 2, 8: 1 } },
       { id: "d", label: "How I looked or came across", evidence: { 6: 3 } },
-      { id: "e", label: "It doesn't land anywhere, it just runs", evidence: { 3: 3 } },
+      { id: "e", label: "Nothing in particular — it just runs on repeat", evidence: { 3: 3 } },
     ],
   },
   "spiral-predict": {
@@ -967,8 +967,8 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     next: "spiral-fuel",
     choices: [
       { id: "a", label: "Since today", evidence: { 5: 2, 7: 1 } },
-      { id: "b", label: "A few days", evidence: { 3: 2, 7: 1 } },
-      { id: "c", label: "Weeks or longer", evidence: { 3: 3 } },
+      { id: "b", label: "A few days", evidence: { 7: 3 } },
+      { id: "c", label: "Weeks or longer, without much of a break", evidence: { 3: 2, 7: 1 } },
       { id: "d", label: "It comes back every few months", evidence: { 3: 3 } },
       { id: "e", label: "No idea", evidence: { 1: 2 } },
     ],
@@ -1952,3 +1952,75 @@ export const FRAMING_LINES = [
   "Every number is useful information about what your mind is doing right now.",
   "The number describes the pattern in this situation — not a permanent type.",
 ];
+
+/* ------------------------------------------------------------------ */
+/* Result output layer — presentation only, never scoring             */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Humanized explanation and one practical next question/advice per number.
+ * NON-SCORING. This does not touch evidence, weights, thresholds or
+ * convergence — it only satisfies the universal result standard:
+ * initial question → number → core lesson → pattern summary →
+ * humanized explanation → practical next question/advice.
+ */
+export interface NextStep {
+  human: string;
+  question: string;
+  advice: string;
+}
+
+export const NEXT_STEPS: Record<GNumber, NextStep> = {
+  1: {
+    human: "You are at the very front of this. You don't have the shape of it yet, and your answers were honest about that instead of covering it with a story.",
+    question: "What is the first honest question you'd ask if nobody was going to judge the answer?",
+    advice: "Ask that one question — out loud or on paper — and stop there. You don't need the whole answer today to have started.",
+  },
+  2: {
+    human: "You're holding two things that both feel true, and most of your answers were about someone else's side of it as much as your own.",
+    question: "What's the most generous accurate reading of the other person, and what's yours?",
+    advice: "Write both versions down without picking a winner. Let them sit next to each other for a day before you act on either.",
+  },
+  3: {
+    human: "Your answers kept pointing at something that repeats. This isn't one event — it's a shape you've seen before, and part of the noise is recognition without a name.",
+    question: "When did this exact feeling show up before, and what did it turn out to be about?",
+    advice: "Name the pattern out loud once, plainly and without a verdict on yourself. Recognition is the work here, not fixing it tonight.",
+  },
+  4: {
+    human: "The problem in your answers isn't insight — it's that nothing is holding it. Everything is loose, so it all has to be carried at once.",
+    question: "What one limit, rule or decision would take this off your hands for the rest of the week?",
+    advice: "Pick one container — a decision, a time, a boundary — and put it in place before you think about it any further.",
+  },
+  5: {
+    human: "You're mixing what happened with what you've concluded from it. Some of this is fact and some of it is a read, and they've been running together.",
+    question: "Which part of this could you show someone, and which part is your interpretation?",
+    advice: "Split the list in two: what occurred, and what you've assumed. Then only act on the first column.",
+  },
+  6: {
+    human: "Your part in this is on your mind, and the noise is coming from the trial rather than the truth. Accountability turned into a case against you.",
+    question: "What's your actual share of this — no more, no less?",
+    advice: "Own your share in one sentence and stop the sentence there. Ownership without prosecution is the whole move.",
+  },
+  7: {
+    human: "The pressure in your answers is about staying still. This wants to be solved right now, and there's nothing to solve yet — only time to sit through.",
+    question: "What would it cost you to leave this exactly as it is until tomorrow?",
+    advice: "Don't chase resolution tonight. Choose one unhurried thing, do it, and let this stay unfinished on purpose.",
+  },
+  8: {
+    human: "A lot of this is built out of what you think someone meant. You're working from tone, timing and gaps rather than from what was actually said.",
+    question: "What do you actually know they said — and what would you find out by asking them directly?",
+    advice: "Ask the one person involved a plain question and let them finish answering before you decide what it means.",
+  },
+  9: {
+    human: "You already know something here. What's left isn't understanding — it's the small step you keep not taking, and the spiral is the gap where it should be.",
+    question: "What's the smallest real thing you could do about this in the next hour?",
+    advice: "Do that one thing today and let the rest stay unsolved. The step is the point, not the whole solution.",
+  },
+};
+
+/** Presentation copy for the honest undetermined outcome. */
+export const UNDETERMINED_NEXT: NextStep = {
+  human: "The answers you gave are pulling in more than one direction at once. That is a real state and a common one — it isn't a failed reading, and no number is being invented to close it out.",
+  question: "Which of the threads above would change the most if you got one piece of information?",
+  advice: "Pick the thread with the missing information and go get that one piece. Come back to this when you have it.",
+};
