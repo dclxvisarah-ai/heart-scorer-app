@@ -967,7 +967,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     next: "spiral-fuel",
     choices: [
       { id: "a", label: "Since today", evidence: { 5: 2, 7: 1 } },
-      { id: "b", label: "A few days", evidence: { 3: 2, 7: 1 } },
+      { id: "b", label: "A few days", evidence: { 7: 3 } },
       { id: "c", label: "Weeks or longer, without much of a break", evidence: { 3: 2, 7: 1 } },
       { id: "d", label: "It comes back every few months", evidence: { 3: 3 } },
       { id: "e", label: "No idea", evidence: { 1: 2 } },
