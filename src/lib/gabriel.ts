@@ -1129,6 +1129,8 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "d", label: "Angry — at something I haven't actually let the other person finish saying.", evidence: { 8: 3 } },
       { id: "e", label: "Lonely. I want company and I want to be left alone. Both.", evidence: { 2: 3 } },
       { id: "f", label: "Fine, honestly. Better would just be better — that's the whole of it.", evidence: { 5: 2, 2: 1 } },
+      // 9 — the setting is a stalled step, and he names the step
+      { id: "h", label: "Stalled. There's one thing I'd have to actually do tonight for this to shift.", evidence: { 9: 3 } },
       { id: "g", label: "I can't name it. That's the honest answer.", evidence: { 1: 2 } },
     ],
     next: "drink-layer2",
