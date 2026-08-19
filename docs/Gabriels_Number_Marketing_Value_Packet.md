@@ -1,7 +1,7 @@
-# Gabriel's Number — Marketing Value Packet
-> Documentation artifact only. This file is for developer/investor review. It does not change, describe changes to, or alter any application behavior, scoring, questions, branches, UI, or the 1–9 framework.
+# Gabriel's Number — Investor & Potential-Market Value Packet
+> Documentation artifact only. This file is for developer/investor review. It does not change, describe changes to, or alter any application behavior, scoring, questions, branches, UI, or the 1–9 framework. This is not a consumer or personal/family document.
 ## 1. PRODUCT IN ONE SENTENCE
-Gabriel's Number is a reflection tool that uses situation-specific questions to collect weighted evidence and converge on a 1–9 number representing the user's current psychological pattern, with a corresponding symbolic/Tree of Life interpretation.
+Gabriel's Number is a reflection framework that produces situation-specific psychological instruments: a short, honest, tap-based branching sequence that accumulates weighted evidence and converges on a 1–9 number representing the user's current psychological pattern (or an honest "Undetermined" when the pattern has not yet separated). The same immutable 1–9 core generates distinct instruments for different situations.
 ## 2. ACTUAL SOURCE CODE
 The complete current contents of `src/lib/gabriel.ts`, verbatim:
 ```typescript
@@ -1949,25 +1949,114 @@ export const FRAMING_LINES = [
 - `Undetermined` is returned when primary convergence requirements are not met; the engine never forces a number.
 - The Tree of Life mapping is metadata that accompanies a result; it does not add to the score or alter convergence.
 - The project's 1–9 meanings and Tree mappings are working psychological-symbolic mappings. They are NOT represented as official traditional Kabbalah or Pythagorean assignments, and no such claim is made by the project.
-## 4. MARKETING-VALUE ANALYSIS BRIEF
+
+## 4. CENTRAL INVESTOR THESIS
+
+**Reflection framework → distinct situation-specific instruments → professional bridge → potential licensable framework/platform.**
+
+Gabriel's Number did not begin as a quiz or a fixed personality test. It began as a **reflection framework**: a fixed, immutable 1–9 core (meanings, evidence model, convergence maths) that does not change from one situation to the next. The product insight is that this single immutable core can generate **distinct, situation-specific instruments** — each one a different doorway, a different set of questions, a different evidence configuration — while the underlying maths and meanings stay exactly the same. The same engine that reads a spiraling mind can read an urge to drink, and it does so by asking genuinely different questions, not by relabeling the same ones.
+
+That property is the basis of the thesis:
+
+1. **Reflection framework.** The 1–9 core, the convergence engine, the `Undetermined` safety behavior, and the deeper-probe resolution loop are situation-independent. They are the platform.
+2. **Distinct instruments.** Each doorway is a separate, audit-locked instrument with its own question architecture, evidence routing, and stress-test record. New situations produce genuinely new instruments against the same core — not a generic quiz re-skinned.
+3. **Professional bridge.** Certain situations (grief, bereavement, recovery, chronic illness) sit closer to professional reflective practice. A purpose-built instrument for those contexts is a credible bridge from consumer reflection toward professional use, where a reflective pattern read could support — not replace — a clinician's or facilitator's own assessment.
+4. **Potential licensable framework/platform.** If the core reliably generates defensible, audit-locked instruments across domains, the framework itself becomes the asset: a licensable engine and instrument-design standard that providers, organizations, or platforms could adopt and configure for their own populations.
+
+Every stage past the framework itself is a **potential opportunity or development direction**, not a proven outcome. No clinical efficacy, market demand, professional adoption, or enterprise revenue is claimed.
+
+## 5. VALIDATED INSTRUMENTS — DISTINCT INSTRUMENTS AGAINST ONE CORE
+
+The thesis in section 4 is not theoretical. Two doorways have already been built, audited, and stress-tested as **distinct instruments** against the same immutable 1–9 core:
+
+### 5.1 Spiraling — LOCKED
+Doorway: *"My brain is spiraling."*
+
+- **Architecture:** Fixed six-page instrument. 3 adaptive opening pages (P1 → one of 8 P2 follow-ups → one of 3 P3 pages), then a fixed stage-2 chain (P4–P6). 15 reachable questions, 84 reachable options, every reachable path exactly 6 pages.
+- **Stress test (exhaustive, on exported `buildSequence`/`evaluatePattern`):**
+  - Reachable paths walked: **55,440** — page-length violations: **0** (every path exactly 6 pages).
+  - Reachable options: **84**; exercised: **84**; uncovered: **0**. Reachable questions: **15**.
+  - Primary distribution: 1:2179, 2:4832, 3:6655, 4:2119, 5:6790, 6:2460, 7:6341, 8:5282, 9:3561 — **all nine numbers reachable**.
+  - **Undetermined: 27.5%** — preserved, never forced.
+  - Determinism: re-evaluating all 55,440 outcomes produced identical results — 0 mismatches. Idempotency passed.
+  - Back navigation / stale answers: editing each of the 6 pages preserved the prefix (0 prefix changes) and left no stale survivals.
+  - Missing/bogus IDs: empty answer map → Undetermined, no throw; bogus choice/question IDs → no throw, valid result.
+  - Deeper probes: 400 sampled Undetermined outcomes, **400 resolved within ≤3 probes**.
+  - Banned-word scan ("land"/"landed"/"landing" in user-facing text): **0 occurrences**.
+- **Result standard:** every outcome renders Initial question → Your Gabriel Number → The clarity you're missing (core lesson) → pattern reasoning → What to look at next (humanized explanation + carry-forward question + practical advice).
+- **Lock record:** `.lovable/audit-spiraling-lock.md`.
+
+### 5.2 Drinking — LOCKED
+Doorway: *"Why the fuck do I want a drink right now?"*
+
+- **Architecture:** Fixed six-page instrument. Opening chain resolves to follow-ups, then a fixed stage-2 chain. 25 reachable questions, 222 reachable options, every reachable path exactly 6 pages.
+- **Stress test (exhaustive, on exported `buildSequence`/`evaluatePattern`):**
+  - Reachable paths walked: **~999,792** — page-length violations: **0** (every path exactly 6 pages).
+  - Reachable options: **222**; exercised: **222**; uncovered: **0**. Reachable questions: **25**.
+  - All nine numbers reachable (60,546–99,9996 paths each).
+  - **Undetermined: ~30.7%** — preserved, never forced.
+  - 0 signature collisions, 0 dangling IDs, 0 evidence weight >3, 0 evidence-less options.
+  - Banned-word scan in Drinking user-facing text: **0 occurrences**.
+- **Result standard:** same universal sequence as Spiraling.
+- **Lock record:** `docs/Drinking_Branch_Full_Audit.md` (full response-level mapping for all 222 options).
+
+### 5.3 Why this matters for the thesis
+These two instruments share **nothing** at the question layer — different doorways, different words, different evidence configurations, different reachable question counts (15 vs 25), different option counts (84 vs 222) — yet they run on the **same** immutable 1–9 meanings, the same normalization formula, the same thresholds, the same `Undetermined` behavior, and the same deeper-probe resolution loop. That is the core demonstration: the framework is the asset; the instruments are its products. New situations yield new instruments without touching the core.
+
+## 6. STRATEGIC EXPANSION — GRIEF/BEREAVEMENT AS NEXT PROFESSIONAL-FACING INSTRUMENT
+
+**Potential development direction — not a validated market, not a clinical product, not a hospice adoption claim.**
+
+Grief and bereavement are a natural candidate for the next purpose-built instrument, and a credible bridge from consumer reflection toward professional use:
+
+- **Why grief fits the framework.** Grief is not a quiz question; it is a sustained psychological pattern that moves — looping on what was said/unsaid (3 Pattern), holding the loss and the life continuing at once (2 Duality), separating what is actually known from what is feared (5 Discernment), tolerating the quiet of an empty hour (7 Staying), hearing a memory before overriding it (8 Listening), carrying one concrete next step (9 Embodiment). These are the same nine dimensions. A grief instrument would not invent new meanings; it would route evidence to the existing core.
+- **A doorway, not a diagnosis.** Like the Drinking doorway, a grief instrument would open from an honest doorway ("I keep coming back to them" / "I can't tell if I'm grieving or stuck") and end with a defensible pattern and a practical next step — never a clinical verdict. `Undetermined` remains valid: "the loss is not resolving into a single pattern yet" is an honest, non-pathologizing read.
+- **Potential professional-facing context.** A grief instrument could be designed for use alongside — not in place of — a clinician, grief counselor, chaplain, or peer-support facilitator, as a structured reflective prompt that surfaces a pattern for the professional and the person to look at together. This is a **potential** application; no clinical efficacy, CBT treatment effect, or professional endorsement is claimed.
+- **Potential markets and partners (opportunities, not demand signals).** Hospice and bereavement organizations, grief-support nonprofits, employee-assistance programs, and faith/community pastoral-care programs are conceivable settings for a reflective instrument that complements existing care. Whether any of these would adopt, pay for, or benefit from such an instrument is unproven and would require validation.
+- **CBT-informed reflective angle (potential, not proven).** Cognitive-behavioral traditions emphasize separating fact from interpretation, identifying recurring thought patterns, and checking assumptions — movements that map cleanly onto the existing 5 / 3 / 2 dimensions. A grief (or recovery) instrument could be **informed by** those traditions as a reflection lens. This is explicitly *not* a claim of CBT treatment, clinical equivalence, or therapeutic efficacy. It is a design direction to evaluate.
+
+Grief/Bereavement is positioned as the **first professional-facing instrument** and a bridge into professional use — the third stage of the central thesis.
+
+## 7. POTENTIAL PROFESSIONAL / PROVIDER LAYER
+
+**Future product concept — not built, not validated, not a revenue claim.**
+
+If the framework reliably produces defensible instruments across situations, a professional/provider layer becomes a conceivable product direction:
+
+- **Longitudinal pattern tracking.** A provider-facing view could track how a person's Gabriel Number pattern shifts across multiple sessions over time (e.g. a grief instrument run weekly through a bereavement period), surfacing movement toward or away from particular dimensions rather than a single snapshot. This is a **potential** feature concept; no clinical interpretation of such trends is claimed, and the meaning of longitudinal shifts would require professional validation before any clinical use.
+- **Aggregate, de-identified trend views.** Organizations (hospice programs, EAPs, support groups) could conceivably receive aggregate, de-identified pattern-trend views across a population — e.g. "over the last month, the group's dominant pattern has moved from 3 Pattern toward 7 Staying" — as a reflection on collective movement, never as individual diagnosis. This is a **potential** analytics direction; no enterprise demand, no validated organizational benefit, and no individual-level reporting is claimed.
+- **Provider as facilitator, not interpreter.** In this model the professional facilitates the reflection and brings their own clinical judgment; the instrument surfaces a pattern and a next step, it does not render a verdict or replace assessment. Any clinical application would require independent validation.
+- **Licensable framework.** The end-state of this direction is that the framework — the immutable 1–9 core, the convergence engine, the instrument-design standard, and the audit protocol — is the licensable asset. Providers and platforms would configure their own situation-specific instruments against it, inheriting the validated maths and the locked result standard. This is the fourth stage of the central thesis and is explicitly a **long-term potential direction**, not a current capability.
+
+Everything in this section is a future product concept. None of it exists in the current application, and none of it should be read as a roadmap commitment, a validated demand signal, or a proven benefit.
+
+## 8. MARKETING-VALUE ANALYSIS BRIEF
 The following characteristics may differentiate the product technically and product-wise. Items marked **[Hypothesis/Opportunity]** are unproven and should not be presented as market claims. No clinical, diagnostic, scientific, or market-demand validation is claimed.
 
-- **Situation-specific branching.** The experience starts from a concrete doorway (e.g. "I don't know what the hell to do today", "My brain is spiraling") rather than a generic quiz. Each doorway has its own opening question and follow-up tree, so the questions track the user's actual situation.
-- **Weighted evidence, not answer-counting.** Each answer choice contributes a small evidence weight toward one or more of the nine numbers. This is richer than counting selected options per category.
+- **Framework, not a quiz.** The product is an immutable reflection framework that generates situation-specific instruments, not a fixed personality test or a re-skinned quiz. Two audit-locked instruments (Spiraling, Drinking) already demonstrate this property.
+- **Situation-specific branching.** The experience starts from a concrete doorway (e.g. "I don't know what the hell to do today", "My brain is spiraling", "Why the fuck do I want a drink right now?") rather than generic items. Each doorway has its own opening question and follow-up tree, so the questions track the user's actual situation.
+- **Weighted evidence, not answer-counting.** Each answer choice contributes a small evidence weight (max 3) toward one or more of the nine numbers. This is richer than counting selected options per category.
 - **Convergence rather than a simple result.** A 1–9 number is produced by convergence — the strongest coherent pattern across accumulated evidence — not by averaging or by matching the user to a pre-labeled bucket. Insufficient coherence yields `Undetermined`.
-- **Undetermined state.** The system can return "Undetermined" instead of forcing a number, which is an intentional outcome when the evidence does not cohere.
-- **Deeper probes.** When the first pass is Undetermined, follow-up deeper-probe questions attempt to resolve the pattern without manufacturing a result.
+- **Undetermined state.** The system can return "Undetermined" instead of forcing a number, which is an intentional outcome when the evidence does not cohere. Both locked instruments preserve a ~27–31% Undetermined rate.
+- **Deeper probes.** When the first pass is Undetermined, follow-up deeper-probe questions attempt to resolve the pattern without manufacturing a result. In Spiraling, 400 sampled Undetermined outcomes all resolved within ≤3 probes.
 - **Path-dependent evidence availability.** `Available_n` is computed across the questions actually encountered, which depend on prior answers, so normalization adapts to the specific path rather than a fixed denominator.
-- **Symbolic interpretation.** Each number carries a working psychological-symbolic meaning and a Tree of Life mapping as accompanying metadata.
+- **Audit-locked instruments.** Each instrument is locked only after an exhaustive stress test (paths, reachability, determinism, back-navigation, stale-answer cleanup, bogus IDs, deeper probes, wording scans) is recorded in a durable audit file. This is unusual transparency for a reflection tool and is itself a differentiator.
+- **Symbolic interpretation.** Each number carries a working psychological-symbolic meaning and a Tree of Life mapping as accompanying metadata — explicitly working mappings, not official traditional assignments.
+- **[Hypothesis/Opportunity]** The framework-generates-instruments property may make expansion into new domains cheaper and more defensible than building each domain from scratch; this is an architectural hypothesis, not a validated cost claim.
 - **[Hypothesis/Opportunity]** The branching + convergence model may be a more honest framing for self-reflection than linear scoring quizzes; market reception is unproven.
-- **[Hypothesis/Opportunity]** Returning "Undetermined" as a valid outcome may reduce false certainty; whether users experience this as valuable is untested.
-- **[Hypothesis/Opportunity]** The situation-specific doorways could support future domain expansion; this is a product direction, not a validated demand signal.
-## 5. IMPORTANT FRAMEWORK RULE
-The 1–9 framework is the immutable core of Gabriel's Number. Questions are the instrument. The number is the product/output. The questions and answer choices generate evidence; they do not define or replace the 1–9 meanings, weights, thresholds, or convergence maths. Nothing in this packet should be read as implying that the questions themselves are the product.
-## 6. AUDIT FLAGS
-Known factual flags present in the current implementation. These are documented here for transparency; none are fixed by this task.
+- **[Hypothesis/Opportunity]** Returning "Undetermined" as a valid outcome may reduce false certainty; whether users or professionals experience this as valuable is untested.
+- **[Hypothesis/Opportunity]** Grief/bereavement and other professional-adjacent situations could be the bridge from consumer reflection to professional use; this is a development direction, not a validated demand signal or clinical claim.
+
+## 9. IMPORTANT FRAMEWORK RULE
+The 1–9 framework is the immutable core of Gabriel's Number. Questions are the instrument. The number is the product/output. The questions and answer choices generate evidence; they do not define or replace the 1–9 meanings, weights, thresholds, or convergence maths. Nothing in this packet should be read as implying that the questions themselves are the product. New situations produce new instruments against the same core; the core never changes to accommodate a situation.
+
+## 10. AUDIT TRANSPARENCY & TECHNICAL CAVEATS
+Known factual flags and caveats present in the current implementation, documented here for transparency. None are fixed by this task.
 
 - **`DEEPER_PROBES` currently contain evidence weights of 4.** The ordinary-choice convention describes small weights (1–3), so the deeper-probe weights of 4 are a discrepancy. Whether deeper probes intentionally carry stronger evidence is an explicit framework decision requiring product-owner approval; it is not silently changed here.
 - **Normalized weights are rounded to two decimals before ranking/convergence.** The rounding step is part of the implemented pipeline.
 - **The convergence formula has no external published mathematical source cited in the code.** `W_n = Raw_n / sqrt(max(Available_n, 1)) * 2` is a project formula, not a reference to a published statistical method.
-- **Tree mapping is symbolic metadata.** It accompanies results and does not contribute to the score or alter convergence.
+- **Tree mapping is symbolic metadata.** It accompanies results and does not contribute to the score or alter convergence. The 1–9 meanings and Tree of Life mappings are the project's working psychological-symbolic mappings and are NOT official traditional Kabbalah or Pythagorean assignments.
+- **No clinical validation.** Gabriel's Number is a reflection tool. No clinical efficacy, diagnostic accuracy, therapeutic treatment effect, or professional endorsement is claimed or implied. Any professional-facing application described in this packet is a potential development direction requiring independent validation.
+- **No market-demand validation.** No market research, demand signal, or enterprise/customer commitment is claimed. All market-facing statements are hypotheses or opportunities.
+- **Stress-test figures are implementation-derived, not externally audited.** The path counts, reachability, and Undetermined rates cited for the locked instruments are produced by running the project's own stress-test harness against the exported `buildSequence`/`evaluatePattern`. They are reproducible from the code in section 2 but have not been independently verified.
