@@ -1093,6 +1093,10 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "d", label: "The off switch. Not the taste, the off switch — and I'll own that that's what I'm buying.", evidence: { 6: 2, 5: 1 }, avoids: true },
       { id: "e", label: "Both, and I've never actually pulled them apart.", evidence: { 1: 2, 3: 1 } },
       { id: "g", label: "I'd have to stop and hear what I actually want before I answer that.", evidence: { 8: 3 } },
+      // 7 — the hour itself is tolerable; the drink isn't doing the work
+      { id: "h", label: "Neither, really. It's the hour — and I could be in it without a drink. I just haven't been.", evidence: { 7: 3 } },
+      // 9 — wants the night carried into tomorrow rather than paid for
+      { id: "i", label: "What I actually want is to get to tomorrow without paying for tonight.", evidence: { 9: 3 } },
       { id: "f", label: "I don't know.", evidence: { 1: 2 } },
     ],
   },
