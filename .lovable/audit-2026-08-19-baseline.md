@@ -73,3 +73,21 @@ answers), contradictions, and deeper-probe resolution.
 
 Progress indicator: seed → sprout → young tree → growing tree → blooming tree →
 fruit-bearing tree. Purely visual.
+
+## Stage 1 + spiral rebuild (2026-08-19, later)
+
+Hidden from the start screen (code, questions and mappings preserved via
+`Doorway.hidden`; `ALL_DOORWAYS` keeps them, `DOORWAYS` filters them out):
+`chance`, `gamble`, `talk`.
+
+`spiral` rebuilt to the drinking-branch architecture: 6 fixed pages
+(`prefixPages: 3`, `stage2: "spiral-known"`, `totalPages: 6`).
+Pages 1–2 unchanged wording; new layer 3 (`spiral-subject` / `spiral-stakes` /
+`spiral-fuel`) reached by thread; stage 2 = `spiral-known` (reworded, same
+evidence), `spiral-stop`, `spiral-need`.
+
+Stress test: 55,440 exhaustive complete paths, all exactly 6 pages, 84/84 answer
+options exercised, all nine numbers reachable as primary, Undetermined 26.8%,
+deeper probes resolved 100% of sampled undetermined cases, deterministic,
+back-button edits invalidate later answers, bogus ids safe, empty state has no
+primary, 0 problems. No weight >3, no per-choice sum >3.
