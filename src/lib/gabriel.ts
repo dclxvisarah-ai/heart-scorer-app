@@ -1395,6 +1395,10 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "c", label: "The fear of what happens if I stop — and I can sit with that fear tonight.", evidence: { 7: 3 }, followUp: "drink-fear" },
       { id: "d", label: "Not having to decide. No rule, no decision, nothing to hold.", evidence: { 4: 2, 3: 1 }, followUp: "drink-inertia" },
       { id: "e", label: "It changes depending on the fucking day — and I can see which days are which.", evidence: { 3: 3 }, followUp: "drink-consequence" },
+      { id: "f", label: "Neither, until I know what I'm actually choosing between. I'm not calling it a want before then.", evidence: { 5: 3 }, followUp: "drink-consequence" },
+      { id: "g", label: "The drink, and I know what that costs me — I can own it without making myself the villain.", evidence: { 6: 3 }, followUp: "drink-want" },
+      { id: "h", label: "I can't answer that yet. I'd have to stop and hear what the other side of it is first.", evidence: { 8: 3 }, followUp: "drink-fear" },
+      { id: "i", label: "I honestly don't know which one has more power. That's the thing I'm trying to find out.", evidence: { 1: 2, 5: 1 }, followUp: "drink-fear" },
     ],
   },
 
