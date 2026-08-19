@@ -1295,7 +1295,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     id: "drink-changes",
     prompt: "Then what does the drink change about the thing you're already doing?",
     choices: [
-      { id: "a", label: "It makes boring shit tolerable.", evidence: { 7: 2, 3: 1 }, followUp: "drink-boredom" },
+      { id: "a", label: "It makes boring shit tolerable.", evidence: { 7: 3 }, followUp: "drink-boredom" },
       { id: "b", label: "It makes me enjoy things more.", evidence: { 2: 2, 9: 1 }, followUp: "drink-want" },
       { id: "c", label: "It makes me stop caring that I'm bored.", evidence: { 7: 3 }, followUp: "drink-boredom", avoids: true },
       { id: "d", label: "It gives me something to look forward to while I'm doing the same shit.", evidence: { 4: 2, 9: 1 }, followUp: "drink-inertia" },
@@ -1378,10 +1378,10 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "c", label: "I want to do things — I just can't get myself moving.", evidence: { 1: 2, 9: 1 } },
       { id: "d", label: "Drinking makes me feel like I'm doing something.", evidence: { 3: 2, 6: 1 } },
       { id: "e", label: "I use it as my excuse not to start.", evidence: { 1: 2, 7: 1 } },
-      { id: "f", label: "I know exactly what I should be doing and don't want to do it.", evidence: { 9: 2, 5: 1 } },
+      { id: "f", label: "I know exactly what I should be doing and don't want to do it.", evidence: { 5: 2, 9: 1 } },
       { id: "g", label: "No. I'm productive as hell while I drink.", evidence: { 5: 2, 2: 1 } },
       { id: "h", label: "That's not what's happening at all.", evidence: { 5: 2, 2: 1 } },
-      { id: "i", label: "Maybe. I've never separated those two things before.", evidence: { 8: 2, 1: 1 } },
+      { id: "i", label: "Maybe. I've never separated those two things before.", evidence: { 1: 2, 8: 1 } },
     ],
   },
 
