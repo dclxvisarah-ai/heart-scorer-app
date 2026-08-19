@@ -1168,23 +1168,6 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     next: "drink-layer2",
   },
 
-  /* cognitive escape */
-  "drink-nothink": {
-    id: "drink-nothink",
-    prompt: "What's the thought that keeps coming back?",
-    note: "You don't have to be specific. Just point at it.",
-    choices: [
-      { id: "a", label: "Something I did. I own it, and I don't need to keep sentencing myself for it.", evidence: { 6: 3 } },
-      { id: "b", label: "Something someone else did — I've been arguing with my version of them, not the real one.", evidence: { 8: 3 } },
-      { id: "c", label: "A decision I keep reopening because I never set a rule for it.", evidence: { 4: 3 } },
-      { id: "d", label: "Money, or how it all works out. I can't tell what I know from what I'm assuming.", evidence: { 5: 3 } },
-      { id: "e", label: "Same thought, same time of day, every day.", evidence: { 3: 3 } },
-      { id: "f", label: "All of it at once — and I can let it be loud without acting on it.", evidence: { 7: 3 } },
-      { id: "g", label: "I'd rather not name it yet. That's where I actually am.", evidence: { 1: 2 } },
-    ],
-    next: "drink-layer2",
-  },
-
   /* anxiety / physical dependence concern — held without diagnosis */
   "drink-without": {
     id: "drink-without",
@@ -1230,21 +1213,6 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "d", label: "It's the marker. It ends the day.", evidence: { 4: 3 } },
       { id: "e", label: "It's me. And I can say that without building a case against myself.", evidence: { 6: 3 } },
       { id: "f", label: "I've never separated them. That's the first honest thing here.", evidence: { 1: 2, 5: 1 } },
-    ],
-    next: "drink-layer2",
-  },
-
-  /* anticipation */
-  "drink-forward": {
-    id: "drink-forward",
-    prompt: "What else is on the list of things to look forward to right now?",
-    choices: [
-      { id: "a", label: "Plenty — and I default to this one every single time anyway.", evidence: { 3: 3 } },
-      { id: "b", label: "A couple of things, further out. I could put one on the calendar tonight.", evidence: { 9: 3 } },
-      { id: "c", label: "People, mostly. I'd have to reach out and actually listen.", evidence: { 8: 2, 2: 1 } },
-      { id: "d", label: "Nothing I've planned. Nothing has a shape yet.", evidence: { 4: 2, 1: 1 } },
-      { id: "e", label: "Nothing — and I can say that plainly without deciding what it means about me.", evidence: { 5: 2, 1: 1 } },
-      { id: "f", label: "I haven't thought about it. That's the honest start.", evidence: { 1: 2 } },
     ],
     next: "drink-layer2",
   },
@@ -1310,23 +1278,6 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
       { id: "f", label: "Dread about something coming. There's one step that would shrink it.", evidence: { 9: 3 } },
       { id: "g", label: "Emptiness. Same hour, most nights.", evidence: { 3: 3 } },
       { id: "h", label: "I feel it and I can't name it. That's where I'm starting.", evidence: { 1: 2 } },
-    ],
-    next: "drink-layer2",
-  },
-
-  /* unexplained incongruence */
-  "drink-good-life": {
-    id: "drink-good-life",
-    prompt: "Okay, then let's not invent a problem. What feels strangest about wanting it when nothing seems wrong?",
-    choices: [
-      { id: "a", label: "Things are good and I still want one. Two true things at once.", evidence: { 2: 3 } },
-      { id: "b", label: "I'm restless inside a good life — and I could just be restless without fixing it.", evidence: { 7: 3 } },
-      { id: "c", label: "I keep forecasting what'll go wrong, and I know it's a forecast, not a fact.", evidence: { 5: 3 } },
-      { id: "d", label: "With nothing to fix, I don't know what to do with myself. First time I've noticed that.", evidence: { 1: 2, 4: 1 } },
-      { id: "e", label: "Same hour, same reach — good day or bad day, it doesn't matter.", evidence: { 3: 3 } },
-      { id: "f", label: "I want one, nothing needs it, and there's something else I'd rather actually do.", evidence: { 9: 3 } },
-      { id: "g", label: "Nothing feels strange. I want one, and I'll say that plainly.", evidence: { 5: 2, 2: 1 } },
-      { id: "h", label: "I honestly don't know.", evidence: { 1: 2 } },
     ],
     next: "drink-layer2",
   },
