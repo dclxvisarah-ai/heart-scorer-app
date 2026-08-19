@@ -192,7 +192,7 @@ export interface Doorway {
 export const UNIVERSAL_QUESTION: Question = {
   id: "u1",
     rebuild:
-      "REQUIRES REBUILD — banned generic "what are you avoiding" framing. Information target to preserve: which dimension the avoidance sits in (7 staying, 8 listening, 5 discernment, 4 structure, 9 embodiment).",
+      "REQUIRES REBUILD — banned generic what-are-you-avoiding framing. Information target to preserve: which dimension the avoidance sits in (7 staying, 8 listening, 5 discernment, 4 structure, 9 embodiment).",
   prompt: "What are you trying not to experience right now?",
   note: "Not an accusation. Sometimes the honest answer is that you aren't avoiding anything.",
   choices: [
@@ -212,7 +212,7 @@ export const UNIVERSAL_FOLLOW_UPS: Record<string, Question> = {
   "uf-discomfort": {
     id: "uf-discomfort",
     rebuild:
-      "REQUIRES REBUILD — banned "where does the discomfort sit" framing. Target: body/unsaid/known-task/undifferentiated (7, 8, 9+4, 5+1).",
+      "REQUIRES REBUILD — banned where-does-the-discomfort-sit framing. Target: body/unsaid/known-task/undifferentiated (7, 8, 9+4, 5+1).",
     prompt: "Where does the discomfort actually sit?",
     choices: [
       { id: "a", label: "In my body — restless, tight, wired", evidence: { 7: 2, 3: 1 } },
