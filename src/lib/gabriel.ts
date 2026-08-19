@@ -162,7 +162,16 @@ export interface Doorway {
    * Doorways without one keep the shared closer (unchanged behavior).
    */
   closing?: string;
-}
+  /**
+   * Optional fixed-length architecture. `prefixPages` questions come from the
+   * doorway's own opening chain, then the path continues into `stage2` and is
+   * capped at `totalPages`, so the branch always has the same number of pages
+   * however the person answers.
+   */
+  stage2?: string;
+  prefixPages?: number;
+  totalPages?: number;
+
 
 /* ------------------------------------------------------------------ */
 /* The universal branch                                               */
