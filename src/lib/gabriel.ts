@@ -2229,24 +2229,29 @@ export const UNDETERMINED_NEXT: NextStep = {
  */
 export const NINE_BRIDGE_QUESTION = "What are you going to do with this insight?";
 
-/** Per-doorway opening line for the 9 result. Falls back to the generic line. */
+/**
+ * Per-doorway opening line for the 9 result. EVERY doorway gets its own line —
+ * no branch may inherit another branch's language. When a new branch is added,
+ * add its own entry here; the generic fallback is deliberately branch-neutral.
+ */
 const NINE_BRIDGE_OPENINGS: Record<string, string> = {
   drink:
     "The urge wasn't simply about wanting a drink. Your answers point to what was happening underneath the urge.",
   well:
-    "The urge wasn't simply about wanting a drink. Your answers point to what was happening underneath the urge.",
-  bet: "The urge wasn't simply about gambling. Your answers point to what the bet was standing in for.",
-  gamble: "The urge wasn't simply about gambling. Your answers point to what the bet was standing in for.",
-  spiral: "The spiral wasn't simply about the event. Your answers show what the looping was protecting you from.",
-  loop: "The spiral wasn't simply about the event. Your answers show what the looping was protecting you from.",
+    "The unease wasn't simply about things going well. Your answers point to what sits underneath the bracing when calm arrives.",
+  bet: "The urge wasn't simply about gambling. Your answers point to what the bet was standing in for underneath.",
+  gamble: "The urge wasn't simply about gambling. Your answers point to what the bet was standing in for underneath.",
+  spiral: "The spiral wasn't simply about the thought. Your answers show what the looping was protecting you from underneath.",
+  loop:
+    "The repetition wasn't simply bad luck repeating. Your answers point to the condition underneath that keeps setting it up again.",
   lost:
     "The restlessness wasn't simply about not knowing what to do today. Your answers point to the thing underneath it.",
   chance:
-    "The question wasn't simply whether to take the chance. Your answers point to what the risk actually represents.",
+    "The question wasn't simply whether to take the chance. Your answers point to what the risk actually represents underneath.",
   talk:
-    "It wasn't simply about whether now is the right time to talk. Your answers point to what you already know needs saying.",
+    "It wasn't simply about whether now is the right time to talk. Your answers point to what you already know needs saying underneath the timing.",
   happened:
-    "It wasn't simply about what happened. Your answers point to what you already understand about your part in it.",
+    "It wasn't simply about what happened. Your answers point to what you already understand, underneath, about your part in it.",
   surprise:
     "It wasn't simply about being caught off guard. Your answers point to what you already recognised underneath the surprise.",
 };

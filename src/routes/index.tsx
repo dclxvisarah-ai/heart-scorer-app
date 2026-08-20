@@ -152,6 +152,19 @@ function GabrielsNumberPage() {
     result?.primary && result.primary !== 9
       ? getResultNarrative(doorway?.id, result.primary, result.contributions)
       : undefined;
+  /** Response-pattern summary for the 9 result (presentation only). */
+  const nineSummary =
+    result?.primary === 9
+      ? (() => {
+          const quoted = result.contributions
+            .map((c) => c.choiceLabel)
+            .filter(Boolean)
+            .slice(0, 2);
+          return quoted.length > 0
+            ? `The answers that carried this: ${quoted.map((q) => `“${q}”`).join(" and ")}.`
+            : undefined;
+        })()
+      : undefined;
 
   return (
     <main className="paper min-h-screen">
@@ -337,6 +350,9 @@ function GabrielsNumberPage() {
                       <p className="text-sm leading-relaxed text-foreground">
                         {getNineBridge(doorway.id).human}
                       </p>
+                      {nineSummary ? (
+                        <p className="mt-2 text-sm leading-relaxed text-olive-soft">{nineSummary}</p>
+                      ) : null}
                       <p className="mt-3 font-display text-lg leading-snug">
                         {getNineBridge(doorway.id).question}
                       </p>
