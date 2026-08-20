@@ -252,7 +252,7 @@ export interface ResultNarrative {
   /** Practical consideration. */
   advice: string;
   /** Short pattern summary drawn from the answers that carried the number. */
-  patternSummary?: string;
+  patternSummary?: string | undefined;
 }
 
 /**
