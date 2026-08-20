@@ -342,6 +342,18 @@ function GabrielsNumberPage() {
                     <p className="mt-1.5 text-sm leading-relaxed text-foreground">
                       {NUMBERS[result.primary].lesson}
                     </p>
+                    {narrative ? (
+                      <>
+                        <p className="mt-3 text-sm leading-relaxed text-foreground">
+                          {narrative.clarity}
+                        </p>
+                        {narrative.patternSummary ? (
+                          <p className="mt-2 text-sm leading-relaxed text-olive-soft">
+                            {narrative.patternSummary}
+                          </p>
+                        ) : null}
+                      </>
+                    ) : null}
                   </div>
 
                 </>
