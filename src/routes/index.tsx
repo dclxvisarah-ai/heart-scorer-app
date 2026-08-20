@@ -168,6 +168,7 @@ function GabrielsNumberPage() {
 
   return (
     <main className="paper min-h-screen">
+      <DevPreviewBanner />
       <div className="mx-auto w-full max-w-2xl px-4 pt-8 pb-6 sm:px-6 sm:pt-12">
         <header className="mb-7 flex items-start justify-between gap-4">
           <div>
