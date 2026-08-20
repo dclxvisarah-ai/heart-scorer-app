@@ -147,6 +147,11 @@ function GabrielsNumberPage() {
     return chosen ? `${first.prompt} — ${chosen.label}` : undefined;
   })();
   const nextProbe = result && !result.primary ? getDeeperProbe(result.contested, deeperIds) : undefined;
+  /** Branch- and response-specific result narrative for numbers 1–8. */
+  const narrative =
+    result?.primary && result.primary !== 9
+      ? getResultNarrative(doorway?.id, result.primary, result.contributions)
+      : undefined;
 
   return (
     <main className="paper min-h-screen">
