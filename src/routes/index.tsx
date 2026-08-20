@@ -108,6 +108,8 @@ function GabrielsNumberPage() {
     setSavedId(undefined);
     setDeeperIds([]);
     setLeftHere(false);
+    urgeTimer.reset();
+
   }
 
   function choose(questionId: string, choiceId: string) {
