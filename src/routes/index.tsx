@@ -21,6 +21,13 @@ import {
 } from "@/lib/gabriel";
 import { loadHistory, newId, saveEntry, type HistoryEntry } from "@/lib/history";
 import { getResultNarrative } from "@/lib/result-narrative";
+import {
+  UrgeTimer,
+  UrgeTimerStrip,
+  urgeTimerIntro,
+  useUrgeTimer,
+} from "@/components/UrgeTimer";
+
 
 const TITLE = "What's Gabriel's Number? Vol. 2";
 const DESCRIPTION =
@@ -52,6 +59,12 @@ function GabrielsNumberPage() {
   /** Reworded probes the person opted into from an undetermined result. */
   const [deeperIds, setDeeperIds] = useState<string[]>([]);
   const [leftHere, setLeftHere] = useState(false);
+  /**
+   * Behavioural-support timer. Session-level state only — never read by the
+   * scoring engine and never saved as evidence.
+   */
+  const urgeTimer = useUrgeTimer();
+
 
   useEffect(() => {
     setHistory(loadHistory());
@@ -95,6 +108,8 @@ function GabrielsNumberPage() {
     setSavedId(undefined);
     setDeeperIds([]);
     setLeftHere(false);
+    urgeTimer.reset();
+
   }
 
   function choose(questionId: string, choiceId: string) {
@@ -264,6 +279,20 @@ function GabrielsNumberPage() {
                 style={{ width: `${((index + 1) / sequence.length) * 100}%` }}
               />
             </div>
+
+            {(() => {
+              const intro = urgeTimerIntro(doorway.id);
+              if (!intro) return null;
+              return index === 0 ? (
+                <div className="mt-4">
+                  <UrgeTimer timer={urgeTimer} intro={intro} />
+                </div>
+              ) : (
+                <UrgeTimerStrip timer={urgeTimer} />
+              );
+            })()}
+
+
 
             {current.rebuild ? (
               <p className="mt-4 rounded-lg border border-gold/60 bg-gold/10 px-3 py-2 text-[11px] leading-relaxed tracking-wide text-olive-soft uppercase">
