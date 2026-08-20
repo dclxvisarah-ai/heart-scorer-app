@@ -278,6 +278,20 @@ function GabrielsNumberPage() {
               />
             </div>
 
+            {(() => {
+              const intro = urgeTimerIntro(doorway.id);
+              if (!intro) return null;
+              return index === 0 ? (
+                <div className="mt-4">
+                  <UrgeTimer timer={urgeTimer} intro={intro} />
+                </div>
+              ) : (
+                <UrgeTimerStrip timer={urgeTimer} />
+              );
+            })()}
+
+
+
             {current.rebuild ? (
               <p className="mt-4 rounded-lg border border-gold/60 bg-gold/10 px-3 py-2 text-[11px] leading-relaxed tracking-wide text-olive-soft uppercase">
                 Requires rebuild — internal flag
