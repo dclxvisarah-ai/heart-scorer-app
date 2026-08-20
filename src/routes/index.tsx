@@ -19,6 +19,7 @@ import {
   type Question,
 } from "@/lib/gabriel";
 import { loadHistory, newId, saveEntry, type HistoryEntry } from "@/lib/history";
+import { getResultNarrative } from "@/lib/result-narrative";
 
 const TITLE = "What's Gabriel's Number? Vol. 2";
 const DESCRIPTION =
@@ -146,6 +147,11 @@ function GabrielsNumberPage() {
     return chosen ? `${first.prompt} — ${chosen.label}` : undefined;
   })();
   const nextProbe = result && !result.primary ? getDeeperProbe(result.contested, deeperIds) : undefined;
+  /** Branch- and response-specific result narrative for numbers 1–8. */
+  const narrative =
+    result?.primary && result.primary !== 9
+      ? getResultNarrative(doorway?.id, result.primary, result.contributions)
+      : undefined;
 
   return (
     <main className="paper min-h-screen">
@@ -341,6 +347,18 @@ function GabrielsNumberPage() {
                     <p className="mt-1.5 text-sm leading-relaxed text-foreground">
                       {NUMBERS[result.primary].lesson}
                     </p>
+                    {narrative ? (
+                      <>
+                        <p className="mt-3 text-sm leading-relaxed text-foreground">
+                          {narrative.clarity}
+                        </p>
+                        {narrative.patternSummary ? (
+                          <p className="mt-2 text-sm leading-relaxed text-olive-soft">
+                            {narrative.patternSummary}
+                          </p>
+                        ) : null}
+                      </>
+                    ) : null}
                   </div>
 
                 </>
@@ -443,15 +461,17 @@ function GabrielsNumberPage() {
 
             {(() => {
               const step = result.primary ? NEXT_STEPS[result.primary] : UNDETERMINED_NEXT;
+              const question = narrative?.question ?? step.question;
+              const advice = narrative?.advice ?? step.advice;
               return (
                 <div className="card-cream p-5 sm:p-7">
                   <h3 className="font-display text-lg">What to look at next</h3>
                   <p className="mt-3 text-sm leading-relaxed text-foreground">{step.human}</p>
                   <p className="mt-4 rounded-xl border border-gold/50 bg-gold/10 px-4 py-3 text-sm leading-relaxed text-foreground">
                     <span className="font-medium">Carry this question with you.</span>{" "}
-                    {step.question}
+                    {question}
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-olive-soft">{step.advice}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-olive-soft">{advice}</p>
                 </div>
               );
             })()}
