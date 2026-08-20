@@ -21,6 +21,13 @@ import {
 } from "@/lib/gabriel";
 import { loadHistory, newId, saveEntry, type HistoryEntry } from "@/lib/history";
 import { getResultNarrative } from "@/lib/result-narrative";
+import {
+  UrgeTimer,
+  UrgeTimerStrip,
+  urgeTimerIntro,
+  useUrgeTimer,
+} from "@/components/UrgeTimer";
+
 
 const TITLE = "What's Gabriel's Number? Vol. 2";
 const DESCRIPTION =
