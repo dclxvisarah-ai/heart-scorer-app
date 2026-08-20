@@ -1390,30 +1390,37 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
 
   /* ---------------- PAGE 5b: if the drink disappeared -------------- */
 
+  /**
+   * PAGE 5 (demonstrated power). Deliberately NOT another removal
+   * counterfactual — page 4 (drink-lost) already asks what would be lost and
+   * page 6 (drink-fear) asks what removal would threaten. This layer asks
+   * only for what has already, observably changed. Choice ids, evidence maps
+   * and followUps are unchanged: scoring is untouched.
+   */
   "drink-gone": {
     id: "drink-gone",
     prompt:
-      "You wake up tomorrow and the urge is completely gone. Your life otherwise stays exactly the same. What feels weirdest?",
+      "Set the hypotheticals aside. What has it already changed that you could actually point to?",
     choices: [
-      { id: "a", label: "I'd have no idea what to do with that time. That's the first real question.", evidence: { 1: 2, 4: 1 }, followUp: "drink-missing" },
-      { id: "b", label: "Relieved and thrown, both at once.", evidence: { 2: 3 }, followUp: "drink-want" },
-      { id: "c", label: "I'd go looking for another way to feel different. Same reach, new object — I can see the pattern.", evidence: { 3: 3 }, followUp: "drink-want", avoids: true },
-      { id: "d", label: "Scared, because I know what my body does when I stop — I'd want that heard by someone who knows.", evidence: { 8: 2, 5: 1 }, followUp: "drink-fear" },
-      { id: "f", label: "The one thing in the day that was mine, and mine on purpose.", evidence: { 4: 3 }, followUp: "drink-missing" },
-      { id: "g", label: "Pissed — and honest about being pissed instead of performing gratitude.", evidence: { 6: 3 }, followUp: "drink-consequence" },
-      { id: "h", label: "I'd find out the ritual mattered more than the drink ever did.", evidence: { 3: 2, 5: 1 }, followUp: "drink-missing" },
-      { id: "i", label: "I'd miss the version of me that comes out after — and I'd have to be the other one sober.", evidence: { 6: 2, 2: 1 }, followUp: "drink-fear" },
-      { id: "j", label: "More money, more time, a better day — and I'd still fucking miss it. Both true.", evidence: { 2: 2, 5: 1 }, followUp: "drink-consequence" },
-      { id: "k", label: "I'm more afraid of my life without it than of what it's doing to me — and I can say that and stay in it.", evidence: { 7: 3 }, followUp: "drink-fear" },
-      { id: "l", label: "I'd miss having that hour already decided for me. Without it, I'd have to decide what that hour is for.", evidence: { 4: 2, 1: 1 }, followUp: "drink-missing" },
-      { id: "m", label: "I'd do everything the same, just without it. That's the actual next step.", evidence: { 9: 3 }, followUp: "drink-changes" },
+      { id: "a", label: "I couldn't point to anything yet. That's the first honest thing here.", evidence: { 1: 2, 4: 1 }, followUp: "drink-missing" },
+      { id: "b", label: "It's improved some nights and wrecked others, and I can name which were which.", evidence: { 2: 3 }, followUp: "drink-want" },
+      { id: "c", label: "The same evenings keep going the same way. That's the part I can point to.", evidence: { 3: 3 }, followUp: "drink-want", avoids: true },
+      { id: "d", label: "My body — sleep, mornings, how the next day actually feels. I'd want that heard by someone who knows.", evidence: { 8: 2, 5: 1 }, followUp: "drink-fear" },
+      { id: "f", label: "It's the one part of the day I run deliberately, and I've kept it that way on purpose.", evidence: { 4: 3 }, followUp: "drink-missing" },
+      { id: "g", label: "It's cost me things I said mattered — and I'll say that without performing guilt about it.", evidence: { 6: 3 }, followUp: "drink-consequence" },
+      { id: "h", label: "Nothing about the drink itself. It's the hour around it that's changed shape.", evidence: { 3: 2, 5: 1 }, followUp: "drink-missing" },
+      { id: "i", label: "Who I am after a few has become a person other people have to deal with.", evidence: { 6: 2, 2: 1 }, followUp: "drink-fear" },
+      { id: "j", label: "Money, time and mornings — and I still don't want to give it up. Both real.", evidence: { 2: 2, 5: 1 }, followUp: "drink-consequence" },
+      { id: "k", label: "It's changed what I'm willing to sit through sober, and I can look straight at that.", evidence: { 7: 3 }, followUp: "drink-fear" },
+      { id: "l", label: "It's taken the deciding out of that hour. I haven't chosen what that hour is for in months.", evidence: { 4: 2, 1: 1 }, followUp: "drink-missing" },
+      { id: "m", label: "It's already changed one thing I actually care about — and I know the step that addresses it.", evidence: { 9: 3 }, followUp: "drink-changes" },
     ],
   },
 
   /* the "free time hypothesis is wrong" branch */
   "drink-missing": {
     id: "drink-missing",
-    prompt: "Wait — what would actually be missing?",
+    prompt: "Then if that hour stopped being the drink's hour, what would actually be missing?",
     choices: [
       { id: "a", label: "Not the time. I'd be doing the same things — I can tell those apart.", evidence: { 5: 3 } },
       { id: "b", label: "Something to look forward to. I'd have to make one thing worth it.", evidence: { 9: 3 } },
