@@ -96,3 +96,28 @@ describe("Gabriel Number 9 result copy", () => {
     expect(ninesFound).toBeGreaterThan(0);
   });
 });
+
+describe("Gabriel Number 9 branch isolation", () => {
+  /** Vocabulary that must never appear outside its own branch family. */
+  const BRANCH_WORDS: Record<string, RegExp> = {
+    drink: /\bdrink|drinking|alcohol|sober\b/i,
+    bet: /\bbet|gambl/i,
+    spiral: /\bspiral|looping\b/i,
+  };
+
+  it("gives every doorway a distinct 9 opening with no foreign branch vocabulary", () => {
+    const seen = new Map<string, string>();
+    const family: Record<string, string> = { gamble: "bet" };
+    for (const doorway of ALL_DOORWAYS) {
+      const human = getNineBridge(doorway.id).human;
+      const own = family[doorway.id] ?? doorway.id;
+      for (const [branch, re] of Object.entries(BRANCH_WORDS)) {
+        if (branch === own) continue;
+        expect(re.test(human), `${doorway.id} leaks ${branch} language`).toBe(false);
+      }
+      const prior = seen.get(human);
+      if (prior) expect(family[prior] ?? prior, `${doorway.id} reuses ${prior} copy`).toBe(own);
+      seen.set(human, doorway.id);
+    }
+  });
+});
