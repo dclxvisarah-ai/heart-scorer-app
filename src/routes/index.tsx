@@ -337,6 +337,9 @@ function GabrielsNumberPage() {
                       <p className="text-sm leading-relaxed text-foreground">
                         {getNineBridge(doorway.id).human}
                       </p>
+                      {nineSummary ? (
+                        <p className="mt-2 text-sm leading-relaxed text-olive-soft">{nineSummary}</p>
+                      ) : null}
                       <p className="mt-3 font-display text-lg leading-snug">
                         {getNineBridge(doorway.id).question}
                       </p>
