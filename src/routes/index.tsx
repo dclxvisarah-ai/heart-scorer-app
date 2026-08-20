@@ -59,6 +59,12 @@ function GabrielsNumberPage() {
   /** Reworded probes the person opted into from an undetermined result. */
   const [deeperIds, setDeeperIds] = useState<string[]>([]);
   const [leftHere, setLeftHere] = useState(false);
+  /**
+   * Behavioural-support timer. Session-level state only — never read by the
+   * scoring engine and never saved as evidence.
+   */
+  const urgeTimer = useUrgeTimer();
+
 
   useEffect(() => {
     setHistory(loadHistory());
