@@ -152,6 +152,19 @@ function GabrielsNumberPage() {
     result?.primary && result.primary !== 9
       ? getResultNarrative(doorway?.id, result.primary, result.contributions)
       : undefined;
+  /** Response-pattern summary for the 9 result (presentation only). */
+  const nineSummary =
+    result?.primary === 9
+      ? (() => {
+          const quoted = result.contributions
+            .map((c) => c.choiceLabel)
+            .filter(Boolean)
+            .slice(0, 2);
+          return quoted.length > 0
+            ? `The answers that carried this: ${quoted.map((q) => `“${q}”`).join(" and ")}.`
+            : undefined;
+        })()
+      : undefined;
 
   return (
     <main className="paper min-h-screen">
