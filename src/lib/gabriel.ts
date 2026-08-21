@@ -2136,7 +2136,7 @@ const NINE_BRIDGE_OPENINGS: Record<string, string> = {
     "The urge wasn't simply about wanting a drink. Your answers point to what was happening underneath the urge.",
   well:
     "The unease wasn't simply about things going well. Your answers point to what sits underneath the bracing when calm arrives.",
-  bet: "The urge wasn't simply about gambling. Your answers point to what the bet was standing in for underneath.",
+  bet: "The pull to keep going wasn't simply about the next bet. Your answers point to what continuing itself — the chase — is doing for you underneath.",
   gamble: "The urge wasn't simply about gambling. Your answers point to what the bet was standing in for underneath.",
   spiral: "The spiral wasn't simply about the thought. Your answers show what the looping was protecting you from underneath.",
   loop:
