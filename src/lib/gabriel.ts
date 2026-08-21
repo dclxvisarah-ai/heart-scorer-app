@@ -509,36 +509,32 @@ export const ALL_DOORWAYS: Doorway[] = [
   },
 
   {
-    // FIRST USABLE INSTRUMENT — not yet locked. Same six-page architecture and
-    // the same immutable 1–9 evidence weights as the locked branches. No new
-    // meanings, thresholds or formula.
+    // THE CHASE — rebuilt instrument. Examines the continuation loop: what is
+    // happening inside the person at the moment they are tempted to keep going.
+    // Same six-page architecture and the same immutable 1–9 evidence weights as
+    // the locked branches. No new meanings, thresholds or formula.
     id: "bet",
-    label: "I want to gamble right now, and I don't fucking know why",
-    sub: "No lecture. A look at what the urge is actually doing",
+    label: "The Chase",
+    sub: "You're in it and you don't want to stop. A look at what keeps it going",
     universal: "ifAvoidance",
-    stage2: "bet-known",
+    stage2: "bet-story",
     prefixPages: 3,
     totalPages: 6,
     questions: [
       {
         id: "bet-1",
-        prompt: "What's the closest thing to true about the urge right now?",
-        note: "You already know the odds. You already know how it can go. That's not the question.",
+        prompt: "Where are you in the cycle right now?",
+        note: "No advice, no strategy. Just where you actually are.",
         choices: [
-          { id: "rush", label: "I want the few minutes where it could still go either way.", evidence: { 2: 3 }, followUp: "bet-rush" },
-          { id: "escape", label: "I want out of my own head for an hour.", evidence: { 7: 3 }, followUp: "bet-escape", avoids: true },
-          { id: "relief", label: "Something is pressing on me and this is the only thing that loosens it.", evidence: { 8: 3 }, followUp: "bet-relief" },
-          { id: "outcome", label: "I want to change how something is going.", evidence: { 5: 3 }, followUp: "bet-outcome" },
-          { id: "chase", label: "I'm down and I want it back.", evidence: { 3: 2, 5: 1 }, followUp: "bet-chase" },
-          { id: "reach", label: "My hand was already reaching for it before I thought about it.", evidence: { 3: 3 }, followUp: "bet-reach" },
-          { id: "numb", label: "I don't feel much of anything and I want to feel something.", evidence: { 9: 3 }, followUp: "bet-numb" },
-          { id: "ritual", label: "Same day, same hour. It's just what I do.", evidence: { 4: 3 }, followUp: "bet-ritual" },
-          { id: "own", label: "I like it. I'm not going to build a story on top of it.", evidence: { 6: 3 }, followUp: "bet-own" },
-          { id: "unclear", label: "I don't know. That's literally why I'm here.", evidence: { 1: 2 }, followUp: "bet-unclear" },
+          { id: "up", label: "I'm up. I know I should leave, but I still want to keep going.", evidence: { 2: 3 }, followUp: "bet-up" },
+          { id: "down", label: "I'm down. I want to get the money back.", evidence: { 3: 2, 5: 1 }, followUp: "bet-down" },
+          { id: "even", label: "I'm about even, and I don't want to stop yet.", evidence: { 7: 3 }, followUp: "bet-even" },
+          { id: "early", label: "I haven't lost or won much yet. I just feel pulled to keep going.", evidence: { 8: 3 }, followUp: "bet-early", avoids: true },
         ],
       },
     ],
   },
+
   {
     id: "talk",
     hidden: true,
