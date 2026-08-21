@@ -509,36 +509,32 @@ export const ALL_DOORWAYS: Doorway[] = [
   },
 
   {
-    // FIRST USABLE INSTRUMENT — not yet locked. Same six-page architecture and
-    // the same immutable 1–9 evidence weights as the locked branches. No new
-    // meanings, thresholds or formula.
+    // THE CHASE — rebuilt instrument. Examines the continuation loop: what is
+    // happening inside the person at the moment they are tempted to keep going.
+    // Same six-page architecture and the same immutable 1–9 evidence weights as
+    // the locked branches. No new meanings, thresholds or formula.
     id: "bet",
-    label: "I want to gamble right now, and I don't fucking know why",
-    sub: "No lecture. A look at what the urge is actually doing",
+    label: "The Chase",
+    sub: "You're in it and you don't want to stop. A look at what keeps it going",
     universal: "ifAvoidance",
-    stage2: "bet-known",
+    stage2: "bet-story",
     prefixPages: 3,
     totalPages: 6,
     questions: [
       {
         id: "bet-1",
-        prompt: "What's the closest thing to true about the urge right now?",
-        note: "You already know the odds. You already know how it can go. That's not the question.",
+        prompt: "Where are you in the cycle right now?",
+        note: "No advice, no strategy. Just where you actually are.",
         choices: [
-          { id: "rush", label: "I want the few minutes where it could still go either way.", evidence: { 2: 3 }, followUp: "bet-rush" },
-          { id: "escape", label: "I want out of my own head for an hour.", evidence: { 7: 3 }, followUp: "bet-escape", avoids: true },
-          { id: "relief", label: "Something is pressing on me and this is the only thing that loosens it.", evidence: { 8: 3 }, followUp: "bet-relief" },
-          { id: "outcome", label: "I want to change how something is going.", evidence: { 5: 3 }, followUp: "bet-outcome" },
-          { id: "chase", label: "I'm down and I want it back.", evidence: { 3: 2, 5: 1 }, followUp: "bet-chase" },
-          { id: "reach", label: "My hand was already reaching for it before I thought about it.", evidence: { 3: 3 }, followUp: "bet-reach" },
-          { id: "numb", label: "I don't feel much of anything and I want to feel something.", evidence: { 9: 3 }, followUp: "bet-numb" },
-          { id: "ritual", label: "Same day, same hour. It's just what I do.", evidence: { 4: 3 }, followUp: "bet-ritual" },
-          { id: "own", label: "I like it. I'm not going to build a story on top of it.", evidence: { 6: 3 }, followUp: "bet-own" },
-          { id: "unclear", label: "I don't know. That's literally why I'm here.", evidence: { 1: 2 }, followUp: "bet-unclear" },
+          { id: "up", label: "I'm up. I know I should leave, but I still want to keep going.", evidence: { 2: 3 }, followUp: "bet-up" },
+          { id: "down", label: "I'm down. I want to get the money back.", evidence: { 3: 2, 5: 1 }, followUp: "bet-down" },
+          { id: "even", label: "I'm about even, and I don't want to stop yet.", evidence: { 7: 3 }, followUp: "bet-even" },
+          { id: "early", label: "I haven't lost or won much yet. I just feel pulled to keep going.", evidence: { 8: 3 }, followUp: "bet-early", avoids: true },
         ],
       },
     ],
   },
+
   {
     id: "talk",
     hidden: true,
@@ -1548,208 +1544,102 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     ],
   },
 
-  /* --- "I want to gamble right now" (first usable pass) ------------ */
+  /* --- THE CHASE — the continuation loop (rebuilt) ------------------ */
 
-  /* PAGE 2: what the urge is providing */
-  "bet-rush": {
-    id: "bet-rush",
-    prompt: "What part of that in-between are you actually after?",
+  /* PAGE 2: state-specific continuation probe */
+  "bet-up": {
+    id: "bet-up",
+    prompt: "What makes leaving while you're ahead so hard?",
     choices: [
-      { id: "a", label: "The part where both outcomes are still alive at once.", evidence: { 2: 3 } },
-      { id: "b", label: "The jolt. My body wants that more than the money does.", evidence: { 8: 3 } },
-      { id: "c", label: "Something has to be about to happen or the hour feels dead.", evidence: { 7: 3 } },
-      { id: "d", label: "The build-up is the same every time, and I know its shape.", evidence: { 3: 3 } },
-      { id: "e", label: "The money barely matters. That's news to me.", evidence: { 1: 2, 5: 1 } },
-      { id: "f", label: "I like the thrill and I'm not going to apologize for it.", evidence: { 6: 3 } },
+      { id: "a", label: "Taking the win means calling it enough, and enough feels like leaving something on the table.", evidence: { 4: 3, 6: 1 } },
+      { id: "b", label: "If I stop now I never find out how far this could have gone.", evidence: { 2: 3 } },
+      { id: "c", label: "Stopping ends how this feels, and I don't want that part to end.", evidence: { 8: 3 } },
+      { id: "d", label: "I want to show the run wasn't luck — that I was reading it right.", evidence: { 5: 3 } },
     ],
-    next: "bet-mech",
+    next: "bet-guarantee",
   },
-  "bet-escape": {
-    id: "bet-escape",
-    prompt: "What are you trying to get out of?",
+  "bet-down": {
+    id: "bet-down",
+    prompt: "What makes stopping after a loss so hard?",
     choices: [
-      { id: "a", label: "My own thinking. It won't stop.", evidence: { 7: 3 }, avoids: true },
-      { id: "b", label: "A feeling in my chest I haven't named yet.", evidence: { 8: 3 } },
-      { id: "c", label: "One specific thing I don't want to look at.", evidence: { 9: 2, 7: 1 }, avoids: true },
-      { id: "d", label: "Everything and nothing. It's just too much right now.", evidence: { 1: 2 }, avoids: true },
-      { id: "e", label: "Being here for a day I didn't want — I can see that's the trade.", evidence: { 5: 3 }, avoids: true },
-      { id: "f", label: "I'm checking out on purpose, and I'd rather say that plainly.", evidence: { 6: 3 } },
+      { id: "a", label: "Stopping makes the number final, and I'm not ready for it to be final.", evidence: { 4: 3 } },
+      { id: "b", label: "One decent win puts it all back. That's the sentence in my head.", evidence: { 3: 3, 9: 1 } },
+      { id: "c", label: "I don't want the night to be over on this note.", evidence: { 7: 3 } },
+      { id: "d", label: "I want out of how losing feels, and playing is the only thing that touches it.", evidence: { 8: 3 } },
     ],
-    next: "bet-mech",
+    next: "bet-guarantee",
   },
-  "bet-relief": {
-    id: "bet-relief",
-    prompt: "Where is that pressure actually coming from?",
+  "bet-even": {
+    id: "bet-even",
+    prompt: "You're even. What's the pull to stay in it?",
     choices: [
-      { id: "a", label: "Money. There's a number I owe or need.", evidence: { 4: 3 } },
-      { id: "b", label: "My body — wired, tight, can't sit down.", evidence: { 8: 3 } },
-      { id: "c", label: "A person. Something unsaid between us.", evidence: { 2: 3 } },
-      { id: "d", label: "Work, or the shape of my whole week.", evidence: { 3: 3 } },
-      { id: "e", label: "I know exactly where it's from, and this won't touch it.", evidence: { 5: 3 } },
-      { id: "f", label: "I couldn't tell you. I only know the pressure.", evidence: { 1: 2 } },
+      { id: "a", label: "Even is boring. I came for something sharper than this.", evidence: { 8: 3 } },
+      { id: "b", label: "I don't want the moment to end while it's still going.", evidence: { 7: 3 } },
+      { id: "c", label: "Breaking even isn't the point. I want a real number out of this.", evidence: { 4: 3 } },
+      { id: "d", label: "Honestly, I just don't stop at this point. I never have.", evidence: { 3: 3 } },
     ],
-    next: "bet-mech",
+    next: "bet-guarantee",
   },
-  "bet-outcome": {
-    id: "bet-outcome",
-    prompt: "What are you hoping this actually changes?",
+  "bet-early": {
+    id: "bet-early",
+    prompt: "Nothing much has happened yet. So what's pulling?",
     choices: [
-      { id: "a", label: "A number in my account by tomorrow.", evidence: { 4: 3 } },
-      { id: "b", label: "How a bad stretch has been going. I want it to turn.", evidence: { 3: 3 } },
-      { id: "c", label: "How I feel about myself today — and I can say that out loud.", evidence: { 6: 3 } },
-      { id: "d", label: "Something already decided that I keep trying to re-open.", evidence: { 5: 3 } },
-      { id: "e", label: "One decision I'm avoiding making for real.", evidence: { 9: 2, 7: 1 }, avoids: true },
-      { id: "f", label: "Nothing I can name. It just feels like doing something.", evidence: { 1: 2 } },
+      { id: "a", label: "Something has to be about to happen or the hour feels dead.", evidence: { 7: 3 } },
+      { id: "b", label: "My hand was already moving before I decided anything.", evidence: { 3: 3 } },
+      { id: "c", label: "There's a feeling I haven't named and this is what I do with it.", evidence: { 8: 3 } },
+      { id: "d", label: "I don't know. That's the part I'm here about.", evidence: { 1: 2, 5: 1 } },
     ],
-    next: "bet-mech",
-  },
-  "bet-chase": {
-    id: "bet-chase",
-    prompt: "How much of this is about getting back what you already lost?",
-    choices: [
-      { id: "a", label: "All of it. The number is the whole reason.", evidence: { 4: 3 } },
-      { id: "b", label: "Most of it — and I've done this exact thing before.", evidence: { 3: 3 } },
-      { id: "c", label: "It's not the money. It's not wanting to be the person who lost it.", evidence: { 6: 3 } },
-      { id: "d", label: "I want proof the last one was luck, not a pattern.", evidence: { 5: 3 } },
-      { id: "e", label: "Both — I want it back and I know this is how it gets worse.", evidence: { 2: 3 } },
-      { id: "f", label: "I hadn't thought about it that way until now.", evidence: { 1: 2, 8: 1 } },
-    ],
-    next: "bet-mech",
-  },
-  "bet-reach": {
-    id: "bet-reach",
-    prompt: "When did you notice you'd already reached for it?",
-    choices: [
-      { id: "a", label: "After. My hand got there before my head did.", evidence: { 3: 3 } },
-      { id: "b", label: "The second I was alone with my phone and nothing scheduled.", evidence: { 4: 3 } },
-      { id: "c", label: "Right after a feeling hit — I never checked what the feeling was.", evidence: { 8: 3 } },
-      { id: "d", label: "I noticed and kept going. That's the honest version.", evidence: { 6: 3 } },
-      { id: "e", label: "There's a specific trigger, and I can name it.", evidence: { 5: 3 } },
-      { id: "f", label: "I don't know. It's blurry.", evidence: { 1: 2 } },
-    ],
-    next: "bet-mech",
-  },
-  "bet-numb": {
-    id: "bet-numb",
-    prompt: "What would feeling something actually look like right now?",
-    choices: [
-      { id: "a", label: "Anything sharp. Win or lose, just not flat.", evidence: { 2: 3 } },
-      { id: "b", label: "Something in my body. I've been numb for a while.", evidence: { 8: 3 } },
-      { id: "c", label: "Caring about one real thing again.", evidence: { 9: 3 } },
-      { id: "d", label: "Being here for this hour instead of watching it go by.", evidence: { 7: 3 } },
-      { id: "e", label: "I can name the flatness without calling myself broken.", evidence: { 6: 3 } },
-      { id: "f", label: "I don't know what I stopped feeling, or when.", evidence: { 1: 2 } },
-    ],
-    next: "bet-mech",
-  },
-  "bet-ritual": {
-    id: "bet-ritual",
-    prompt: "What's the actual shape of it — when does it happen?",
-    choices: [
-      { id: "a", label: "Same day, same hour. It's built into my week.", evidence: { 4: 3 } },
-      { id: "b", label: "Whenever one particular feeling shows up.", evidence: { 8: 3 } },
-      { id: "c", label: "After work, when the day has nothing left in it.", evidence: { 3: 3 } },
-      { id: "d", label: "With the same people, in the same place.", evidence: { 2: 3 } },
-      { id: "e", label: "It used to have a shape. Lately it doesn't, and that matters.", evidence: { 5: 3 } },
-      { id: "f", label: "I've never actually looked at when it happens.", evidence: { 1: 2 } },
-    ],
-    next: "bet-mech",
-  },
-  "bet-own": {
-    id: "bet-own",
-    prompt: "Fine. What's the honest version of the want?",
-    choices: [
-      { id: "a", label: "It's fun, and I'm allowed to like fun things.", evidence: { 6: 3 } },
-      { id: "b", label: "It's the one thing in my week I chose for myself.", evidence: { 4: 3 } },
-      { id: "c", label: "I like it and I know the cost. Both stay true.", evidence: { 2: 3 } },
-      { id: "d", label: "I want it, and I want to keep it small and deliberate.", evidence: { 5: 3 } },
-      { id: "e", label: "I like it, and I've noticed it's grown. Same reach, more often.", evidence: { 3: 3 } },
-      { id: "f", label: "I want it to fit a life I actually like living.", evidence: { 9: 3 } },
-    ],
-    next: "bet-mech",
-  },
-  "bet-unclear": {
-    id: "bet-unclear",
-    prompt: "Alright. What can you say for certain about right now?",
-    choices: [
-      { id: "a", label: "There's a feeling in me and I haven't named it yet.", evidence: { 8: 3 } },
-      { id: "b", label: "It's the same time of day this usually hits.", evidence: { 3: 3 } },
-      { id: "c", label: "Something happened earlier today.", evidence: { 5: 3 } },
-      { id: "d", label: "Nothing happened. That's what's strange about it.", evidence: { 7: 3 } },
-      { id: "e", label: "I've got money in front of me and an empty hour.", evidence: { 4: 3 } },
-      { id: "f", label: "Only that I'm here asking instead of doing it.", evidence: { 1: 2, 6: 1 } },
-    ],
-    next: "bet-mech",
+    next: "bet-guarantee",
   },
 
-  /* PAGE 3: the underlying mechanism */
-  "bet-mech": {
-    id: "bet-mech",
-    prompt: "In the moment you'd place it, what is the money actually buying?",
+  /* PAGE 3: separate the urge from the outcome */
+  "bet-guarantee": {
+    id: "bet-guarantee",
+    prompt: "If I could guarantee you the next bet would lose, how much would you still want to make it?",
     choices: [
-      { id: "a", label: "A few minutes where I'm not thinking about anything else.", evidence: { 7: 3 }, avoids: true },
-      { id: "b", label: "The feeling that something is still open.", evidence: { 2: 3 } },
-      { id: "c", label: "Proof that I can read this right.", evidence: { 5: 3 } },
-      { id: "d", label: "A break in a day that had no breaks in it.", evidence: { 4: 3 } },
-      { id: "e", label: "The same hit, the same way, as always.", evidence: { 3: 3 } },
-      { id: "f", label: "Something to feel in a body that's gone quiet.", evidence: { 8: 3 } },
-      { id: "g", label: "A moment I actually enjoy, and I'll own that.", evidence: { 6: 3 } },
-      { id: "h", label: "Distance from one specific thing I need to do.", evidence: { 9: 2, 7: 1 }, avoids: true },
-      { id: "i", label: "Nothing. Which means the reason is somewhere I haven't looked.", evidence: { 1: 2, 5: 1 } },
+      { id: "a", label: "Not at all. I only want it if I can win.", evidence: { 5: 3 } },
+      { id: "b", label: "Part of me still would. I want the moment more than the result.", evidence: { 7: 3 } },
+      { id: "c", label: "I'd still want to, because I hate stopping here.", evidence: { 4: 3, 2: 1 } },
+      { id: "d", label: "I don't know. That question changes something for me.", evidence: { 1: 2, 6: 1 } },
     ],
   },
 
-  /* PAGE 4: known reality vs interpretation */
-  "bet-known": {
-    id: "bet-known",
-    prompt: "Split two things for me: what you actually know right now, and what you're assuming.",
+  /* PAGE 4: the story the next bet is telling */
+  "bet-story": {
+    id: "bet-story",
+    prompt: "What does the next bet promise you right now?",
     choices: [
-      { id: "a", label: "I know the odds are against me. I'm assuming tonight is different.", evidence: { 5: 3 } },
-      { id: "b", label: "I know how I feel. I'm assuming this is what fixes it.", evidence: { 8: 3 } },
-      { id: "c", label: "I know how last time went. I'm assuming this time won't go the same way.", evidence: { 3: 3 } },
-      { id: "d", label: "I know I need money. I'm assuming this is a way to get it.", evidence: { 4: 3 } },
-      { id: "e", label: "I know it helps and I know it costs. Neither cancels the other.", evidence: { 2: 3 } },
-      { id: "f", label: "I know I'm avoiding something. I'm assuming I can't sit through it.", evidence: { 7: 3 }, avoids: true },
-      { id: "g", label: "I know what I'm choosing, and I'm not dressing it up.", evidence: { 6: 3 } },
-      { id: "h", label: "I know what I want my life to look like, and this isn't it.", evidence: { 9: 3 } },
-      { id: "i", label: "I can't separate them yet. That's the honest answer.", evidence: { 1: 2 } },
+      { id: "a", label: "That the money ends up where I want it to be.", evidence: { 4: 3 } },
+      { id: "b", label: "That this stops feeling the way it currently feels.", evidence: { 8: 3 } },
+      { id: "c", label: "That I was right about how this was going to go.", evidence: { 5: 3 } },
+      { id: "d", label: "That the night keeps going somewhere instead of stopping here.", evidence: { 2: 3, 7: 1 } },
     ],
     next: "bet-history",
   },
 
-  /* PAGE 5: the demonstrated pattern */
+  /* PAGE 5: reality check through history */
   "bet-history": {
     id: "bet-history",
-    prompt: "Forget how you feel about it. What has actually happened the last several times?",
+    prompt: "Forget what you hope happens. What usually happens when you keep going?",
     choices: [
-      { id: "a", label: "Same trigger, same reach, same result.", evidence: { 3: 3 } },
-      { id: "b", label: "The stakes crept up, and I only see that now.", evidence: { 5: 3 } },
-      { id: "c", label: "Sometimes fine, sometimes not — and I can tell which days are which.", evidence: { 2: 3 } },
-      { id: "d", label: "It's stayed inside the limits I set for it.", evidence: { 4: 3 } },
-      { id: "e", label: "I stopped myself once, and I remember how I did it.", evidence: { 6: 3 } },
-      { id: "f", label: "I said I'd stop and didn't. That's the actual record.", evidence: { 9: 2, 7: 1 } },
-      { id: "g", label: "My body has been telling me something about it for a while.", evidence: { 8: 3 } },
-      { id: "h", label: "I've sat through the urge before without acting on it.", evidence: { 7: 3 } },
-      { id: "i", label: "I've never actually looked at the history.", evidence: { 1: 2 } },
+      { id: "a", label: "The same shape every time. I could describe it before it happens.", evidence: { 3: 3 } },
+      { id: "b", label: "It gets bigger — the amounts, the time, what I'm willing to risk.", evidence: { 5: 3, 9: 1 } },
+      { id: "c", label: "Sometimes it works, sometimes it doesn't, and I can tell the nights apart.", evidence: { 2: 3 } },
+      { id: "d", label: "I stop noticing what I'm doing until it's already over.", evidence: { 8: 2, 1: 1 } },
     ],
     next: "bet-need",
   },
 
-  /* PAGE 6: what is actually needed next */
+  /* PAGE 6: what is actually needed now */
   "bet-need": {
     id: "bet-need",
-    prompt: "Last one. What would actually help in the next hour?",
-    note: "Reflection, not a verdict.",
+    prompt: "Last one. What would help you most in the next hour?",
+    note: "Reflection, not a verdict — and not a plan for how to play.",
     choices: [
-      { id: "a", label: "Naming the feeling before I do anything with it.", evidence: { 8: 3 } },
-      { id: "b", label: "One rule for tonight that I'd actually keep.", evidence: { 4: 3 } },
-      { id: "c", label: "Working out what this is really about before I move.", evidence: { 5: 3 } },
-      { id: "d", label: "Doing the one thing I've been putting off.", evidence: { 9: 3 } },
-      { id: "e", label: "Staying in this hour without needing to change how it feels.", evidence: { 7: 3 } },
-      { id: "f", label: "Admitting I want it, and choosing without the self-hatred.", evidence: { 6: 3 } },
-      { id: "g", label: "Being honest about this with one person.", evidence: { 2: 3 } },
-      { id: "h", label: "Seeing the pattern for what it is instead of arguing with it.", evidence: { 3: 3 } },
-      { id: "i", label: "I don't know yet — and starting from that is fine.", evidence: { 1: 2 } },
+      { id: "a", label: "Enough distance from the decision to actually see it.", evidence: { 5: 3 } },
+      { id: "b", label: "Accepting what's already on the table and calling it done.", evidence: { 6: 3 } },
+      { id: "c", label: "Letting the urge be there without acting on it.", evidence: { 7: 3 } },
+      { id: "d", label: "Telling someone what's happening right now, while it's happening.", evidence: { 9: 3 } },
     ],
   },
 
@@ -2246,7 +2136,7 @@ const NINE_BRIDGE_OPENINGS: Record<string, string> = {
     "The urge wasn't simply about wanting a drink. Your answers point to what was happening underneath the urge.",
   well:
     "The unease wasn't simply about things going well. Your answers point to what sits underneath the bracing when calm arrives.",
-  bet: "The urge wasn't simply about gambling. Your answers point to what the bet was standing in for underneath.",
+  bet: "The pull to keep going wasn't simply about the next bet. Your answers point to what continuing itself — the chase — is doing for you underneath.",
   gamble: "The urge wasn't simply about gambling. Your answers point to what the bet was standing in for underneath.",
   spiral: "The spiral wasn't simply about the thought. Your answers show what the looping was protecting you from underneath.",
   loop:
