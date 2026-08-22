@@ -1562,10 +1562,10 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     id: "bet-down",
     prompt: "What makes stopping after a loss so hard?",
     choices: [
-      { id: "a", label: "Stopping makes the number final, and I'm not ready for it to be final.", evidence: { 4: 3 } },
-      { id: "b", label: "One decent win puts it all back. That's the sentence in my head.", evidence: { 3: 3, 9: 1 } },
-      { id: "c", label: "I don't want the night to be over on this note.", evidence: { 7: 3 } },
-      { id: "d", label: "I want out of how losing feels, and playing is the only thing that touches it.", evidence: { 8: 3 } },
+      { id: "a", label: "If I stop now, the loss is real. Another bet could still change it.", evidence: { 4: 3 } },
+      { id: "b", label: "One decent win could put it back. I keep doing that math.", evidence: { 3: 3, 9: 1 } },
+      { id: "c", label: "I don't want the night to end with me down.", evidence: { 7: 3 } },
+      { id: "d", label: "Losing feels worse when I'm sitting still than when I'm still betting.", evidence: { 8: 3 } },
     ],
     next: "bet-guarantee",
   },
@@ -1573,10 +1573,10 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     id: "bet-even",
     prompt: "You're even. What's the pull to stay in it?",
     choices: [
-      { id: "a", label: "Even is boring. I came for something sharper than this.", evidence: { 8: 3 } },
-      { id: "b", label: "I don't want the moment to end while it's still going.", evidence: { 7: 3 } },
-      { id: "c", label: "Breaking even isn't the point. I want a real number out of this.", evidence: { 4: 3 } },
-      { id: "d", label: "Honestly, I just don't stop at this point. I never have.", evidence: { 3: 3 } },
+      { id: "a", label: "Walking away even feels like nothing happened.", evidence: { 8: 3 } },
+      { id: "b", label: "The night is still going, and I don't want to be done yet.", evidence: { 7: 3 } },
+      { id: "c", label: "I didn't come here just to leave with the same amount.", evidence: { 4: 3 } },
+      { id: "d", label: "This is usually where I keep playing. I don't really stop at even.", evidence: { 3: 3 } },
     ],
     next: "bet-guarantee",
   },
@@ -1584,10 +1584,10 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     id: "bet-early",
     prompt: "Nothing much has happened yet. So what's pulling?",
     choices: [
-      { id: "a", label: "Something has to be about to happen or the hour feels dead.", evidence: { 7: 3 } },
-      { id: "b", label: "My hand was already moving before I decided anything.", evidence: { 3: 3 } },
-      { id: "c", label: "There's a feeling I haven't named and this is what I do with it.", evidence: { 8: 3 } },
-      { id: "d", label: "I don't know. That's the part I'm here about.", evidence: { 1: 2, 5: 1 } },
+      { id: "a", label: "I'm waiting for something to happen. So far, nothing has.", evidence: { 7: 3 } },
+      { id: "b", label: "I was already making the next bet before I thought about stopping.", evidence: { 3: 3 } },
+      { id: "c", label: "Betting is the only part of the night that feels interesting right now.", evidence: { 8: 3 } },
+      { id: "d", label: "I don't know. I barely started and I already don't want to leave.", evidence: { 1: 2, 5: 1 } },
     ],
     next: "bet-guarantee",
   },
@@ -1604,42 +1604,79 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
     ],
   },
 
-  /* PAGE 4: the story the next bet is telling */
+  /* PAGE 4: expectation attached to continuation */
   "bet-story": {
     id: "bet-story",
-    prompt: "What does the next bet promise you right now?",
+    prompt: "WHAT ARE YOU EXPECTING FROM THE NEXT BET?",
     choices: [
-      { id: "a", label: "That the money ends up where I want it to be.", evidence: { 4: 3 } },
-      { id: "b", label: "That this stops feeling the way it currently feels.", evidence: { 8: 3 } },
-      { id: "c", label: "That I was right about how this was going to go.", evidence: { 5: 3 } },
-      { id: "d", label: "That the night keeps going somewhere instead of stopping here.", evidence: { 2: 3, 7: 1 } },
+      { id: "a", label: "To win.", evidence: { 5: 3 } },
+      { id: "b", label: "To get back what I lost.", evidence: { 4: 3 } },
+      { id: "c", label: "To change how I'm feeling right now.", evidence: { 8: 3 } },
+      { id: "d", label: "To keep the night going.", evidence: { 2: 3, 7: 1 } },
+      { id: "e", label: "Honestly, I don't know.", evidence: { 1: 2 } },
+      { id: "f", label: "Nothing in particular. I just want to bet.", evidence: { 7: 3 } },
     ],
     next: "bet-history",
   },
 
-  /* PAGE 5: reality check through history */
+  /* PAGE 5: observed continuation pattern */
   "bet-history": {
     id: "bet-history",
-    prompt: "Forget what you hope happens. What usually happens when you keep going?",
+    prompt: "IF YOU KEEP GOING, WHERE DOES IT USUALLY END?",
     choices: [
-      { id: "a", label: "The same shape every time. I could describe it before it happens.", evidence: { 3: 3 } },
-      { id: "b", label: "It gets bigger — the amounts, the time, what I'm willing to risk.", evidence: { 5: 3, 9: 1 } },
-      { id: "c", label: "Sometimes it works, sometimes it doesn't, and I can tell the nights apart.", evidence: { 2: 3 } },
-      { id: "d", label: "I stop noticing what I'm doing until it's already over.", evidence: { 8: 2, 1: 1 } },
+      { id: "a", label: "I leave with more than I started with.", evidence: { 2: 3 } },
+      { id: "b", label: "I give back some of what I won.", evidence: { 3: 3 } },
+      { id: "c", label: "I lose what I came with.", evidence: { 3: 3 } },
+      { id: "d", label: "I chase the loss and usually lose more.", evidence: { 5: 3, 9: 1 } },
+      { id: "e", label: "It can go either way. I know the difference between those nights.", evidence: { 2: 3 } },
+      { id: "f", label: "I honestly don't know.", evidence: { 1: 2 } },
     ],
     next: "bet-need",
   },
 
-  /* PAGE 6: what is actually needed now */
+  /* PAGE 6: immediate stopping decision, selected from the person's Q1 state */
   "bet-need": {
     id: "bet-need",
-    prompt: "Last one. What would help you most in the next hour?",
-    note: "Reflection, not a verdict — and not a plan for how to play.",
+    prompt: "IF YOU'RE UP RIGHT NOW, WHY NOT CASH OUT?",
     choices: [
-      { id: "a", label: "Enough distance from the decision to actually see it.", evidence: { 5: 3 } },
-      { id: "b", label: "Accepting what's already on the table and calling it done.", evidence: { 6: 3 } },
-      { id: "c", label: "Letting the urge be there without acting on it.", evidence: { 7: 3 } },
-      { id: "d", label: "Telling someone what's happening right now, while it's happening.", evidence: { 9: 3 } },
+      { id: "a", label: "Because I want to win more.", evidence: { 5: 3 } },
+      { id: "b", label: "Because I'm not ready for the night to be over.", evidence: { 7: 3 } },
+      { id: "c", label: "Because cashing out feels like leaving money on the table.", evidence: { 6: 3 } },
+      { id: "d", label: "Because I want to see if I'm actually on a run.", evidence: { 5: 3 } },
+      { id: "e", label: "I don't know. I just can't hit the button.", evidence: { 9: 3 } },
+    ],
+  },
+  "bet-need-down": {
+    id: "bet-need-down",
+    prompt: "IF YOU'RE DOWN RIGHT NOW, WHY NOT STOP?",
+    choices: [
+      { id: "a", label: "Because I want the money back.", evidence: { 5: 3 } },
+      { id: "b", label: "Because I don't want the night to end with me down.", evidence: { 7: 3 } },
+      { id: "c", label: "Because stopping makes the loss final.", evidence: { 6: 3 } },
+      { id: "d", label: "Because one win could still turn this around.", evidence: { 5: 3 } },
+      { id: "e", label: "I don't know. I just keep making the next bet.", evidence: { 9: 3 } },
+    ],
+  },
+  "bet-need-even": {
+    id: "bet-need-even",
+    prompt: "IF YOU'RE EVEN RIGHT NOW, WHY NOT STOP?",
+    choices: [
+      { id: "a", label: "Because I still want to leave with a win.", evidence: { 5: 3 } },
+      { id: "b", label: "Because I'm not ready for the night to be over.", evidence: { 7: 3 } },
+      { id: "c", label: "Because leaving even feels like I came for nothing.", evidence: { 6: 3 } },
+      { id: "d", label: "Because I want to see if the next few bets start a run.", evidence: { 5: 3 } },
+      { id: "e", label: "I don't know. I just don't stop at even.", evidence: { 9: 3 } },
+    ],
+  },
+  "bet-need-early": {
+    id: "bet-need-early",
+    prompt: "YOU BARELY STARTED. WHAT'S KEEPING YOU HERE?",
+    choices: [
+      { id: "a", label: "I still want to win something.", evidence: { 5: 3 } },
+      { id: "b", label: "I'm not ready for the night to be over.", evidence: { 7: 3 } },
+      { id: "c", label: "Leaving now would make the whole thing feel pointless.", evidence: { 6: 3 } },
+      { id: "d", label: "I want to see if a run starts.", evidence: { 5: 3 } },
+      { id: "e", label: "I don't know. I just don't want to leave yet.", evidence: { 9: 3 } },
     ],
   },
 
@@ -1720,6 +1757,16 @@ export function buildSequence(
       if (stage2) expand(stage2, answers, out, prefixSeen);
     }
     const capped = out.slice(0, total);
+    if (doorway.id === "bet" && capped[capped.length - 1]?.id === "bet-need") {
+      const closingByState: Record<string, string> = {
+        down: "bet-need-down",
+        even: "bet-need-even",
+        early: "bet-need-early",
+      };
+      const closingId = closingByState[answers["bet-1"] ?? ""];
+      const closing = closingId ? getQuestion(closingId) : undefined;
+      if (closing) capped[capped.length - 1] = closing;
+    }
     for (const id of deeperIds) {
       const probe = DEEPER_PROBES.find((p) => p.question.id === id);
       if (probe) capped.push(probe.question);
