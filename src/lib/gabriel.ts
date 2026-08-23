@@ -2049,12 +2049,13 @@ export const DEEPER_PROBES: DeeperProbe[] = [
     separates: [4, 9],
     question: {
       id: "deep-container",
-      prompt: "If this same thing showed up again next week, what would you already have in place?",
+      prompt: "If you couldn't act on this for the next 10 minutes, what would get you through those 10 minutes?",
+      note: "The next ten minutes. Nothing further out than that.",
       choices: [
-        { id: "a", label: "A rule or limit I'd actually keep", evidence: { 4: 4 } },
-        { id: "b", label: "One small step I know how to take", evidence: { 9: 4 } },
-        { id: "c", label: "The same scramble as this time", evidence: { 4: 2, 3: 1 } },
-        { id: "d", label: "No idea yet", evidence: { 1: 2 } },
+        { id: "a", label: "One limit I'd hold — no calls, no messages, no going over there", evidence: { 4: 4 } },
+        { id: "b", label: "One concrete thing with my body — walk, cold water, out the door", evidence: { 9: 4 } },
+        { id: "c", label: "Same as now — pacing and running it back", evidence: { 4: 2, 3: 1 } },
+        { id: "d", label: "No idea. Ten minutes feels long right now", evidence: { 1: 2 } },
       ],
     },
   },
