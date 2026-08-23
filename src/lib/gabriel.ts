@@ -529,7 +529,7 @@ export const ALL_DOORWAYS: Doorway[] = [
           { id: "up", label: "I'm up. I know I should leave, but I still want to keep going.", evidence: { 2: 3 }, followUp: "bet-up" },
           { id: "down", label: "I'm down. I want to get the money back.", evidence: { 3: 2, 5: 1 }, followUp: "bet-down" },
           { id: "even", label: "I'm about even, and I don't want to stop yet.", evidence: { 7: 3 }, followUp: "bet-even" },
-          { id: "early", label: "I haven't lost or won much yet. I just feel pulled to keep going.", evidence: { 8: 3 }, followUp: "bet-early", avoids: true },
+          { id: "early", label: "I haven't lost or won much yet, and I still don't want to stop.", evidence: { 8: 3 }, followUp: "bet-early", avoids: true },
         ],
       },
     ],
@@ -1622,7 +1622,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   /* PAGE 5: observed continuation pattern */
   "bet-history": {
     id: "bet-history",
-    prompt: "IF YOU KEEP GOING, WHERE DOES IT USUALLY END?",
+    prompt: "If you keep going, where does it usually end?",
     choices: [
       { id: "a", label: "I leave with more than I started with.", evidence: { 2: 3 } },
       { id: "b", label: "I give back some of what I won.", evidence: { 3: 3 } },
@@ -1637,7 +1637,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   /* PAGE 6: immediate stopping decision, selected from the person's Q1 state */
   "bet-need": {
     id: "bet-need",
-    prompt: "IF YOU'RE UP RIGHT NOW, WHY NOT CASH OUT?",
+    prompt: "If you're up right now, why not cash out?",
     choices: [
       { id: "a", label: "Because I want to win more.", evidence: { 5: 3 } },
       { id: "b", label: "Because I'm not ready for the night to be over.", evidence: { 7: 3 } },
@@ -1648,7 +1648,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
   "bet-need-down": {
     id: "bet-need-down",
-    prompt: "IF YOU'RE DOWN RIGHT NOW, WHY NOT STOP?",
+    prompt: "If you're down right now, why not stop?",
     choices: [
       { id: "a", label: "Because I want the money back.", evidence: { 5: 3 } },
       { id: "b", label: "Because I don't want the night to end with me down.", evidence: { 7: 3 } },
@@ -1659,7 +1659,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
   "bet-need-even": {
     id: "bet-need-even",
-    prompt: "IF YOU'RE EVEN RIGHT NOW, WHY NOT STOP?",
+    prompt: "If you're even right now, why not stop?",
     choices: [
       { id: "a", label: "Because I still want to leave with a win.", evidence: { 5: 3 } },
       { id: "b", label: "Because I'm not ready for the night to be over.", evidence: { 7: 3 } },
@@ -1670,7 +1670,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
   "bet-need-early": {
     id: "bet-need-early",
-    prompt: "YOU BARELY STARTED. WHAT'S KEEPING YOU HERE?",
+    prompt: "You barely started. What's keeping you here?",
     choices: [
       { id: "a", label: "I still want to win something.", evidence: { 5: 3 } },
       { id: "b", label: "I'm not ready for the night to be over.", evidence: { 7: 3 } },
