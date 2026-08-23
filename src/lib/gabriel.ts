@@ -10,6 +10,19 @@
  * The Tree of Life and number mappings here are OUR working
  * psychological-symbolic mappings. They are not claims about what
  * traditional Kabbalah or Pythagorean numerology officially assigns.
+ *
+ * HARD PRODUCT-LANGUAGE RULE (global, applies to every branch and every
+ * future edit):
+ * Gabriel speaks in concrete, human, direct, situational language. NO generic
+ * therapeutic / self-help / clinical filler. Banned phrasings include (and are
+ * not limited to): "what would help you most", "create some distance", "hold
+ * space", "ground yourself", "process your feelings", "what are you avoiding",
+ * "what are you choosing instead", and "land / landed / landing".
+ * Every question must earn its place by producing a specific piece of evidence
+ * the engine needs. Never put an assumption, diagnosis, judgment, or a
+ * "what you should know/do" into the person's mouth. "I don't know" stays a
+ * legitimate response and is not treated as evidence unless explicitly
+ * warranted by that question's design.
  */
 
 export type GNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
