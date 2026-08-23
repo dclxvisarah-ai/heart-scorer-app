@@ -7,6 +7,11 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import cooldownPhoto from "@/assets/right-now-cooldown.jpg.asset.json";
+import goodPhoto from "@/assets/right-now-good.jpg.asset.json";
+import growthPhoto from "@/assets/right-now-growth.jpg.asset.json";
+import mirrorPhoto from "@/assets/right-now-mirror.jpg.asset.json";
+
 type Phase = "menu" | "rage" | "cooldown" | "needs" | "reflect" | "kids" | "good";
 
 const RAGE_SECONDS = 60;
@@ -52,7 +57,7 @@ const REFLECT_PROMPTS: ReflectPrompt[] = [
 
 /** Kids: raw → light. Never a straight jump into a cheesy joke. */
 const KIDS_STEPS = [
-  { at: 0, text: "LOOK AT THEM.", sub: "Pick whichever way is easiest right now." },
+  { at: 0, text: "WHAT DO YOU WANT THEM TO SEE?", sub: "Pick whichever way is easiest right now." },
   { at: 25, text: "Remember something ridiculous they did.", sub: "The stupid stuff counts." },
   { at: 70, text: "Something they did that made you laugh.", sub: "Even if you didn't want to laugh." },
   { at: 115, text: "Something you're proud of.", sub: "Small is fine." },
@@ -65,6 +70,14 @@ const GOOD_STEPS = [
   { at: 140, text: "One more.", sub: "Something small and ordinary is fine." },
   { at: 220, text: "One that has nothing to do with today.", sub: "Something that's just true." },
   { at: 275, text: "Last one. Anything.", sub: "Then you're done." },
+];
+
+const GRATITUDE_CUES = [
+  "one thing",
+  "one person",
+  "one place",
+  "one thing your body can still do",
+  "one thing that made you laugh",
 ];
 
 const KIDS_OPTIONS = [
@@ -309,24 +322,19 @@ function Cooldown({ onDone }: { onDone: () => void }) {
   const timer = useCountdown(COOLDOWN_SECONDS, onDone);
   return (
     <div className="mt-6 flex flex-col items-center">
-      <div className="cooldown-scene relative flex h-44 w-full max-w-sm items-end overflow-hidden rounded-xl border border-hairline bg-teal/5">
-        <span aria-hidden className="cooldown-sun" />
+      <div className="cooldown-scene relative flex h-56 w-full max-w-md items-end overflow-hidden rounded-xl border border-hairline">
+        <img
+          src={cooldownPhoto.url}
+          alt="Quiet water beneath clouds in evening light"
+          loading="lazy"
+          width={1536}
+          height={1024}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <span aria-hidden className="cooldown-photo-wash" />
         <span aria-hidden className="cooldown-breath cooldown-breath-1" />
         <span aria-hidden className="cooldown-breath cooldown-breath-2" />
-        <span aria-hidden className="cooldown-drop cooldown-drop-1" />
-        <span aria-hidden className="cooldown-drop cooldown-drop-2" />
-        {[0, 1, 2].map((i) => (
-          <span
-            key={i}
-            aria-hidden
-            className="absolute inset-x-0 bottom-0 h-24 rounded-[50%] bg-teal/15 motion-reduce:animate-none"
-            style={{
-              animation: `settle-wave ${7 + i * 2}s ease-in-out ${i * 0.8}s infinite`,
-              bottom: `${i * 10}px`,
-            }}
-          />
-        ))}
-        <span className="relative z-10 mx-auto mb-6 rounded-full bg-cream/80 px-4 py-1 font-display text-3xl tabular-nums text-teal backdrop-blur-sm">
+        <span className="relative z-10 mx-auto mb-6 rounded-full border border-cream/30 bg-foreground/55 px-4 py-1 font-display text-3xl tabular-nums text-cream backdrop-blur-sm">
           {fmt(timer.remaining)}
         </span>
       </div>
@@ -424,29 +432,57 @@ function Guided({
     for (const s of steps) if (elapsedSec >= s.at) out = s;
     return out;
   }, [elapsedSec, steps]);
+  const isKids = tone === "warm";
+  const showGrowth = isKids && elapsedSec >= 70;
+  const gratitudeCue = GRATITUDE_CUES[Math.min(Math.floor(elapsedSec / 60), GRATITUDE_CUES.length - 1)];
+  const visual = isKids ? (showGrowth ? growthPhoto : mirrorPhoto) : goodPhoto;
+  const visualAlt = isKids
+    ? showGrowth
+      ? "A living plant receiving water in warm window light"
+      : "A mirror reflecting evening sky and clouds"
+    : "Golden evening clouds above a quiet landscape";
 
   return (
     <div className="mt-6 flex flex-col items-center">
       <div
-        className={`flex w-full flex-col items-center rounded-xl border border-hairline p-5 ${
-          tone === "warm" ? "bg-gold/10" : "bg-teal/5"
+        className={`guided-photo relative flex min-h-[30rem] w-full flex-col items-center justify-between overflow-hidden rounded-xl border border-hairline p-5 ${
+          isKids ? "guided-photo-kids" : "guided-photo-good"
         }`}
       >
-        <Gauge progress={timer.progress} label={fmt(timer.remaining)} tone={tone} />
-        <p
-          key={step.text}
-          className="animate-fade-in mt-5 text-center font-display text-2xl leading-tight sm:text-3xl"
-        >
-          {step.text}
-        </p>
-        <p className="mt-2 text-center text-sm text-olive-soft">{step.sub}</p>
-        {options && elapsedSec < 25 ? (
-          <ul className="mt-4 flex flex-col items-center gap-1.5 text-sm text-olive-soft">
-            {options.map((o) => (
-              <li key={o}>{o}</li>
-            ))}
-          </ul>
-        ) : null}
+        <img
+          key={visual.url}
+          src={visual.url}
+          alt={visualAlt}
+          loading="lazy"
+          width={isKids ? 1024 : 1536}
+          height={isKids ? 1536 : 1024}
+          className="guided-photo-image absolute inset-0 h-full w-full object-cover motion-reduce:animate-none"
+        />
+        <span aria-hidden className="guided-photo-wash" />
+        <div className="relative z-10">
+          <Gauge progress={timer.progress} label={fmt(timer.remaining)} tone={tone} />
+        </div>
+        <div className="relative z-10 mt-8 w-full rounded-lg border border-cream/20 bg-foreground/60 p-4 text-cream backdrop-blur-sm">
+          {!isKids ? (
+            <p className="mb-2 text-center text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-gold">
+              Grateful for: <span className="text-cream">{gratitudeCue}</span>
+            </p>
+          ) : null}
+          <p
+            key={step.text}
+            className="animate-fade-in text-center font-display text-2xl leading-tight sm:text-3xl"
+          >
+            {step.text}
+          </p>
+          <p className="mt-2 text-center text-sm text-cream/80">{step.sub}</p>
+          {options && elapsedSec < 25 ? (
+            <ul className="mt-4 flex flex-col items-center gap-1.5 text-center text-xs font-medium text-cream/90 sm:text-sm">
+              {options.map((o) => (
+                <li key={o}>{o}</li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
       </div>
       <div className="mt-5 flex flex-wrap justify-center gap-2">
         <button type="button" onClick={timer.running ? timer.pause : timer.resume} className={ghostBtn}>
