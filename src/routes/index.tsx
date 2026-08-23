@@ -90,7 +90,7 @@ function GabrielsNumberPage() {
 
   useEffect(() => {
     if (stage !== "result" || !result || !doorway) return;
-    const id = `${doorway.id}-${Object.keys(answers).length}`;
+    const id = `${runToken}-${doorway.id}-${Object.keys(answers).length}`;
     if (savedId === id) return;
     setSavedId(id);
     setHistory(
@@ -104,7 +104,7 @@ function GabrielsNumberPage() {
         reasoning: result.reasoning,
       }),
     );
-  }, [stage, result, doorway, answers, savedId]);
+  }, [stage, result, doorway, answers, savedId, runToken]);
 
   function restart() {
     setStage("start");
@@ -114,6 +114,7 @@ function GabrielsNumberPage() {
     setSavedId(undefined);
     setDeeperIds([]);
     setLeftHere(false);
+    setRunToken((t) => t + 1);
     urgeTimer.reset();
 
   }
