@@ -277,6 +277,10 @@ function GabrielsNumberPage() {
           </section>
         ) : null}
 
+        {stage === "release" && doorway ? (
+          <FireRelease onSkip={() => setStage("questions")} />
+        ) : null}
+
         {stage === "questions" && current && doorway ? (
           <section className="card-cream animate-rise p-5 sm:p-7">
             <div className="flex items-center justify-between gap-3">
