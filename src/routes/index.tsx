@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 
 import { DevPreviewBanner } from "@/components/DevPreviewBanner";
+import { FireRelease } from "@/components/FireRelease";
 import { FramingNote } from "@/components/FramingNote";
 import { NumberPanel } from "@/components/NumberPanel";
 import {
