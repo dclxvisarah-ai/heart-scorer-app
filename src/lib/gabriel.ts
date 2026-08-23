@@ -621,44 +621,39 @@ export const ALL_DOORWAYS: Doorway[] = [
     ],
   },
   {
+    // THE FIRE — anger/rage instrument. One event has activated intense anger
+    // and it is still running. Same fixed six-page architecture as the drinking
+    // branch and the same immutable 1–9 evidence weights: no new numbers,
+    // thresholds, or scoring model. The instrument separates the feeling and the
+    // impulse from action, and finds what the force is actually pointing at.
+    // Never instructs, encourages or plans harm to anyone.
     id: "happened",
-    label: "Something happened and I can't stop thinking about it",
-    sub: "One event, still running",
+    label: "I'm fucking furious about what happened",
+    sub: "One event. The anger is still running.",
     universal: "ifAvoidance",
+    stage2: "fury-want",
+    prefixPages: 3,
+    totalPages: 6,
     questions: [
       {
         id: "happened-1",
-        prompt: "Can you say what happened without saying what it meant?",
+        prompt: "What kind of furious is this?",
+        note: "No lecture. Anger is information and force. We're finding what it's pointing at.",
         choices: [
-          { id: "a", label: "Yes, easily", evidence: { 5: 3 } },
-          { id: "b", label: "Yes, but the meaning comes right after", evidence: { 5: 2, 3: 1 } },
-          { id: "c", label: "Not really — they're the same thing to me", evidence: { 5: 2, 2: 1 } },
-          { id: "d", label: "I haven't tried", evidence: { 1: 2 } },
-        ],
-      },
-      {
-        id: "happened-2",
-        prompt: "When it replays, does anything change?",
-        choices: [
-          { id: "a", label: "Yes — I notice something new each time", evidence: { 3: 1, 9: 2 } },
-          { id: "b", label: "The wording changes, not the content", evidence: { 3: 3 } },
-          { id: "c", label: "It's identical every time", evidence: { 3: 2, 7: 1 } },
-          { id: "d", label: "It gets worse each pass", evidence: { 6: 2, 7: 1 } },
-        ],
-      },
-      {
-        id: "happened-3",
-        prompt: "What's your part in it?",
-        note: "Contribution, not verdict.",
-        choices: [
-          { id: "a", label: "I can name it without piling on myself", evidence: { 6: 3 } },
-          { id: "b", label: "I can name it and then I don't stop", evidence: { 6: 2, 3: 1 } },
-          { id: "c", label: "I don't think I have one", evidence: { 2: 2 } },
-          { id: "d", label: "Still working that out", evidence: { 1: 1, 2: 1 } },
+          { id: "betray", label: "Someone I trusted did it. That's what makes it this bad.", evidence: { 8: 2, 2: 1 }, followUp: "fury-crossed-trust" },
+          { id: "disrespect", label: "I got treated like nothing, in front of people.", evidence: { 4: 2, 6: 1 }, followUp: "fury-crossed-line" },
+          { id: "injustice", label: "It was flat out unfair and nobody is going to fix it.", evidence: { 5: 3 }, followUp: "fury-crossed-fair" },
+          { id: "helpless", label: "I couldn't do a damn thing while it was happening.", evidence: { 7: 3 }, followUp: "fury-crossed-power" },
+          { id: "again", label: "It's not the first time. They did it again.", evidence: { 3: 3 }, followUp: "fury-crossed-line" },
+          { id: "mine", label: "It wasn't even aimed at me. It was aimed at someone who's mine.", evidence: { 2: 2, 4: 1 }, followUp: "fury-crossed-trust" },
+          { id: "hurt", label: "Underneath it I'm hurt, and the anger is easier to hold.", evidence: { 6: 3 }, followUp: "fury-crossed-hurt" },
+          { id: "still", label: "It's over and it's still running at full volume in me.", evidence: { 7: 2, 3: 1 }, followUp: "fury-crossed-power" },
+          { id: "blank", label: "I'm this angry and I couldn't tell you which part did it.", evidence: { 1: 2 }, followUp: "fury-crossed-fair" },
         ],
       },
     ],
   },
+
   {
     id: "loop",
     label: "The same thing keeps happening again",
