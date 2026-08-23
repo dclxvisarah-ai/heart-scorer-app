@@ -56,6 +56,12 @@ function GabrielsNumberPage() {
   const [index, setIndex] = useState(0);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [savedId, setSavedId] = useState<string | undefined>();
+  /**
+   * Increments on every fresh run. Saved-history de-duplication is scoped to
+   * one run, so two identical runs both get saved and no run inherits the
+   * previous run's saved state.
+   */
+  const [runToken, setRunToken] = useState(0);
   /** Reworded probes the person opted into from an undetermined result. */
   const [deeperIds, setDeeperIds] = useState<string[]>([]);
   const [leftHere, setLeftHere] = useState(false);
