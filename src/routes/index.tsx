@@ -253,7 +253,7 @@ function GabrielsNumberPage() {
                     setDeeperIds([]);
                     setLeftHere(false);
                     setRunToken((t) => t + 1);
-                    setStage("questions");
+                    setStage(RELEASE_DOORWAYS.has(option.id) ? "release" : "questions");
                   }}
                   className="group rounded-xl border border-hairline bg-background/50 px-4 py-3.5 text-left transition-colors hover:border-teal/60 hover:bg-teal/5"
                 >
