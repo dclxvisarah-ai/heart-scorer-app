@@ -239,3 +239,84 @@
     transform: translateX(-12%) scaleY(1);
   }
 }
+
+.right-now-rage {
+  background:
+    linear-gradient(145deg, color-mix(in oklch, var(--color-foreground) 94%, var(--color-terracotta)), var(--color-foreground));
+  border-color: color-mix(in oklch, var(--color-terracotta) 65%, var(--color-foreground));
+  color: var(--color-cream);
+}
+
+.right-now-rage .eyebrow,
+.right-now-rage h2,
+.right-now-rage button {
+  color: var(--color-cream);
+}
+
+.right-now-rage button {
+  background-color: color-mix(in oklch, var(--color-foreground) 82%, transparent);
+  border-color: color-mix(in oklch, var(--color-cream) 30%, transparent);
+}
+
+.right-now-rage .text-muted-foreground {
+  color: color-mix(in oklch, var(--color-cream) 70%, transparent);
+}
+
+.right-now-cooldown {
+  background-color: color-mix(in oklch, var(--color-cream) 92%, var(--color-teal));
+}
+
+.rage-face {
+  position: absolute;
+  right: -0.25rem;
+  bottom: -1rem;
+  font-size: 7rem;
+  filter: grayscale(0.35);
+  opacity: 0.1;
+  transform: rotate(-10deg);
+}
+
+.rage-mark {
+  position: absolute;
+  color: var(--color-terracotta);
+  opacity: 0.16;
+  animation: rage-jolt 1.4s steps(2, end) infinite;
+}
+
+.rage-mark-1 { left: 2%; top: 2%; font-size: 3rem; }
+.rage-mark-2 { right: 5%; top: 3%; font-size: 2rem; animation-delay: 0.2s; }
+.rage-mark-3 { left: 8%; bottom: 12%; font-size: 2.5rem; animation-delay: 0.45s; }
+.rage-mark-4 { right: 13%; bottom: 20%; font-size: 2rem; animation-delay: 0.7s; }
+.rage-mark-5 { left: 22%; top: 25%; font-size: 1.5rem; animation-delay: 0.9s; }
+
+.cooldown-scene {
+  background-image: linear-gradient(to bottom, var(--color-cream), color-mix(in oklch, var(--color-teal) 12%, var(--color-cream)));
+}
+
+.cooldown-sun {
+  position: absolute;
+  top: 1.25rem;
+  right: 2rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background-color: color-mix(in oklch, var(--color-gold) 52%, transparent);
+  animation: cooldown-drift 8s ease-in-out infinite alternate;
+}
+
+@keyframes rage-jolt {
+  0%, 100% { transform: translate(0, 0) rotate(-6deg); }
+  50% { transform: translate(4px, -3px) rotate(5deg); }
+}
+
+@keyframes cooldown-drift {
+  from { transform: translateY(0); opacity: 0.65; }
+  to { transform: translateY(0.4rem); opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rage-mark,
+  .cooldown-sun {
+    animation: none;
+  }
+}

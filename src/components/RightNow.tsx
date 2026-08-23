@@ -27,8 +27,10 @@ const RAGE_LINES = [
   "You don't have to forgive anybody right now.",
   "Of course you're still thinking about it.",
   "You're allowed to be this angry.",
-  "It wasn't fair. Say it out loud if you want.",
+  "It wasn't fair. Full fucking stop.",
 ];
+
+const IMPACT_MARKS = ["!", "#", "%", "?!", "×"];
 
 const REFLECT_PROMPTS = [
   "What actually felt unfair about it?",
@@ -133,7 +135,11 @@ export function RightNow({
   const [phase, setPhase] = useState<Phase>("menu");
 
   return (
-    <section className="card-cream animate-fade-in overflow-hidden p-5 sm:p-7">
+    <section
+      className={`card-cream animate-fade-in overflow-hidden p-5 transition-colors duration-700 sm:p-7 ${
+        phase === "rage" ? "right-now-rage" : phase === "cooldown" ? "right-now-cooldown" : ""
+      }`}
+    >
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="eyebrow text-terracotta">Right now</p>
@@ -226,8 +232,19 @@ function Rage({ onDone, onCancel }: { onDone: () => void; onCancel: () => void }
   const line: string = RAGE_LINES[Math.floor(elapsed / 5000) % RAGE_LINES.length];
 
   return (
-    <div className="mt-6">
-      <div className="flex flex-col items-center">
+    <div className="relative mt-6 overflow-hidden rounded-xl px-2 py-5 sm:px-5">
+      <div aria-hidden className="absolute inset-0 overflow-hidden">
+        {IMPACT_MARKS.map((mark, i) => (
+          <span
+            key={`${mark}-${i}`}
+            className={`rage-mark rage-mark-${i + 1} font-display font-black`}
+          >
+            {mark}
+          </span>
+        ))}
+        <span className="rage-face" role="presentation">😡</span>
+      </div>
+      <div className="relative z-10 flex flex-col items-center">
         <Gauge progress={timer.progress} label={fmt(timer.remaining)} intense />
         <p
           key={line}
@@ -261,19 +278,20 @@ function Cooldown({ onDone }: { onDone: () => void }) {
   const timer = useCountdown(COOLDOWN_SECONDS, onDone);
   return (
     <div className="mt-6 flex flex-col items-center">
-      <div className="relative flex h-40 w-full max-w-sm items-end overflow-hidden rounded-2xl border border-hairline bg-teal/5">
+      <div className="cooldown-scene relative flex h-44 w-full max-w-sm items-end overflow-hidden rounded-xl border border-hairline bg-teal/5">
+        <span aria-hidden className="cooldown-sun" />
         {[0, 1, 2].map((i) => (
           <span
             key={i}
             aria-hidden
-            className="absolute inset-x-0 bottom-0 h-24 rounded-[50%] bg-teal/15"
+            className="absolute inset-x-0 bottom-0 h-24 rounded-[50%] bg-teal/15 motion-reduce:animate-none"
             style={{
               animation: `settle-wave ${7 + i * 2}s ease-in-out ${i * 0.8}s infinite`,
               bottom: `${i * 10}px`,
             }}
           />
         ))}
-        <span className="relative z-10 mx-auto mb-6 font-display text-3xl tabular-nums text-teal">
+        <span className="relative z-10 mx-auto mb-6 rounded-full bg-cream/80 px-4 py-1 font-display text-3xl tabular-nums text-teal backdrop-blur-sm">
           {fmt(timer.remaining)}
         </span>
       </div>
@@ -359,7 +377,7 @@ function Guided({
   return (
     <div className="mt-6 flex flex-col items-center">
       <div
-        className={`flex w-full flex-col items-center rounded-2xl border border-hairline p-5 ${
+        className={`flex w-full flex-col items-center rounded-xl border border-hairline p-5 ${
           tone === "warm" ? "bg-gold/10" : "bg-teal/5"
         }`}
       >
@@ -422,7 +440,7 @@ function Gauge({
       {intense ? (
         <span
           aria-hidden
-          className="absolute inset-0 rounded-full bg-terracotta/15"
+          className="absolute inset-0 rounded-full bg-terracotta/20 motion-reduce:animate-none"
           style={{ animation: "impact-pulse 1.1s ease-in-out infinite" }}
         />
       ) : null}
