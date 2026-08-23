@@ -151,7 +151,7 @@ export function RightNow({
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="eyebrow text-terracotta">Right now</p>
+          <p className="eyebrow text-terracotta">Right now — acute de-escalation tool</p>
           <h2 className="rule-gold font-display text-2xl leading-tight sm:text-3xl">
             {phase === "menu" ? "You don't have to hold it together." : "RIGHT NOW"}
           </h2>
@@ -164,10 +164,14 @@ export function RightNow({
       {phase === "menu" ? (
         <>
           <p className="mt-3 text-sm leading-relaxed text-olive-soft">
-            Optional. Nothing here is scored and none of it touches your Gabriel Number. Use it as
-            often as you want.
+            RIGHT NOW is for getting through the next few minutes. Nothing here is scored and none
+            of it touches your Gabriel Number. THE FIRE — the deeper investigation that reads your
+            pattern — is waiting whenever you want it.
           </p>
           <MenuButtons onPick={setPhase} first />
+          <button type="button" onClick={onExit} className={`mt-3 w-full ${optionBtn} text-center`}>
+            {exitLabel} →
+          </button>
         </>
       ) : null}
 
@@ -184,7 +188,9 @@ export function RightNow({
         </>
       ) : null}
 
-      {phase === "reflect" ? <Reflect onBack={() => setPhase("needs")} onExit={onExit} /> : null}
+      {phase === "reflect" ? (
+        <Reflect onBack={() => setPhase("menu")} onExit={onExit} exitLabel={exitLabel} />
+      ) : null}
 
       {phase === "kids" ? (
         <Guided
@@ -205,10 +211,15 @@ export function RightNow({
         />
       ) : null}
 
-      {phase !== "menu" && phase !== "rage" ? (
-        <button type="button" onClick={() => setPhase("menu")} className="mt-6 w-full rounded-full border border-hairline bg-background/60 px-4 py-2.5 text-xs tracking-wide text-olive-soft uppercase transition-colors hover:border-teal/60 hover:text-foreground">
-          Right Now menu
-        </button>
+      {phase !== "menu" && phase !== "rage" && phase !== "reflect" ? (
+        <div className="mt-6 flex flex-col gap-2.5">
+          <button type="button" onClick={onExit} className={primaryBtn}>
+            {exitLabel} →
+          </button>
+          <button type="button" onClick={() => setPhase("menu")} className={optionBtn}>
+            ← RETURN TO RIGHT NOW
+          </button>
+        </div>
       ) : null}
     </section>
   );
