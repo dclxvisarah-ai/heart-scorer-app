@@ -214,3 +214,28 @@
 @utility confetti-fall {
   animation: confetti-fall 2.4s ease-in forwards;
 }
+
+/* RIGHT NOW de-escalation visuals (presentation only, never scored) */
+@keyframes impact-pulse {
+  0%,
+  100% {
+    transform: scale(0.94);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.85;
+  }
+}
+
+@keyframes settle-wave {
+  0% {
+    transform: translateX(-12%) scaleY(1);
+  }
+  50% {
+    transform: translateX(12%) scaleY(0.86);
+  }
+  100% {
+    transform: translateX(-12%) scaleY(1);
+  }
+}
