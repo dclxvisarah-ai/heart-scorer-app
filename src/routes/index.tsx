@@ -117,10 +117,20 @@ function GabrielsNumberPage() {
     // Changing an answer invalidates anything answered after this question,
     // since later questions can depend on this branch.
     for (const q of sequence.slice(index + 1)) delete next[q.id];
+
+    const nextSequence = doorway ? buildSequence(doorway, next, deeperIds) : [];
+    // Current-run isolation: the result may only ever quote answers that are
+    // still on the live path. Any answer whose question is no longer part of
+    // the path this run actually walked is dropped here, so a changed branch
+    // can never leave a stale selection behind for the result page to cite.
+    const livePath = new Set(nextSequence.map((q) => q.id));
+    for (const key of Object.keys(next)) {
+      if (!livePath.has(key)) delete next[key];
+    }
+
     setAnswers(next);
     setSavedId(undefined);
 
-    const nextSequence = doorway ? buildSequence(doorway, next, deeperIds) : [];
     if (index + 1 >= nextSequence.length) {
       setStage("result");
     } else {
