@@ -528,8 +528,8 @@ export const ALL_DOORWAYS: Doorway[] = [
     // Same six-page architecture and the same immutable 1–9 evidence weights as
     // the locked branches. No new meanings, thresholds or formula.
     id: "bet",
-    label: "The Chase",
-    sub: "You're in it and you don't want to stop. A look at what keeps it going",
+    label: "I'm still betting and I don't want to stop",
+    sub: "Money on the line right now. The part that keeps you in it.",
     universal: "ifAvoidance",
     stage2: "bet-story",
     prefixPages: 3,
@@ -537,15 +537,16 @@ export const ALL_DOORWAYS: Doorway[] = [
     questions: [
       {
         id: "bet-1",
-        prompt: "Where are you in the cycle right now?",
-        note: "No advice, no strategy. Just where you actually are.",
+        prompt: "Where are you right now, money-wise?",
+        note: "No advice, no strategy. Just say where you actually are.",
         choices: [
-          { id: "up", label: "I'm up. I know I should leave, but I still want to keep going.", evidence: { 2: 3 }, followUp: "bet-up" },
-          { id: "down", label: "I'm down. I want to get the money back.", evidence: { 3: 2, 5: 1 }, followUp: "bet-down" },
-          { id: "even", label: "I'm about even, and I don't want to stop yet.", evidence: { 7: 3 }, followUp: "bet-even" },
-          { id: "early", label: "I haven't lost or won much yet, and I still don't want to stop.", evidence: { 8: 3 }, followUp: "bet-early", avoids: true },
+          { id: "up", label: "I'm up. And I'm still sat here.", evidence: { 2: 3 }, followUp: "bet-up" },
+          { id: "down", label: "I'm down. I want that money back.", evidence: { 3: 2, 5: 1 }, followUp: "bet-down" },
+          { id: "even", label: "About even. Still going.", evidence: { 7: 3 }, followUp: "bet-even" },
+          { id: "early", label: "Barely started and I already don't want to leave.", evidence: { 8: 3 }, followUp: "bet-early", avoids: true },
         ],
       },
+
     ],
   },
 
