@@ -32,12 +32,21 @@ const RAGE_LINES = [
 
 const IMPACT_MARKS = ["!", "#", "%", "?!", "×"];
 
-const REFLECT_PROMPTS = [
-  "What actually felt unfair about it?",
-  "Where did it feel disrespectful?",
-  "What did they cross that shouldn't have been crossed?",
-  "What hurt more than you'd admit to anyone?",
-  "What do you wish had happened instead?",
+type ReflectPrompt = { q: string; note?: string; placeholder?: string };
+
+const REFLECT_PROMPTS: ReflectPrompt[] = [
+  { q: "What actually felt unfair about it?" },
+  { q: "What did they cross that shouldn't have been crossed?" },
+  {
+    q: "What is the thing your rage is imagining right now?",
+    note: "You can name the image or the fantasy honestly. Keep it as a thought — not a plan, and no instructions for hurting anyone.",
+    placeholder: "The image, as it actually shows up.",
+  },
+  {
+    q: "Now the containment part: what keeps that a thought and nothing more, for the next ten minutes?",
+    placeholder: "Where you'll be, who you won't contact, what your hands will do.",
+  },
+  { q: "What hurt more than you'd admit to anyone?" },
 ];
 
 /** Kids: raw → light. Never a straight jump into a cheesy joke. */
@@ -142,7 +151,7 @@ export function RightNow({
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="eyebrow text-terracotta">Right now</p>
+          <p className="eyebrow text-terracotta">Right now — acute de-escalation tool</p>
           <h2 className="rule-gold font-display text-2xl leading-tight sm:text-3xl">
             {phase === "menu" ? "You don't have to hold it together." : "RIGHT NOW"}
           </h2>
@@ -155,10 +164,14 @@ export function RightNow({
       {phase === "menu" ? (
         <>
           <p className="mt-3 text-sm leading-relaxed text-olive-soft">
-            Optional. Nothing here is scored and none of it touches your Gabriel Number. Use it as
-            often as you want.
+            RIGHT NOW is for getting through the next few minutes. Nothing here is scored and none
+            of it touches your Gabriel Number. THE FIRE — the deeper investigation that reads your
+            pattern — is waiting whenever you want it.
           </p>
           <MenuButtons onPick={setPhase} first />
+          <button type="button" onClick={onExit} className={`mt-3 w-full ${optionBtn} text-center`}>
+            {exitLabel} →
+          </button>
         </>
       ) : null}
 
@@ -175,7 +188,9 @@ export function RightNow({
         </>
       ) : null}
 
-      {phase === "reflect" ? <Reflect onBack={() => setPhase("needs")} onExit={onExit} /> : null}
+      {phase === "reflect" ? (
+        <Reflect onBack={() => setPhase("menu")} onExit={onExit} exitLabel={exitLabel} />
+      ) : null}
 
       {phase === "kids" ? (
         <Guided
@@ -196,10 +211,15 @@ export function RightNow({
         />
       ) : null}
 
-      {phase !== "menu" && phase !== "rage" ? (
-        <button type="button" onClick={() => setPhase("menu")} className="mt-6 w-full rounded-full border border-hairline bg-background/60 px-4 py-2.5 text-xs tracking-wide text-olive-soft uppercase transition-colors hover:border-teal/60 hover:text-foreground">
-          Right Now menu
-        </button>
+      {phase !== "menu" && phase !== "rage" && phase !== "reflect" ? (
+        <div className="mt-6 flex flex-col gap-2.5">
+          <button type="button" onClick={onExit} className={primaryBtn}>
+            {exitLabel} →
+          </button>
+          <button type="button" onClick={() => setPhase("menu")} className={optionBtn}>
+            ← RETURN TO RIGHT NOW
+          </button>
+        </div>
       ) : null}
     </section>
   );
@@ -212,7 +232,7 @@ function MenuButtons({ onPick, first }: { onPick: (p: Phase) => void; first?: bo
         🔥 {first ? "LET THE FUCK OUT" : "LET THE FUCK OUT AGAIN"} — 1:00
       </button>
       <button type="button" onClick={() => onPick("reflect")} className={optionBtn}>
-        🪞 REFLECT
+        🪞 REFLECT — OPTIONAL, NO TIMER
       </button>
       <button type="button" onClick={() => onPick("kids")} className={optionBtn}>
         👦 TALK ABOUT MY KIDS — 3:00
@@ -307,7 +327,15 @@ function Cooldown({ onDone }: { onDone: () => void }) {
 
 /* ------------------------------ REFLECT -------------------------------- */
 
-function Reflect({ onBack, onExit }: { onBack: () => void; onExit: () => void }) {
+function Reflect({
+  onBack,
+  onExit,
+  exitLabel,
+}: {
+  onBack: () => void;
+  onExit: () => void;
+  exitLabel: string;
+}) {
   const [notes, setNotes] = useState<string[]>(() => REFLECT_PROMPTS.map(() => ""));
   return (
     <div className="mt-5">
@@ -315,12 +343,16 @@ function Reflect({ onBack, onExit }: { onBack: () => void; onExit: () => void })
         What happened, in your own words.
       </p>
       <p className="mt-2 text-sm text-olive-soft">
-        No timer. No number. Nobody reads this. Answer any of it, or none of it.
+        Optional side tool. No timer, no number, nobody reads this — it stays on this screen and
+        nothing here is scored. Answer any of it, or skip straight on.
       </p>
       <div className="mt-5 flex flex-col gap-4">
         {REFLECT_PROMPTS.map((prompt, i) => (
-          <label key={prompt} className="flex flex-col gap-2">
-            <span className="text-sm text-foreground">{prompt}</span>
+          <label key={prompt.q} className="flex flex-col gap-2">
+            <span className="text-sm text-foreground">{prompt.q}</span>
+            {prompt.note ? (
+              <span className="text-xs leading-relaxed text-muted-foreground">{prompt.note}</span>
+            ) : null}
             <textarea
               value={notes[i]}
               onChange={(e) =>
@@ -328,23 +360,27 @@ function Reflect({ onBack, onExit }: { onBack: () => void; onExit: () => void })
               }
               rows={3}
               className="w-full resize-y rounded-xl border border-hairline bg-background/60 px-4 py-3 text-base leading-relaxed text-foreground outline-none placeholder:text-muted-foreground focus:border-teal/70"
-              placeholder="Say it however it comes out."
+              placeholder={prompt.placeholder ?? "Say it however it comes out."}
             />
           </label>
         ))}
       </div>
       <p className="mt-4 text-xs text-muted-foreground">
-        Wherever this goes in your head, keep yourself and everyone else out of harm's way. You can
-        be this angry without doing anything about it tonight.
+        Naming the image is allowed. Acting on it isn't the same thing — keep yourself and everyone
+        else out of harm's way tonight. If you're close to acting on it, get to another person or
+        call your local emergency number.
       </p>
-      <div className="mt-5 flex flex-wrap gap-2">
-        <button type="button" onClick={onBack} className={ghostBtn}>
-          Back to Right Now
+      <div className="mt-6 flex flex-col gap-2.5">
+        <button type="button" onClick={onExit} className={primaryBtn}>
+          {exitLabel} →
         </button>
-        <button type="button" onClick={onExit} className={ghostBtn}>
-          Back to the Fire
+        <button type="button" onClick={onBack} className={optionBtn}>
+          ← RETURN TO RIGHT NOW
         </button>
       </div>
+      <p className="mt-2 text-xs text-muted-foreground">
+        Reflection is a side tool. The next step in the branch is waiting either way.
+      </p>
     </div>
   );
 }

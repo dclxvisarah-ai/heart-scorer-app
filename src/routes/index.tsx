@@ -282,11 +282,14 @@ function GabrielsNumberPage() {
         ) : null}
 
         {stage === "release" && doorway ? (
-          <RightNow onExit={() => setStage("questions")} exitLabel="Go to the Fire" />
+          <RightNow onExit={() => setStage("questions")} exitLabel="GO TO THE FIRE (the investigation)" />
         ) : null}
 
         {stage === "questions" && rightNowOpen && doorway ? (
-          <RightNow onExit={() => setRightNowOpen(false)} exitLabel="Back to question" />
+          <RightNow
+            onExit={() => setRightNowOpen(false)}
+            exitLabel={`RETURN TO THE FIRE — QUESTION ${index + 1}`}
+          />
         ) : null}
 
         {stage === "questions" && !rightNowOpen && current && doorway ? (
@@ -312,7 +315,7 @@ function GabrielsNumberPage() {
                     onClick={() => setRightNowOpen(true)}
                     className="rounded-full border border-terracotta/60 bg-terracotta/10 px-3 py-1.5 text-[11px] tracking-wide text-foreground uppercase transition-colors hover:bg-terracotta/20"
                   >
-                    🔥 Right now
+                    🔥 Right now — de-escalate
                   </button>
                 ) : null}
                 <p className="text-xs text-muted-foreground">
