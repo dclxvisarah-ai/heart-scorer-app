@@ -562,12 +562,16 @@ function GabrielsNumberPage() {
               </div>
             ) : null}
 
+            {/*
+              Non-scoring note for The Chase only. Concrete and situational —
+              it names the decision in front of the person and never tells them
+              what they should do, feel or need.
+            */}
             {doorway.id === "bet" ? (
               <div className="rounded-xl border border-terracotta/40 bg-terracotta/5 px-5 py-4">
                 <p className="text-sm leading-relaxed text-foreground">
-                  If you're in the middle of the urge right now, you don't have to solve the whole
-                  situation. Creating some distance before the next decision can give you back a
-                  choice.
+                  Nothing here decides the next bet for you. The one thing that is still yours right
+                  now is whether the next bet happens in the next minute or not at all.
                 </p>
               </div>
             ) : null}
