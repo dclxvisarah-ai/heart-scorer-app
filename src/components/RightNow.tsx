@@ -31,6 +31,7 @@ const RAGE_LINES = [
 ];
 
 const IMPACT_MARKS = ["!", "#", "%", "?!", "×"];
+const RAGE_CRACKS = ["rage-crack-1", "rage-crack-2", "rage-crack-3", "rage-crack-4"];
 
 type ReflectPrompt = { q: string; note?: string; placeholder?: string };
 
@@ -254,6 +255,12 @@ function Rage({ onDone, onCancel }: { onDone: () => void; onCancel: () => void }
   return (
     <div className="relative mt-6 overflow-hidden rounded-xl px-2 py-5 sm:px-5">
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="rage-heat" />
+        <div className="rage-impact-ring rage-impact-ring-1" />
+        <div className="rage-impact-ring rage-impact-ring-2" />
+        {RAGE_CRACKS.map((className) => (
+          <span key={className} className={`rage-crack ${className}`} />
+        ))}
         {IMPACT_MARKS.map((mark, i) => (
           <span
             key={`${mark}-${i}`}
@@ -262,7 +269,11 @@ function Rage({ onDone, onCancel }: { onDone: () => void; onCancel: () => void }
             {mark}
           </span>
         ))}
-        <span className="rage-face" role="presentation">😡</span>
+        <span className="rage-face" role="presentation">
+          <span className="rage-face-eye rage-face-eye-left" />
+          <span className="rage-face-eye rage-face-eye-right" />
+          <span className="rage-face-mouth" />
+        </span>
       </div>
       <div className="relative z-10 flex flex-col items-center">
         <Gauge progress={timer.progress} label={fmt(timer.remaining)} intense />
@@ -300,6 +311,10 @@ function Cooldown({ onDone }: { onDone: () => void }) {
     <div className="mt-6 flex flex-col items-center">
       <div className="cooldown-scene relative flex h-44 w-full max-w-sm items-end overflow-hidden rounded-xl border border-hairline bg-teal/5">
         <span aria-hidden className="cooldown-sun" />
+        <span aria-hidden className="cooldown-breath cooldown-breath-1" />
+        <span aria-hidden className="cooldown-breath cooldown-breath-2" />
+        <span aria-hidden className="cooldown-drop cooldown-drop-1" />
+        <span aria-hidden className="cooldown-drop cooldown-drop-2" />
         {[0, 1, 2].map((i) => (
           <span
             key={i}
@@ -480,7 +495,7 @@ function Gauge({
           style={{ animation: "impact-pulse 1.1s ease-in-out infinite" }}
         />
       ) : null}
-      <svg width="180" height="180" viewBox="0 0 180 180" aria-hidden>
+      <svg className={intense ? "rage-gauge" : "guided-gauge"} viewBox="0 0 180 180" aria-hidden>
         <circle
           cx="90"
           cy="90"
