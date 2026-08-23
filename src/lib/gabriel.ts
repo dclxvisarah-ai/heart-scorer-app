@@ -2335,7 +2335,8 @@ const NINE_BRIDGE_OPENINGS: Record<string, string> = {
   talk:
     "It wasn't simply about whether now is the right time to talk. Your answers point to what you already know needs saying underneath the timing.",
   happened:
-    "It wasn't simply about what happened. Your answers point to what you already understand, underneath, about your part in it.",
+    "The fury wasn't simply about what they did. Your answers point to what the anger is guarding underneath, and to where the force is actually aimed.",
+
   surprise:
     "It wasn't simply about being caught off guard. Your answers point to what you already recognised underneath the surprise.",
 };
