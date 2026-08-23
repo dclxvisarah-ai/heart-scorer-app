@@ -47,7 +47,10 @@ export const Route = createFileRoute("/")({
   component: GabrielsNumberPage,
 });
 
-type Stage = "start" | "questions" | "result";
+type Stage = "start" | "release" | "questions" | "result";
+
+/** Branches that open with the optional, unscored release panel. */
+const RELEASE_DOORWAYS = new Set(["happened"]);
 
 function GabrielsNumberPage() {
   const [stage, setStage] = useState<Stage>("start");
