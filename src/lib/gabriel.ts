@@ -1549,7 +1549,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   /* PAGE 2: state-specific continuation probe */
   "bet-up": {
     id: "bet-up",
-    prompt: "What makes leaving while you're ahead so hard?",
+    prompt: "You're ahead. What's keeping you in it?",
     choices: [
       { id: "a", label: "Taking the win means calling it enough, and enough feels like leaving something on the table.", evidence: { 4: 3, 6: 1 } },
       { id: "b", label: "If I stop now I never find out how far this could have gone.", evidence: { 2: 3 } },
@@ -1560,7 +1560,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
   "bet-down": {
     id: "bet-down",
-    prompt: "What makes stopping after a loss so hard?",
+    prompt: "You're down. What's keeping you in it?",
     choices: [
       { id: "a", label: "If I stop now, the loss is real. Another bet could still change it.", evidence: { 4: 3 } },
       { id: "b", label: "One decent win could put it back. I keep doing that math.", evidence: { 3: 3, 9: 1 } },
@@ -1571,7 +1571,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
   "bet-even": {
     id: "bet-even",
-    prompt: "You're even. What's the pull to stay in it?",
+    prompt: "You're even. What's keeping you here?",
     choices: [
       { id: "a", label: "Walking away even feels like nothing happened.", evidence: { 8: 3 } },
       { id: "b", label: "The night is still going, and I don't want to be done yet.", evidence: { 7: 3 } },
@@ -1582,7 +1582,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
   "bet-early": {
     id: "bet-early",
-    prompt: "Nothing much has happened yet. So what's pulling?",
+    prompt: "Not much has happened yet. What's keeping you here?",
     choices: [
       { id: "a", label: "I'm waiting for something to happen. So far, nothing has.", evidence: { 7: 3 } },
       { id: "b", label: "I was already making the next bet before I thought about stopping.", evidence: { 3: 3 } },
