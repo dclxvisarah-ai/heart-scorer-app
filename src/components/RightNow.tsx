@@ -232,7 +232,7 @@ function MenuButtons({ onPick, first }: { onPick: (p: Phase) => void; first?: bo
         🔥 {first ? "LET THE FUCK OUT" : "LET THE FUCK OUT AGAIN"} — 1:00
       </button>
       <button type="button" onClick={() => onPick("reflect")} className={optionBtn}>
-        🪞 REFLECT
+        🪞 REFLECT — OPTIONAL, NO TIMER
       </button>
       <button type="button" onClick={() => onPick("kids")} className={optionBtn}>
         👦 TALK ABOUT MY KIDS — 3:00
