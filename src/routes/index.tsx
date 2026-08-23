@@ -56,6 +56,12 @@ function GabrielsNumberPage() {
   const [index, setIndex] = useState(0);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [savedId, setSavedId] = useState<string | undefined>();
+  /**
+   * Increments on every fresh run. Saved-history de-duplication is scoped to
+   * one run, so two identical runs both get saved and no run inherits the
+   * previous run's saved state.
+   */
+  const [runToken, setRunToken] = useState(0);
   /** Reworded probes the person opted into from an undetermined result. */
   const [deeperIds, setDeeperIds] = useState<string[]>([]);
   const [leftHere, setLeftHere] = useState(false);
@@ -84,7 +90,7 @@ function GabrielsNumberPage() {
 
   useEffect(() => {
     if (stage !== "result" || !result || !doorway) return;
-    const id = `${doorway.id}-${Object.keys(answers).length}`;
+    const id = `${runToken}-${doorway.id}-${Object.keys(answers).length}`;
     if (savedId === id) return;
     setSavedId(id);
     setHistory(
@@ -98,7 +104,7 @@ function GabrielsNumberPage() {
         reasoning: result.reasoning,
       }),
     );
-  }, [stage, result, doorway, answers, savedId]);
+  }, [stage, result, doorway, answers, savedId, runToken]);
 
   function restart() {
     setStage("start");
@@ -108,6 +114,7 @@ function GabrielsNumberPage() {
     setSavedId(undefined);
     setDeeperIds([]);
     setLeftHere(false);
+    setRunToken((t) => t + 1);
     urgeTimer.reset();
 
   }
@@ -117,10 +124,20 @@ function GabrielsNumberPage() {
     // Changing an answer invalidates anything answered after this question,
     // since later questions can depend on this branch.
     for (const q of sequence.slice(index + 1)) delete next[q.id];
+
+    const nextSequence = doorway ? buildSequence(doorway, next, deeperIds) : [];
+    // Current-run isolation: the result may only ever quote answers that are
+    // still on the live path. Any answer whose question is no longer part of
+    // the path this run actually walked is dropped here, so a changed branch
+    // can never leave a stale selection behind for the result page to cite.
+    const livePath = new Set(nextSequence.map((q) => q.id));
+    for (const key of Object.keys(next)) {
+      if (!livePath.has(key)) delete next[key];
+    }
+
     setAnswers(next);
     setSavedId(undefined);
 
-    const nextSequence = doorway ? buildSequence(doorway, next, deeperIds) : [];
     if (index + 1 >= nextSequence.length) {
       setStage("result");
     } else {
@@ -224,10 +241,15 @@ function GabrielsNumberPage() {
                   key={option.id}
                   type="button"
                   onClick={() => {
+                    // A new run starts completely empty: no answers, no
+                    // deeper probes and no saved-result state carried over.
                     setDoorwayId(option.id);
                     setAnswers({});
                     setIndex(0);
                     setSavedId(undefined);
+                    setDeeperIds([]);
+                    setLeftHere(false);
+                    setRunToken((t) => t + 1);
                     setStage("questions");
                   }}
                   className="group rounded-xl border border-hairline bg-background/50 px-4 py-3.5 text-left transition-colors hover:border-teal/60 hover:bg-teal/5"
@@ -540,12 +562,16 @@ function GabrielsNumberPage() {
               </div>
             ) : null}
 
+            {/*
+              Non-scoring note for The Chase only. Concrete and situational —
+              it names the decision in front of the person and never tells them
+              what they should do, feel or need.
+            */}
             {doorway.id === "bet" ? (
               <div className="rounded-xl border border-terracotta/40 bg-terracotta/5 px-5 py-4">
                 <p className="text-sm leading-relaxed text-foreground">
-                  If you're in the middle of the urge right now, you don't have to solve the whole
-                  situation. Creating some distance before the next decision can give you back a
-                  choice.
+                  Nothing here decides the next bet for you. The one thing that is still yours right
+                  now is whether the next bet happens in the next minute or not at all.
                 </p>
               </div>
             ) : null}

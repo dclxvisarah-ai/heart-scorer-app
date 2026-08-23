@@ -10,6 +10,19 @@
  * The Tree of Life and number mappings here are OUR working
  * psychological-symbolic mappings. They are not claims about what
  * traditional Kabbalah or Pythagorean numerology officially assigns.
+ *
+ * HARD PRODUCT-LANGUAGE RULE (global, applies to every branch and every
+ * future edit):
+ * Gabriel speaks in concrete, human, direct, situational language. NO generic
+ * therapeutic / self-help / clinical filler. Banned phrasings include (and are
+ * not limited to): "what would help you most", "create some distance", "hold
+ * space", "ground yourself", "process your feelings", "what are you avoiding",
+ * "what are you choosing instead", and "land / landed / landing".
+ * Every question must earn its place by producing a specific piece of evidence
+ * the engine needs. Never put an assumption, diagnosis, judgment, or a
+ * "what you should know/do" into the person's mouth. "I don't know" stays a
+ * legitimate response and is not treated as evidence unless explicitly
+ * warranted by that question's design.
  */
 
 export type GNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
@@ -529,7 +542,7 @@ export const ALL_DOORWAYS: Doorway[] = [
           { id: "up", label: "I'm up. I know I should leave, but I still want to keep going.", evidence: { 2: 3 }, followUp: "bet-up" },
           { id: "down", label: "I'm down. I want to get the money back.", evidence: { 3: 2, 5: 1 }, followUp: "bet-down" },
           { id: "even", label: "I'm about even, and I don't want to stop yet.", evidence: { 7: 3 }, followUp: "bet-even" },
-          { id: "early", label: "I haven't lost or won much yet. I just feel pulled to keep going.", evidence: { 8: 3 }, followUp: "bet-early", avoids: true },
+          { id: "early", label: "I haven't lost or won much yet, and I still don't want to stop.", evidence: { 8: 3 }, followUp: "bet-early", avoids: true },
         ],
       },
     ],
@@ -1549,7 +1562,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   /* PAGE 2: state-specific continuation probe */
   "bet-up": {
     id: "bet-up",
-    prompt: "What makes leaving while you're ahead so hard?",
+    prompt: "You're ahead. What's keeping you in it?",
     choices: [
       { id: "a", label: "Taking the win means calling it enough, and enough feels like leaving something on the table.", evidence: { 4: 3, 6: 1 } },
       { id: "b", label: "If I stop now I never find out how far this could have gone.", evidence: { 2: 3 } },
@@ -1560,7 +1573,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
   "bet-down": {
     id: "bet-down",
-    prompt: "What makes stopping after a loss so hard?",
+    prompt: "You're down. What's keeping you in it?",
     choices: [
       { id: "a", label: "If I stop now, the loss is real. Another bet could still change it.", evidence: { 4: 3 } },
       { id: "b", label: "One decent win could put it back. I keep doing that math.", evidence: { 3: 3, 9: 1 } },
@@ -1571,7 +1584,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
   "bet-even": {
     id: "bet-even",
-    prompt: "You're even. What's the pull to stay in it?",
+    prompt: "You're even. What's keeping you here?",
     choices: [
       { id: "a", label: "Walking away even feels like nothing happened.", evidence: { 8: 3 } },
       { id: "b", label: "The night is still going, and I don't want to be done yet.", evidence: { 7: 3 } },
@@ -1582,7 +1595,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
   "bet-early": {
     id: "bet-early",
-    prompt: "Nothing much has happened yet. So what's pulling?",
+    prompt: "Not much has happened yet. What's keeping you here?",
     choices: [
       { id: "a", label: "I'm waiting for something to happen. So far, nothing has.", evidence: { 7: 3 } },
       { id: "b", label: "I was already making the next bet before I thought about stopping.", evidence: { 3: 3 } },
@@ -1607,7 +1620,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   /* PAGE 4: expectation attached to continuation */
   "bet-story": {
     id: "bet-story",
-    prompt: "WHAT ARE YOU EXPECTING FROM THE NEXT BET?",
+    prompt: "What are you expecting from the next bet?",
     choices: [
       { id: "a", label: "To win.", evidence: { 5: 3 } },
       { id: "b", label: "To get back what I lost.", evidence: { 4: 3 } },
@@ -1622,7 +1635,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   /* PAGE 5: observed continuation pattern */
   "bet-history": {
     id: "bet-history",
-    prompt: "IF YOU KEEP GOING, WHERE DOES IT USUALLY END?",
+    prompt: "If you keep going, where does it usually end?",
     choices: [
       { id: "a", label: "I leave with more than I started with.", evidence: { 2: 3 } },
       { id: "b", label: "I give back some of what I won.", evidence: { 3: 3 } },
@@ -1637,7 +1650,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   /* PAGE 6: immediate stopping decision, selected from the person's Q1 state */
   "bet-need": {
     id: "bet-need",
-    prompt: "IF YOU'RE UP RIGHT NOW, WHY NOT CASH OUT?",
+    prompt: "If you're up right now, why not cash out?",
     choices: [
       { id: "a", label: "Because I want to win more.", evidence: { 5: 3 } },
       { id: "b", label: "Because I'm not ready for the night to be over.", evidence: { 7: 3 } },
@@ -1648,7 +1661,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
   "bet-need-down": {
     id: "bet-need-down",
-    prompt: "IF YOU'RE DOWN RIGHT NOW, WHY NOT STOP?",
+    prompt: "If you're down right now, why not stop?",
     choices: [
       { id: "a", label: "Because I want the money back.", evidence: { 5: 3 } },
       { id: "b", label: "Because I don't want the night to end with me down.", evidence: { 7: 3 } },
@@ -1659,7 +1672,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
   "bet-need-even": {
     id: "bet-need-even",
-    prompt: "IF YOU'RE EVEN RIGHT NOW, WHY NOT STOP?",
+    prompt: "If you're even right now, why not stop?",
     choices: [
       { id: "a", label: "Because I still want to leave with a win.", evidence: { 5: 3 } },
       { id: "b", label: "Because I'm not ready for the night to be over.", evidence: { 7: 3 } },
@@ -1670,7 +1683,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   },
   "bet-need-early": {
     id: "bet-need-early",
-    prompt: "YOU BARELY STARTED. WHAT'S KEEPING YOU HERE?",
+    prompt: "You barely started. What's keeping you here?",
     choices: [
       { id: "a", label: "I still want to win something.", evidence: { 5: 3 } },
       { id: "b", label: "I'm not ready for the night to be over.", evidence: { 7: 3 } },
