@@ -362,6 +362,7 @@ export const CORE_QUESTIONS: Question[] = [
 export const ALL_DOORWAYS: Doorway[] = [
   {
     id: "lost",
+    hidden: true,
     label: "I don't know what the hell to do today",
     sub: "Unfocused, and it's getting louder",
     universal: "ifAvoidance",
@@ -591,6 +592,7 @@ export const ALL_DOORWAYS: Doorway[] = [
   },
   {
     id: "well",
+    hidden: true,
     label: "Everything's going really well and I'm not used to that",
     sub: "Calm can feel unfamiliar",
     universal: "ifAvoidance",
@@ -656,6 +658,7 @@ export const ALL_DOORWAYS: Doorway[] = [
 
   {
     id: "loop",
+    hidden: true,
     label: "The same thing keeps happening again",
     sub: "A shape you recognize",
     universal: "ifAvoidance",
@@ -695,6 +698,7 @@ export const ALL_DOORWAYS: Doorway[] = [
   },
   {
     id: "surprise",
+    hidden: true,
     label: "Take a chance — pick for me",
     sub: "You bring nothing; we'll start anyway",
     universal: "always",
@@ -1823,10 +1827,18 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
 };
 
 /**
- * Doorways offered on the start screen. Hidden branches stay in
- * `ALL_DOORWAYS` (and remain resolvable by id) so no work is lost.
+ * Visible main-menu order. Menu architecture pass: exactly four doorways are
+ * offered — The Fire (happened), The Chase (bet), Spiraling (spiral),
+ * Drinking (drink). Every other doorway stays defined in `ALL_DOORWAYS` and
+ * remains resolvable by id (saved history keeps working); it is only pruned
+ * from the menu. Nothing is deleted.
  */
-export const DOORWAYS: Doorway[] = ALL_DOORWAYS.filter((d) => !d.hidden);
+export const VISIBLE_DOORWAY_ORDER = ["happened", "bet", "spiral", "drink"] as const;
+
+export const DOORWAYS: Doorway[] = VISIBLE_DOORWAY_ORDER.map(
+  (id) => ALL_DOORWAYS.find((d) => d.id === id)!,
+).filter(Boolean);
+
 
 export function getDoorway(id: string | undefined): Doorway | undefined {
   return ALL_DOORWAYS.find((d) => d.id === id);
