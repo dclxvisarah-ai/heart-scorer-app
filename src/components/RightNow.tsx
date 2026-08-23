@@ -229,7 +229,7 @@ function MenuButtons({ onPick, first }: { onPick: (p: Phase) => void; first?: bo
 function Rage({ onDone, onCancel }: { onDone: () => void; onCancel: () => void }) {
   const timer = useCountdown(RAGE_SECONDS, onDone);
   const elapsed = RAGE_SECONDS * 1000 - timer.remaining;
-  const line: string = RAGE_LINES[Math.floor(elapsed / 5000) % RAGE_LINES.length];
+  const line = RAGE_LINES[Math.floor(elapsed / 5000) % RAGE_LINES.length] ?? RAGE_LINES[0] ?? "Yeah. You're fucking angry.";
 
   return (
     <div className="relative mt-6 overflow-hidden rounded-xl px-2 py-5 sm:px-5">
