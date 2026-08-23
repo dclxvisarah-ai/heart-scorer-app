@@ -32,12 +32,21 @@ const RAGE_LINES = [
 
 const IMPACT_MARKS = ["!", "#", "%", "?!", "×"];
 
-const REFLECT_PROMPTS = [
-  "What actually felt unfair about it?",
-  "Where did it feel disrespectful?",
-  "What did they cross that shouldn't have been crossed?",
-  "What hurt more than you'd admit to anyone?",
-  "What do you wish had happened instead?",
+type ReflectPrompt = { q: string; note?: string; placeholder?: string };
+
+const REFLECT_PROMPTS: ReflectPrompt[] = [
+  { q: "What actually felt unfair about it?" },
+  { q: "What did they cross that shouldn't have been crossed?" },
+  {
+    q: "What is the thing your rage is imagining right now?",
+    note: "You can name the image or the fantasy honestly. Keep it as a thought — not a plan, and no instructions for hurting anyone.",
+    placeholder: "The image, as it actually shows up.",
+  },
+  {
+    q: "Now the containment part: what keeps that a thought and nothing more, for the next ten minutes?",
+    placeholder: "Where you'll be, who you won't contact, what your hands will do.",
+  },
+  { q: "What hurt more than you'd admit to anyone?" },
 ];
 
 /** Kids: raw → light. Never a straight jump into a cheesy joke. */
