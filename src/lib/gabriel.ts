@@ -1607,7 +1607,7 @@ export const BRANCH_QUESTIONS: Record<string, Question> = {
   /* PAGE 4: expectation attached to continuation */
   "bet-story": {
     id: "bet-story",
-    prompt: "WHAT ARE YOU EXPECTING FROM THE NEXT BET?",
+    prompt: "What are you expecting from the next bet?",
     choices: [
       { id: "a", label: "To win.", evidence: { 5: 3 } },
       { id: "b", label: "To get back what I lost.", evidence: { 4: 3 } },
