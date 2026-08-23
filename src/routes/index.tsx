@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 
 import { DevPreviewBanner } from "@/components/DevPreviewBanner";
+import { FireRelease } from "@/components/FireRelease";
 import { FramingNote } from "@/components/FramingNote";
 import { NumberPanel } from "@/components/NumberPanel";
 import {
@@ -47,7 +48,10 @@ export const Route = createFileRoute("/")({
   component: GabrielsNumberPage,
 });
 
-type Stage = "start" | "questions" | "result";
+type Stage = "start" | "release" | "questions" | "result";
+
+/** Branches that open with the optional, unscored release panel. */
+const RELEASE_DOORWAYS = new Set(["happened"]);
 
 function GabrielsNumberPage() {
   const [stage, setStage] = useState<Stage>("start");
@@ -250,7 +254,7 @@ function GabrielsNumberPage() {
                     setDeeperIds([]);
                     setLeftHere(false);
                     setRunToken((t) => t + 1);
-                    setStage("questions");
+                    setStage(RELEASE_DOORWAYS.has(option.id) ? "release" : "questions");
                   }}
                   className="group rounded-xl border border-hairline bg-background/50 px-4 py-3.5 text-left transition-colors hover:border-teal/60 hover:bg-teal/5"
                 >
@@ -272,6 +276,10 @@ function GabrielsNumberPage() {
               </p>
             ) : null}
           </section>
+        ) : null}
+
+        {stage === "release" && doorway ? (
+          <FireRelease onSkip={() => setStage("questions")} />
         ) : null}
 
         {stage === "questions" && current && doorway ? (
