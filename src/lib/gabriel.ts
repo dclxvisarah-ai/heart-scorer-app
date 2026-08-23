@@ -362,6 +362,7 @@ export const CORE_QUESTIONS: Question[] = [
 export const ALL_DOORWAYS: Doorway[] = [
   {
     id: "lost",
+    hidden: true,
     label: "I don't know what the hell to do today",
     sub: "Unfocused, and it's getting louder",
     universal: "ifAvoidance",
@@ -591,6 +592,7 @@ export const ALL_DOORWAYS: Doorway[] = [
   },
   {
     id: "well",
+    hidden: true,
     label: "Everything's going really well and I'm not used to that",
     sub: "Calm can feel unfamiliar",
     universal: "ifAvoidance",
@@ -656,6 +658,7 @@ export const ALL_DOORWAYS: Doorway[] = [
 
   {
     id: "loop",
+    hidden: true,
     label: "The same thing keeps happening again",
     sub: "A shape you recognize",
     universal: "ifAvoidance",
@@ -695,6 +698,7 @@ export const ALL_DOORWAYS: Doorway[] = [
   },
   {
     id: "surprise",
+    hidden: true,
     label: "Take a chance — pick for me",
     sub: "You bring nothing; we'll start anyway",
     universal: "always",
