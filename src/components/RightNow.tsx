@@ -233,7 +233,7 @@ function Rage({ onDone, onCancel }: { onDone: () => void; onCancel: () => void }
 
   return (
     <div className="relative mt-6 overflow-hidden rounded-xl px-2 py-5 sm:px-5">
-      <div aria-hidden className="absolute inset-0 overflow-hidden">
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         {IMPACT_MARKS.map((mark, i) => (
           <span
             key={`${mark}-${i}`}
