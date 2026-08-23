@@ -223,7 +223,7 @@ function MenuButtons({ onPick, first }: { onPick: (p: Phase) => void; first?: bo
 function Rage({ onDone, onCancel }: { onDone: () => void; onCancel: () => void }) {
   const timer = useCountdown(RAGE_SECONDS, onDone);
   const elapsed = RAGE_SECONDS * 1000 - timer.remaining;
-  const line = RAGE_LINES[Math.floor(elapsed / 5000) % RAGE_LINES.length];
+  const line: string = RAGE_LINES[Math.floor(elapsed / 5000) % RAGE_LINES.length];
 
   return (
     <div className="mt-6">
@@ -350,8 +350,8 @@ function Guided({
 }) {
   const timer = useCountdown(seconds, onDone);
   const elapsedSec = (seconds * 1000 - timer.remaining) / 1000;
-  const step = useMemo(() => {
-    let out = steps[0];
+  const step = useMemo<Step>(() => {
+    let out: Step = steps[0] as Step;
     for (const s of steps) if (elapsedSec >= s.at) out = s;
     return out;
   }, [elapsedSec, steps]);
