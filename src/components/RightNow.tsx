@@ -316,7 +316,15 @@ function Cooldown({ onDone }: { onDone: () => void }) {
 
 /* ------------------------------ REFLECT -------------------------------- */
 
-function Reflect({ onBack, onExit }: { onBack: () => void; onExit: () => void }) {
+function Reflect({
+  onBack,
+  onExit,
+  exitLabel,
+}: {
+  onBack: () => void;
+  onExit: () => void;
+  exitLabel: string;
+}) {
   const [notes, setNotes] = useState<string[]>(() => REFLECT_PROMPTS.map(() => ""));
   return (
     <div className="mt-5">
@@ -324,12 +332,16 @@ function Reflect({ onBack, onExit }: { onBack: () => void; onExit: () => void })
         What happened, in your own words.
       </p>
       <p className="mt-2 text-sm text-olive-soft">
-        No timer. No number. Nobody reads this. Answer any of it, or none of it.
+        Optional side tool. No timer, no number, nobody reads this — it stays on this screen and
+        nothing here is scored. Answer any of it, or skip straight on.
       </p>
       <div className="mt-5 flex flex-col gap-4">
         {REFLECT_PROMPTS.map((prompt, i) => (
-          <label key={prompt} className="flex flex-col gap-2">
-            <span className="text-sm text-foreground">{prompt}</span>
+          <label key={prompt.q} className="flex flex-col gap-2">
+            <span className="text-sm text-foreground">{prompt.q}</span>
+            {prompt.note ? (
+              <span className="text-xs leading-relaxed text-muted-foreground">{prompt.note}</span>
+            ) : null}
             <textarea
               value={notes[i]}
               onChange={(e) =>
@@ -337,23 +349,27 @@ function Reflect({ onBack, onExit }: { onBack: () => void; onExit: () => void })
               }
               rows={3}
               className="w-full resize-y rounded-xl border border-hairline bg-background/60 px-4 py-3 text-base leading-relaxed text-foreground outline-none placeholder:text-muted-foreground focus:border-teal/70"
-              placeholder="Say it however it comes out."
+              placeholder={prompt.placeholder ?? "Say it however it comes out."}
             />
           </label>
         ))}
       </div>
       <p className="mt-4 text-xs text-muted-foreground">
-        Wherever this goes in your head, keep yourself and everyone else out of harm's way. You can
-        be this angry without doing anything about it tonight.
+        Naming the image is allowed. Acting on it isn't the same thing — keep yourself and everyone
+        else out of harm's way tonight. If you're close to acting on it, get to another person or
+        call your local emergency number.
       </p>
-      <div className="mt-5 flex flex-wrap gap-2">
-        <button type="button" onClick={onBack} className={ghostBtn}>
-          Back to Right Now
+      <div className="mt-6 flex flex-col gap-2.5">
+        <button type="button" onClick={onExit} className={primaryBtn}>
+          {exitLabel} →
         </button>
-        <button type="button" onClick={onExit} className={ghostBtn}>
-          Back to the Fire
+        <button type="button" onClick={onBack} className={optionBtn}>
+          ← RETURN TO RIGHT NOW
         </button>
       </div>
+      <p className="mt-2 text-xs text-muted-foreground">
+        Reflection is a side tool. The next step in the branch is waiting either way.
+      </p>
     </div>
   );
 }
