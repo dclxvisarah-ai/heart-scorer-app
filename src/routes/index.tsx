@@ -241,10 +241,15 @@ function GabrielsNumberPage() {
                   key={option.id}
                   type="button"
                   onClick={() => {
+                    // A new run starts completely empty: no answers, no
+                    // deeper probes and no saved-result state carried over.
                     setDoorwayId(option.id);
                     setAnswers({});
                     setIndex(0);
                     setSavedId(undefined);
+                    setDeeperIds([]);
+                    setLeftHere(false);
+                    setRunToken((t) => t + 1);
                     setStage("questions");
                   }}
                   className="group rounded-xl border border-hairline bg-background/50 px-4 py-3.5 text-left transition-colors hover:border-teal/60 hover:bg-teal/5"
