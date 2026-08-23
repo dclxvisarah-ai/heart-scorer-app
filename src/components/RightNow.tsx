@@ -326,7 +326,7 @@ function Cooldown({ onDone }: { onDone: () => void }) {
         <img
           src={cooldownPhoto.url}
           alt="Quiet water beneath clouds in evening light"
-          loading="lazy"
+          loading="eager"
           width={1536}
           height={1024}
           className="absolute inset-0 h-full w-full object-cover"
@@ -453,7 +453,7 @@ function Guided({
           key={visual.url}
           src={visual.url}
           alt={visualAlt}
-          loading="lazy"
+          loading="eager"
           width={isKids ? 1024 : 1536}
           height={isKids ? 1536 : 1024}
           className="guided-photo-image absolute inset-0 h-full w-full object-cover motion-reduce:animate-none"
