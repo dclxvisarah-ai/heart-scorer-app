@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { FramingNote } from "@/components/FramingNote";
-import { NumberPanel } from "@/components/NumberPanel";
-import { NUMBERS, G_NUMBERS } from "@/lib/gabriel";
+import { NUMBERS } from "@/lib/gabriel";
 import {
   clearHistory,
   deleteEntry,
