@@ -33,7 +33,6 @@ export const Route = createFileRoute("/readings")({
 function ReadingsPage() {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [hydrated, setHydrated] = useState(false);
-  const [showKey, setShowKey] = useState(false);
 
   useEffect(() => {
     setHistory(loadHistory());
