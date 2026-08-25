@@ -1,34 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 
-import { DevPreviewBanner } from "@/components/DevPreviewBanner";
-import { RightNow } from "@/components/RightNow";
 import { FramingNote } from "@/components/FramingNote";
 import { NumberPanel } from "@/components/NumberPanel";
 import {
   DOORWAYS,
   FRAMING_LINES,
-  NEXT_STEPS,
   NUMBERS,
-  UNDETERMINED_NEXT,
   buildSequence,
   evaluatePattern,
   getDeeperProbe,
-  getNineBridge,
-
   getDoorway,
   type AnswerMap,
   type Question,
 } from "@/lib/gabriel";
 import { loadHistory, newId, saveEntry, type HistoryEntry } from "@/lib/history";
-import { getResultNarrative } from "@/lib/result-narrative";
-import {
-  UrgeTimer,
-  UrgeTimerStrip,
-  urgeTimerIntro,
-  useUrgeTimer,
-} from "@/components/UrgeTimer";
-
 
 const TITLE = "What's Gabriel's Number? Vol. 2";
 const DESCRIPTION =
@@ -48,36 +34,18 @@ export const Route = createFileRoute("/")({
   component: GabrielsNumberPage,
 });
 
-type Stage = "start" | "release" | "questions" | "result";
-
-/** Branches that open with the optional, unscored release panel. */
-const RELEASE_DOORWAYS = new Set(["happened"]);
+type Stage = "start" | "questions" | "result";
 
 function GabrielsNumberPage() {
   const [stage, setStage] = useState<Stage>("start");
-  // RIGHT NOW overlay: de-escalation only, never scored. Question position
-  // (index/answers) is untouched while it is open.
-  const [rightNowOpen, setRightNowOpen] = useState(false);
   const [doorwayId, setDoorwayId] = useState<string | undefined>();
   const [answers, setAnswers] = useState<AnswerMap>({});
   const [index, setIndex] = useState(0);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [savedId, setSavedId] = useState<string | undefined>();
-  /**
-   * Increments on every fresh run. Saved-history de-duplication is scoped to
-   * one run, so two identical runs both get saved and no run inherits the
-   * previous run's saved state.
-   */
-  const [runToken, setRunToken] = useState(0);
   /** Reworded probes the person opted into from an undetermined result. */
   const [deeperIds, setDeeperIds] = useState<string[]>([]);
   const [leftHere, setLeftHere] = useState(false);
-  /**
-   * Behavioural-support timer. Session-level state only — never read by the
-   * scoring engine and never saved as evidence.
-   */
-  const urgeTimer = useUrgeTimer();
-
 
   useEffect(() => {
     setHistory(loadHistory());
@@ -97,7 +65,7 @@ function GabrielsNumberPage() {
 
   useEffect(() => {
     if (stage !== "result" || !result || !doorway) return;
-    const id = `${runToken}-${doorway.id}-${Object.keys(answers).length}`;
+    const id = `${doorway.id}-${Object.keys(answers).length}`;
     if (savedId === id) return;
     setSavedId(id);
     setHistory(
@@ -111,7 +79,7 @@ function GabrielsNumberPage() {
         reasoning: result.reasoning,
       }),
     );
-  }, [stage, result, doorway, answers, savedId, runToken]);
+  }, [stage, result, doorway, answers, savedId]);
 
   function restart() {
     setStage("start");
@@ -121,9 +89,6 @@ function GabrielsNumberPage() {
     setSavedId(undefined);
     setDeeperIds([]);
     setLeftHere(false);
-    setRunToken((t) => t + 1);
-    urgeTimer.reset();
-
   }
 
   function choose(questionId: string, choiceId: string) {
@@ -131,20 +96,10 @@ function GabrielsNumberPage() {
     // Changing an answer invalidates anything answered after this question,
     // since later questions can depend on this branch.
     for (const q of sequence.slice(index + 1)) delete next[q.id];
-
-    const nextSequence = doorway ? buildSequence(doorway, next, deeperIds) : [];
-    // Current-run isolation: the result may only ever quote answers that are
-    // still on the live path. Any answer whose question is no longer part of
-    // the path this run actually walked is dropped here, so a changed branch
-    // can never leave a stale selection behind for the result page to cite.
-    const livePath = new Set(nextSequence.map((q) => q.id));
-    for (const key of Object.keys(next)) {
-      if (!livePath.has(key)) delete next[key];
-    }
-
     setAnswers(next);
     setSavedId(undefined);
 
+    const nextSequence = doorway ? buildSequence(doorway, next, deeperIds) : [];
     if (index + 1 >= nextSequence.length) {
       setStage("result");
     } else {
@@ -179,36 +134,10 @@ function GabrielsNumberPage() {
 
 
   const current = sequence[index];
-  /** Reconnects the result to the way the person actually came in. */
-  const firstAnswerLabel = (() => {
-    const first = sequence[0];
-    if (!first) return undefined;
-    const chosen = first.choices.find((c) => c.id === answers[first.id]);
-    return chosen ? `${first.prompt} — ${chosen.label}` : undefined;
-  })();
   const nextProbe = result && !result.primary ? getDeeperProbe(result.contested, deeperIds) : undefined;
-  /** Branch- and response-specific result narrative for numbers 1–8. */
-  const narrative =
-    result?.primary && result.primary !== 9
-      ? getResultNarrative(doorway?.id, result.primary, result.contributions)
-      : undefined;
-  /** Response-pattern summary for the 9 result (presentation only). */
-  const nineSummary =
-    result?.primary === 9
-      ? (() => {
-          const quoted = result.contributions
-            .map((c) => c.choiceLabel)
-            .filter(Boolean)
-            .slice(0, 2);
-          return quoted.length > 0
-            ? `The answers that carried this: ${quoted.map((q) => `“${q}”`).join(" and ")}.`
-            : undefined;
-        })()
-      : undefined;
 
   return (
     <main className="paper min-h-screen">
-      <DevPreviewBanner />
       <div className="mx-auto w-full max-w-2xl px-4 pt-8 pb-6 sm:px-6 sm:pt-12">
         <header className="mb-7 flex items-start justify-between gap-4">
           <div>
@@ -248,16 +177,11 @@ function GabrielsNumberPage() {
                   key={option.id}
                   type="button"
                   onClick={() => {
-                    // A new run starts completely empty: no answers, no
-                    // deeper probes and no saved-result state carried over.
                     setDoorwayId(option.id);
                     setAnswers({});
                     setIndex(0);
                     setSavedId(undefined);
-                    setDeeperIds([]);
-                    setLeftHere(false);
-                    setRunToken((t) => t + 1);
-                    setStage(RELEASE_DOORWAYS.has(option.id) ? "release" : "questions");
+                    setStage("questions");
                   }}
                   className="group rounded-xl border border-hairline bg-background/50 px-4 py-3.5 text-left transition-colors hover:border-teal/60 hover:bg-teal/5"
                 >
@@ -281,18 +205,7 @@ function GabrielsNumberPage() {
           </section>
         ) : null}
 
-        {stage === "release" && doorway ? (
-          <RightNow onExit={() => setStage("questions")} exitLabel="GO TO THE FIRE (the investigation)" />
-        ) : null}
-
-        {stage === "questions" && rightNowOpen && doorway ? (
-          <RightNow
-            onExit={() => setRightNowOpen(false)}
-            exitLabel={`RETURN TO THE FIRE — QUESTION ${index + 1}`}
-          />
-        ) : null}
-
-        {stage === "questions" && !rightNowOpen && current && doorway ? (
+        {stage === "questions" && current && doorway ? (
           <section className="card-cream animate-rise p-5 sm:p-7">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
@@ -308,20 +221,9 @@ function GabrielsNumberPage() {
                 ) : null}
                 <p className="eyebrow">{doorway.label}</p>
               </div>
-              <div className="flex items-center gap-2">
-                {RELEASE_DOORWAYS.has(doorway.id) ? (
-                  <button
-                    type="button"
-                    onClick={() => setRightNowOpen(true)}
-                    className="rounded-full border border-terracotta/60 bg-terracotta/10 px-3 py-1.5 text-[11px] tracking-wide text-foreground uppercase transition-colors hover:bg-terracotta/20"
-                  >
-                    🔥 Right now — de-escalate
-                  </button>
-                ) : null}
-                <p className="text-xs text-muted-foreground">
-                  {index + 1} of {sequence.length}
-                </p>
-              </div>
+              <p className="text-xs text-muted-foreground">
+                {index + 1} of {sequence.length}
+              </p>
             </div>
 
             <div className="mt-3 h-0.5 w-full overflow-hidden rounded-full bg-cream-deep">
@@ -331,31 +233,10 @@ function GabrielsNumberPage() {
               />
             </div>
 
-            {(() => {
-              const intro = urgeTimerIntro(doorway.id);
-              if (!intro) return null;
-              return index === 0 ? (
-                <div className="mt-4">
-                  <UrgeTimer timer={urgeTimer} intro={intro} />
-                </div>
-              ) : (
-                <UrgeTimerStrip timer={urgeTimer} />
-              );
-            })()}
-
-
-
-            {current.rebuild ? (
-              <p className="mt-4 rounded-lg border border-gold/60 bg-gold/10 px-3 py-2 text-[11px] leading-relaxed tracking-wide text-olive-soft uppercase">
-                Requires rebuild — internal flag
-              </p>
-            ) : null}
-
             <h2 className="mt-5 font-display text-xl leading-snug sm:text-2xl">{current.prompt}</h2>
             {current.note ? (
               <p className="mt-2 text-sm text-muted-foreground">{current.note}</p>
             ) : null}
-
 
             <div className="mt-5 flex flex-col gap-2.5">
               {current.choices.map((choice) => {
@@ -401,18 +282,11 @@ function GabrielsNumberPage() {
         {stage === "result" && result && doorway ? (
           <section className="animate-rise flex flex-col gap-4">
             <div className="card-cream p-5 sm:p-7">
-              <p className="eyebrow">You came in with</p>
-              <p className="mt-1 font-display text-lg leading-snug sm:text-xl">
-                “{doorway.label}”
-              </p>
-              {firstAnswerLabel ? (
-                <p className="mt-1 text-sm text-olive-soft">{firstAnswerLabel}</p>
-              ) : null}
+              <p className="eyebrow">{doorway.label}</p>
 
               {result.primary ? (
                 <>
-                  <p className="eyebrow mt-6">Your Gabriel Number</p>
-                  <div className="mt-2 flex items-baseline gap-4">
+                  <div className="mt-4 flex items-baseline gap-4">
                     <span className="numeral text-6xl text-teal sm:text-7xl">{result.primary}</span>
                     <div>
                       <p className="font-display text-xl leading-tight sm:text-2xl">
@@ -427,44 +301,15 @@ function GabrielsNumberPage() {
                   <p className="mt-5 text-sm leading-relaxed text-foreground">
                     {NUMBERS[result.primary].meaning}
                   </p>
-                  {result.primary === 9 ? (
-                    <div className="mt-4 rounded-xl border border-gold/50 bg-gold/10 px-4 py-3">
-                      <p className="text-sm leading-relaxed text-foreground">
-                        {getNineBridge(doorway.id).human}
-                      </p>
-                      {nineSummary ? (
-                        <p className="mt-2 text-sm leading-relaxed text-olive-soft">{nineSummary}</p>
-                      ) : null}
-                      <p className="mt-3 font-display text-lg leading-snug">
-                        {getNineBridge(doorway.id).question}
-                      </p>
-                    </div>
-                  ) : null}
-                  <div className="mt-4 rounded-xl border border-teal/30 bg-teal/8 px-4 py-3">
-                    <p className="eyebrow">The clarity you're missing</p>
-                    <p className="mt-1.5 text-sm leading-relaxed text-foreground">
-                      {NUMBERS[result.primary].lesson}
-                    </p>
-                    {narrative ? (
-                      <>
-                        <p className="mt-3 text-sm leading-relaxed text-foreground">
-                          {narrative.clarity}
-                        </p>
-                        {narrative.patternSummary ? (
-                          <p className="mt-2 text-sm leading-relaxed text-olive-soft">
-                            {narrative.patternSummary}
-                          </p>
-                        ) : null}
-                      </>
-                    ) : null}
-                  </div>
-
+                  <p className="mt-3 rounded-xl border border-teal/30 bg-teal/8 px-4 py-3 text-sm leading-relaxed text-foreground">
+                    <span className="font-medium">Core lesson.</span>{" "}
+                    {NUMBERS[result.primary].lesson}
+                  </p>
                 </>
               ) : (
                 <>
-                  <p className="eyebrow mt-6">Your Gabriel Number</p>
-                  <h2 className="mt-1 font-display text-2xl leading-tight sm:text-3xl">
-                    Undetermined — and that is an honest answer, not a failure.
+                  <h2 className="mt-4 font-display text-2xl leading-tight sm:text-3xl">
+                    Your number is undetermined right now.
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-foreground">{result.reasoning}</p>
                   {result.contested.length > 1 ? (
@@ -477,10 +322,6 @@ function GabrielsNumberPage() {
                       at once — a real state, not a failed reading.
                     </p>
                   ) : null}
-                  <p className="mt-3 text-sm leading-relaxed text-foreground">
-                    {UNDETERMINED_NEXT.human}
-                  </p>
-
 
                   {leftHere ? (
                     <p className="mt-4 rounded-xl border border-hairline bg-background/50 px-4 py-3 text-sm leading-relaxed text-olive-soft">
@@ -557,24 +398,6 @@ function GabrielsNumberPage() {
               </div>
             ) : null}
 
-            {(() => {
-              const step = result.primary ? NEXT_STEPS[result.primary] : UNDETERMINED_NEXT;
-              const question = narrative?.question ?? step.question;
-              const advice = narrative?.advice ?? step.advice;
-              return (
-                <div className="card-cream p-5 sm:p-7">
-                  <h3 className="font-display text-lg">What to look at next</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-foreground">{step.human}</p>
-                  <p className="mt-4 rounded-xl border border-gold/50 bg-gold/10 px-4 py-3 text-sm leading-relaxed text-foreground">
-                    <span className="font-medium">Carry this question with you.</span>{" "}
-                    {question}
-                  </p>
-                  <p className="mt-3 text-sm leading-relaxed text-olive-soft">{advice}</p>
-                </div>
-              );
-            })()}
-
-
             {result.supporting.length > 0 ? (
               <div className="card-cream p-5 sm:p-7">
                 <h3 className="font-display text-lg">
@@ -591,22 +414,7 @@ function GabrielsNumberPage() {
               </div>
             ) : null}
 
-            {/*
-              Non-scoring note for The Chase only. Concrete and situational —
-              it names the decision in front of the person and never tells them
-              what they should do, feel or need.
-            */}
-            {doorway.id === "bet" ? (
-              <div className="rounded-xl border border-terracotta/40 bg-terracotta/5 px-5 py-4">
-                <p className="text-sm leading-relaxed text-foreground">
-                  Nothing here decides the next bet for you. The one thing that is still yours right
-                  now is whether the next bet happens in the next minute or not at all.
-                </p>
-              </div>
-            ) : null}
-
             <FramingNote />
-
 
             <button
               type="button"
