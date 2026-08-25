@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { FramingNote } from "@/components/FramingNote";
-import { NUMBERS } from "@/lib/gabriel";
+import { NumberPanel } from "@/components/NumberPanel";
+import { NUMBERS, G_NUMBERS } from "@/lib/gabriel";
 import {
   clearHistory,
   deleteEntry,
@@ -33,6 +34,7 @@ export const Route = createFileRoute("/readings")({
 function ReadingsPage() {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const [showKey, setShowKey] = useState(false);
 
   useEffect(() => {
     setHistory(loadHistory());
@@ -143,6 +145,33 @@ function ReadingsPage() {
               </button>
             </>
           )}
+        </section>
+
+        <section className="card-cream mt-4 p-5 sm:p-7">
+          <button
+            type="button"
+            onClick={() => setShowKey(!showKey)}
+            className="flex w-full items-center justify-between gap-3 text-left"
+          >
+            <span className="font-display text-lg">The nine, and the Tree of Life map</span>
+            <span aria-hidden className="text-sm text-olive-soft">
+              {showKey ? "Hide" : "Show"}
+            </span>
+          </button>
+
+          {showKey ? (
+            <>
+              <p className="mt-3 text-sm leading-relaxed text-olive-soft">
+                These are our working psychological-symbolic mappings — not claims that traditional
+                Kabbalah or Pythagorean numerology officially assigns these exact definitions.
+              </p>
+              <div className="mt-4 flex flex-col gap-3">
+                {G_NUMBERS.map((n) => (
+                  <NumberPanel key={n} n={n} />
+                ))}
+              </div>
+            </>
+          ) : null}
         </section>
 
         <FramingNote className="mt-4" />
