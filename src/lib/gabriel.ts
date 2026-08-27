@@ -303,6 +303,39 @@ export const CORE_QUESTIONS: Question[] = [
 
 export const DOORWAYS: Doorway[] = [
   {
+    // THE FIRE — anger/rage instrument. One event has activated intense anger
+    // and it is still running. Same fixed six-page architecture and the same
+    // immutable 1–9 evidence weights: no new numbers, thresholds, or scoring
+    // model. The instrument separates the feeling and the impulse from action,
+    // and finds what the force is actually pointing at.
+    // Never instructs, encourages or plans harm to anyone.
+    id: "fire",
+    label: "I'm fucking furious about what happened",
+    sub: "One event. The anger is still running.",
+    universal: "ifAvoidance",
+    stage2: "fury-want",
+    prefixPages: 3,
+    totalPages: 6,
+    questions: [
+      {
+        id: "fire-1",
+        prompt: "What kind of furious is this?",
+        note: "No lecture. Anger is information and force. We're finding what it's pointing at.",
+        choices: [
+          { id: "betray", label: "Someone I trusted did it. That's what makes it this bad.", evidence: { 8: 2, 2: 1 }, followUp: "fury-crossed-trust" },
+          { id: "disrespect", label: "I got treated like nothing, in front of people.", evidence: { 4: 2, 6: 1 }, followUp: "fury-crossed-line" },
+          { id: "injustice", label: "It was flat out unfair and nobody is going to fix it.", evidence: { 5: 3 }, followUp: "fury-crossed-fair" },
+          { id: "helpless", label: "I couldn't do a damn thing while it was happening.", evidence: { 7: 3 }, followUp: "fury-crossed-power" },
+          { id: "again", label: "It's not the first time. They did it again.", evidence: { 3: 3 }, followUp: "fury-crossed-line" },
+          { id: "mine", label: "It wasn't even aimed at me. It was aimed at someone who's mine.", evidence: { 2: 2, 4: 1 }, followUp: "fury-crossed-trust" },
+          { id: "hurt", label: "Underneath it I'm hurt, and the anger is easier to hold.", evidence: { 6: 3 }, followUp: "fury-crossed-hurt" },
+          { id: "still", label: "It's over and it's still running at full volume in me.", evidence: { 7: 2, 3: 1 }, followUp: "fury-crossed-power" },
+          { id: "blank", label: "I'm this angry and I couldn't tell you which part did it.", evidence: { 1: 2 }, followUp: "fury-crossed-fair" },
+        ],
+      },
+    ],
+  },
+  {
     id: "lost",
     label: "I don't know what the hell to do today",
     sub: "Unfocused, and it's getting louder",
