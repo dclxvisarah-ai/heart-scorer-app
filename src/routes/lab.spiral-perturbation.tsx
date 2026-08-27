@@ -43,6 +43,9 @@ export const Route = createFileRoute("/lab/spiral-perturbation")({
 
 const DOORWAY_ID = "spiral";
 
+const BTN =
+  "inline-flex h-9 items-center justify-center rounded-full border border-hairline bg-cream px-4 text-xs text-olive-soft transition-colors hover:border-teal/60 hover:text-foreground disabled:opacity-40";
+
 type RunKey = "A" | "B";
 
 interface RunState {
@@ -175,21 +178,21 @@ function SpiralPerturbationLab() {
         </p>
 
         <div className="mt-5 flex flex-wrap gap-2.5">
-          <button type="button" onClick={cloneAintoB} className="lab-btn" disabled={!runs.A.record}>
+          <button type="button" onClick={cloneAintoB} className={BTN} disabled={!runs.A.record}>
             Clone Run A → Run B
           </button>
           <button
             type="button"
             onClick={() => downloadJson("gabriel-lab-spiral-pair.json", toJson(records))}
-            className="lab-btn"
+            className={BTN}
             disabled={records.length === 0}
           >
             Download raw JSON
           </button>
-          <button type="button" onClick={() => setShowRaw((v) => !v)} className="lab-btn">
+          <button type="button" onClick={() => setShowRaw((v) => !v)} className={BTN}>
             {showRaw ? "Hide raw records" : "Show raw records"}
           </button>
-          <button type="button" onClick={resetAll} className="lab-btn">
+          <button type="button" onClick={resetAll} className={BTN}>
             Reset both runs
           </button>
         </div>
@@ -312,7 +315,7 @@ function RunPane({
       </div>
 
       {!state.record ? (
-        <button type="button" onClick={onBegin} className="lab-btn mt-4">
+        <button type="button" onClick={onBegin} className={`${BTN} mt-4`}>
           Start Run {runKey}
         </button>
       ) : (
@@ -355,7 +358,7 @@ function RunPane({
             type="button"
             onClick={onFinish}
             disabled={!answeredAll}
-            className="lab-btn mt-5"
+            className={`${BTN} mt-5`}
           >
             Close Run {runKey} and record result
           </button>
