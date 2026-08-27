@@ -1,13 +1,21 @@
 import { describe, expect, it } from "vitest";
 
 import { buildSequence, evaluatePattern, getDoorway, type AnswerMap } from "@/lib/gabriel";
-import { diffRuns, reconstructAnswerVector, runEndSnapshot } from "@/lib/lab/contract";
+import {
+  answersFromRecord,
+  diffRuns,
+  isRunFinished,
+  reconstructAnswerVector,
+  runEndSnapshot,
+} from "@/lib/lab/contract";
 import {
   endRun,
   logAnswerMissing,
   logChoiceSelected,
   logQuestionShown,
+  parseLabRuns,
   startRun,
+  toJson,
   type LabRunRecord,
 } from "@/lib/lab/recorder";
 
@@ -139,5 +147,60 @@ describe("Contract V1 lab recorder", () => {
     expect(snapshot.primary).toBe(live.primary ?? null);
     expect(snapshot.supporting).toEqual(live.supporting);
     expect(record.endedAt).not.toBeNull();
+  });
+});
+
+describe("Contract V1 persistence round-trip", () => {
+  it("saves and reloads records byte-identically, preserving event order", () => {
+    const { record } = recordRun("Run A", () => 0);
+    const restored = parseLabRuns(toJson([record]));
+    expect(restored).toHaveLength(1);
+    expect(restored[0]).toEqual(record);
+    expect(restored[0]!.events.map((e) => e.seq)).toEqual(record.events.map((e) => e.seq));
+  });
+
+  it("rejects unreadable or foreign payloads without throwing", () => {
+    expect(parseLabRuns(null)).toEqual([]);
+    expect(parseLabRuns("not json")).toEqual([]);
+    expect(parseLabRuns(JSON.stringify({ contractVersion: "v0", runs: [] }))).toEqual([]);
+    expect(parseLabRuns(JSON.stringify({ contractVersion: "v1", runs: [{ nope: 1 }] }))).toEqual([]);
+  });
+
+  it("restores a partially completed run: answers from raw events, not finished", () => {
+    let record = startRun(doorway, "Run A");
+    const answers: AnswerMap = {};
+    for (let step = 1; step <= 2; step += 1) {
+      const question = buildSequence(doorway, answers)[step - 1]!;
+      const choice = question.choices[0]!;
+      record = logQuestionShown(record, question, step);
+      record = logChoiceSelected(record, question, choice.id, step);
+      answers[question.id] = choice.id;
+    }
+    const next = buildSequence(doorway, answers)[2]!;
+    record = logQuestionShown(record, next, 3);
+
+    const restored = parseLabRuns(toJson([record]))[0]!;
+    expect(isRunFinished(restored)).toBe(false);
+    expect(runEndSnapshot(restored)).toBeNull();
+    expect(answersFromRecord(restored)).toEqual(answers);
+    const vector = reconstructAnswerVector(restored);
+    expect(vector).toHaveLength(3);
+    expect(vector[2]!.missing).toBe(true);
+  });
+
+  it("restores a completed run as finished with its recorded result", () => {
+    const { record } = recordRun("Run B", () => 1);
+    const restored = parseLabRuns(toJson([record]))[0]!;
+    expect(isRunFinished(restored)).toBe(true);
+    expect(runEndSnapshot(restored)).toEqual(runEndSnapshot(record));
+  });
+
+  it("takes the last recorded choice per question when an answer was changed", () => {
+    let record = startRun(doorway, "Run A");
+    const first = buildSequence(doorway, {})[0]!;
+    record = logQuestionShown(record, first, 1);
+    record = logChoiceSelected(record, first, first.choices[0]!.id, 1);
+    record = logChoiceSelected(record, first, first.choices[1]!.id, 1);
+    expect(answersFromRecord(record)[first.id]).toBe(first.choices[1]!.id);
   });
 });

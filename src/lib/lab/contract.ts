@@ -213,3 +213,21 @@ export function runEndSnapshot(record: LabRunRecord): RunEndEvent | null {
   }
   return null;
 }
+
+/** A run is finished only when a run_end event exists. Derived, never stored twice. */
+export function isRunFinished(record: LabRunRecord): boolean {
+  return runEndSnapshot(record) !== null;
+}
+
+/**
+ * Rebuilds the live answer map from raw events only: the last `choice_selected`
+ * recorded for each question wins. No engine call, no event mutation.
+ */
+export function answersFromRecord(record: LabRunRecord): Record<string, string> {
+  const answers: Record<string, string> = {};
+  for (const event of [...record.events].sort((a, b) => a.seq - b.seq)) {
+    if (event.type === "choice_selected") answers[event.questionId] = event.choiceId;
+  }
+  return answers;
+}
+

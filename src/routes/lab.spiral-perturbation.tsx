@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   buildSequence,
@@ -10,7 +10,9 @@ import {
   type Question,
 } from "@/lib/gabriel";
 import {
+  answersFromRecord,
   diffRuns,
+  isRunFinished,
   reconstructAnswerVector,
   runEndSnapshot,
   type LabRunRecord,
@@ -18,6 +20,7 @@ import {
 import {
   downloadJson,
   endRun,
+  loadLabRuns,
   logAnswerMissing,
   logChoiceSelected,
   logQuestionShown,
@@ -25,6 +28,7 @@ import {
   startRun,
   toJson,
 } from "@/lib/lab/recorder";
+
 
 export const Route = createFileRoute("/lab/spiral-perturbation")({
   head: () => ({
@@ -56,10 +60,48 @@ interface RunState {
 
 const EMPTY: RunState = { answers: {}, record: null, finished: false };
 
+/**
+ * Restores a run's live state from a persisted record, using raw events only.
+ * Stale answers (ones the current traversal no longer reaches) are dropped by
+ * walking the sequence; the record itself is never rewritten or reordered.
+ */
+function restoreRunState(
+  doorway: NonNullable<ReturnType<typeof getDoorway>>,
+  record: LabRunRecord,
+): RunState {
+  const raw = answersFromRecord(record);
+  const answers: AnswerMap = {};
+  for (let step = 0; step < 64; step += 1) {
+    const question = buildSequence(doorway, answers)[step];
+    if (!question) break;
+    const choiceId = raw[question.id];
+    if (!choiceId) break;
+    answers[question.id] = choiceId;
+  }
+  return { answers, record, finished: isRunFinished(record) };
+}
+
 function SpiralPerturbationLab() {
   const doorway = getDoorway(DOORWAY_ID);
   const [runs, setRuns] = useState<Record<RunKey, RunState>>({ A: EMPTY, B: EMPTY });
   const [showRaw, setShowRaw] = useState(false);
+
+  // Restore any in-flight Lab runs after a reload or a trip back to Chat.
+  useEffect(() => {
+    if (!doorway) return;
+    const stored = loadLabRuns();
+    if (stored.length === 0) return;
+    setRuns((prev) => {
+      const next = { ...prev };
+      (["A", "B"] as RunKey[]).forEach((key) => {
+        if (next[key].record) return;
+        const found = stored.find((r) => r.label === `Run ${key}`);
+        if (found) next[key] = restoreRunState(doorway, found);
+      });
+      return next;
+    });
+  }, [doorway]);
+
 
   const sequences = useMemo(() => {
     if (!doorway) return { A: [] as Question[], B: [] as Question[] };
