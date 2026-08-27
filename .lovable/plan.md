@@ -1,87 +1,52 @@
-# Restore the August 18, 2026 state as the build baseline
+# Checkpoint 42 — Gabriel's Lab: Spiral paired-perturbation auditability fixture
 
-Baseline commit inspected: `d4658a9` — "Swapped to Gabriel's Number v2", Aug 18 2026 23:08 UTC
-(merge of `7ac7640` + `b79706a`). It is the last commit of Aug 18. Everything after it
-(173 commits, `d4658a9..HEAD`) is Aug 19+ work.
+Research-only. No change to production flow, scoring, Number logic, Spiral wording, or the August 18 baseline.
 
-## What the August 18 state actually contains
+## Current state (verified)
 
-Engine — `src/lib/gabriel.ts`, 1,399 lines:
+- There is no Lab route or Lab code in the project yet: `src/routes/` contains only `__root.tsx`, `index.tsx`, `readings.tsx`.
+- The engine (`src/lib/gabriel.ts`) is pure and already exports everything a Lab needs: `DOORWAYS`/`getDoorway`, `buildSequence`, `evaluatePattern`, `AnswerMap`, `Question`, `PatternResult`, `getDeeperProbe`.
+- Durable history (`src/lib/history.ts`) stores only doorway, primary, supporting, reasoning — it never stores the question/choice vector. This is exactly the Checkpoint 40 gap: Run A (5) vs Run B (7) could not be proven to differ in Q2 only.
 
-- `GNumber` 1–9, `G_NUMBERS`, `NUMBERS` (the nine meanings + Tree of Life map).
-- `UNIVERSAL_QUESTION` (`u1`) + `UNIVERSAL_FOLLOW_UPS` (`uf-discomfort`, `uf-conversation`,
-  `uf-uncertainty`, `uf-decision`, `uf-boredom`, `uf-relief`).
-- `CORE_QUESTIONS` `c1`, `c2`, `c3` as top-up closers.
-- `DOORWAYS` — **all ten visible, none hidden**, in this order:
-  `lost`, `chance`, `spiral`, `drink`, `gamble`, `talk`, `well`, `happened`, `loop`, `surprise`.
-- `BRANCH_QUESTIONS` — the full follow-up pool for every doorway.
-- `getDoorway`, `AnswerMap`, `buildSequence` (variable-length branching; no
-  `prefixPages` / `stage2` / `totalPages` fixed-six-page architecture yet).
-- `DeeperProbe` / `DEEPER_PROBES` / `getDeeperProbe` — the Undetermined resolution flow.
-- `evaluatePattern` with `Raw_n / sqrt(Available_n) * 2`, `MIN_PRIMARY_WEIGHT 2.4`,
-  `MIN_LEAD 0.35`, `MIN_SUPPORT_WEIGHT 1.8`, `coherent`, `contested`, `contributions`.
-- `FRAMING_LINES`.
+Conclusion: nothing in production needs to change. The fixture can be built entirely as a new, additive Lab route that drives the same pure engine functions.
 
-UI — `src/routes/index.tsx` (847-line rewrite landed in this commit):
+## What gets built (minimum)
 
-- Title "What's Gabriel's Number? Vol. 2", stage machine `start → questions → result`.
-- Back button flow: `goBack`, "Back to the start" / "Previous question", plus
-  "Back to the last question" from the result.
-- `choose` with stale-answer pruning, `restart`, `goDeeper` (`deeperIds`), `leftHere`
-  ("Left here. Undetermined is a legitimate place to stop.").
-- localStorage history via `src/lib/history.ts` (unchanged since), `readings.tsx`,
-  `Footer.tsx`, `FramingNote.tsx`, `NumberPanel.tsx`, `styles.css` design system.
-- The old 1–5 dial files (`ClarityDial.tsx`, `ScaleChoice.tsx`, `evaluator.ts`,
-  `evaluations.ts`, `routes/history.tsx`, `routes/vol2.tsx`) were **deleted by this very
-  commit** — they are correctly absent from the baseline.
+A single Lab route that runs Spiral twice and records a complete, ordered, raw answer vector for each run, then diffs them.
 
-## Carried forward (everything above, verbatim)
+New files only:
 
-`src/lib/gabriel.ts`, `src/routes/index.tsx`, `src/routes/readings.tsx`, `src/styles.css`
-restored to their `d4658a9` content, byte for byte. All ten doorways visible, all question
-wording, all evidence weights, all thresholds, the deeper-probe flow, the back flow, the
-history behaviour.
+1. `src/lib/lab/contract.ts` — Contract V1 types + helpers, Lab-only:
+   - `LabRunRecord { contractVersion: "v1"; runId; doorwayId; startedAt; endedAt; events: LabEvent[]; result: PatternResult | null }`
+   - `LabEvent` (ordered, `seq` starting at 1): `run_start`, `question_shown` (exact displayed prompt + note + full ordered choice list with ids and exact labels), `choice_selected` (questionId, choiceId, exact choice label, `seq`), `answer_missing` (explicit missingness when a question was shown but never answered), `run_end` (boundary + result snapshot).
+   - `reconstructAnswerVector(record)` → ordered `[{seq, questionId, choiceId}]` derived from raw events only, no engine re-derivation.
+   - `diffRuns(a, b)` → `{ sharedPrefix, changedIndices, divergedFrom, aOnly, bOnly }`, computed only from reconstructed vectors.
+2. `src/lib/lab/recorder.ts` — a plain in-memory recorder object (`startRun`, `logQuestionShown`, `logChoice`, `logMissing`, `endRun`) that appends monotonically and never mutates prior events; plus optional persistence to `localStorage` under a distinct Lab key (`gabriels-lab-runs-v1`), completely separate from `gabriels-number-readings-v2`.
+3. `src/routes/lab.spiral-perturbation.tsx` — route `/lab/spiral-perturbation`, `noindex`. UI:
+   - Run A pane and Run B pane, each stepping through `buildSequence(getDoorway("spiral"), answers)` using the *unmodified* Spiral questions/wording, recording every shown question and every selected choice.
+   - "Clone Run A into Run B" to seed an identical vector, then change exactly one answer; the diff panel proves how many answers differ and at which index.
+   - Result per run from `evaluatePattern` (read-only call), shown next to the diff.
+   - Raw record viewer: pretty-printed JSON of each `LabRunRecord`, plus copy-to-clipboard / download `.json` for audit attachment.
 
-## Excluded (all Aug 19+ work, dropped)
+No edits to: `src/lib/gabriel.ts`, `src/lib/history.ts`, `src/routes/index.tsx`, `src/routes/readings.tsx`, `src/styles.css`. The Lab route is not linked from any user-facing page (reachable by URL only).
 
-- Fixed six-page architecture (`prefixPages` / `stage2` / `totalPages`) on `spiral`,
-  `drink`, `bet`, `happened`.
-- `Doorway.hidden` + `VISIBLE_DOORWAY_ORDER` and the four-item menu; the seven hidden
-  doorways return to the menu.
-- THE CHASE (`bet` doorway, `bet-*` questions) — the Aug 18 gambling branch is `gamble`.
-- THE FIRE rebuild of `happened` (`fury-*` questions) — reverts to Aug 18 `happened-1..3`.
-- Rebuilt `drink-*` and `spiral-*` layers, the Number-9 bridge standard,
-  `src/lib/result-narrative.ts`, `BRANCH_LENS`.
-- `src/components/RightNow.tsx`, `UrgeTimer.tsx`, `DevPreviewBanner.tsx` and the four
-  `src/assets/right-now-*.jpg` photo assets.
-- Tests written against post-Aug-18 branches: `gabriel.chase.test.ts`,
-  `gabriel.nine-result.test.ts`, `result-standard.test.ts` (they reference `bet`, the
-  9-bridge and `result-narrative`, none of which exist at the baseline).
-- The 2026-08-19 weight normalisation of six double-weighted answers
-  (`chance-info/a`, `chance-split/a`, `spiral-stuck/d`, `uf-conversation/c`,
-  `happened-3/a`, `spiral-known/b`) — at Aug 18 these still carry total weight 4.
+## Acceptance criteria
 
-## Kept regardless (not part of the app's Aug 18 logic)
+1. `/lab/spiral-perturbation` runs Spiral A and B end to end using the existing Spiral wording verbatim; production `/` behaves identically to before (unchanged files).
+2. Every question displayed in each run produces a `question_shown` event containing the exact prompt and the exact ordered choice labels; every selection produces a `choice_selected` event with the exact choice id + label.
+3. A completed run's reconstructed vector, built from raw events alone, equals the answers actually chosen, in order, with no gaps; unanswered-but-shown questions appear as `answer_missing`.
+4. `diffRuns` on a clone-then-change-one-answer pair reports exactly one changed index, and names it (e.g. Q2 / `spiral-…`).
+5. Each run has a unique `runId`; events are strictly ordered by `seq`; re-rendering or re-mounting never rewrites or reorders existing events.
+6. Raw JSON for both runs is exportable and contains no data beyond Contract V1 fields.
+7. No Lab writes touch the production history key; `/readings` is unaffected by Lab runs.
 
-Docs and audit records stay as history: `docs/*.md`, `.lovable/audit-*.md`,
-`.lovable/plan.md`, `AGENTS.md`, config files, `src/lib/history.ts`,
-`src/lib/error-*.ts`, `src/components/ui/*`.
+## How we test it
 
-## Technical notes
+- Unit (Vitest, new `src/lib/lab/__tests__/contract.test.ts`): reconstruction fidelity from raw events; single-answer-change diff yields exactly one changed index; divergent-length runs report shared prefix + divergence point; missingness recorded; event ordering immutability.
+- Replay check: feed a reconstructed vector back into `buildSequence`/`evaluatePattern` and assert the recorded `result` matches — proving the record is sufficient to reproduce the run.
+- Regression guard: confirm the Spiral question/choice text asserted in Lab tests is read from `gabriel.ts` (no duplicated copy), so wording stays single-sourced.
+- Manual browser pass: complete Run A, clone, change Q2 only, confirm the diff panel says one changed answer at Q2 and the two results (expected 5 vs 7) sit beside it; confirm no console errors and `/` plus `/readings` unchanged.
 
-- Restore by checking out the four files from `d4658a9`, then deleting the excluded
-  components/assets/tests, then regenerating nothing (`routeTree.gen.ts` at baseline had
-  only `/`, `/readings`, `/vol2`; current tree has `/`, `/readings` — `vol2.tsx` does not
-  exist in either, so the current generated tree is already correct and stays).
-- `src/styles.css` revert removes the RIGHT NOW animations (`rage-jolt`,
-  `cooldown-drift`, `photo-breathe`, `guided-photo-wash`) along with them.
-- Verification after restore: app builds, all ten doorways appear, one full path per
-  doorway reaches a result, Back works at every page, Undetermined offers deeper probes,
-  history saves and lists.
+## Explicitly out of scope
 
-## Two decisions to confirm before I build
-
-1. The Aug 18 baseline shows the four-item menu, THE FIRE, THE CHASE, RIGHT NOW and the
-   urge timer all gone. Confirm that is intended, or name any of them to keep.
-2. `src/components/Footer.tsx` (© 2026 Sarah DeFazio) exists at the baseline and is
-   unchanged since, so it stays either way — no action needed.
+Scoring/threshold changes, Number-mapping changes, Spiral rewording, adaptive probing changes, analytics, any server/database capture, and linking the Lab from production UI.
