@@ -1269,6 +1269,28 @@ export function buildSequence(
   const seen = new Set<string>();
   for (const question of doorway.questions) expand(question, answers, sequence, seen);
 
+  // Fixed-length architecture: the opening chain is trimmed to `prefixPages`,
+  // then the path continues into the stage-2 chain and is capped, so the
+  // branch always runs the same number of pages however it is answered.
+  if (doorway.stage2) {
+    const prefixCount = doorway.prefixPages ?? 3;
+    const total = doorway.totalPages ?? 6;
+    const prefix = sequence.slice(0, prefixCount);
+    const out = [...prefix];
+    const prefixSeen = new Set(prefix.map((q) => q.id));
+    const last = prefix[prefix.length - 1];
+    if (prefix.length === prefixCount && last && answers[last.id]) {
+      const stage2 = getQuestion(doorway.stage2);
+      if (stage2) expand(stage2, answers, out, prefixSeen);
+    }
+    const capped = out.slice(0, total);
+    for (const id of deeperIds) {
+      const probe = DEEPER_PROBES.find((p) => p.question.id === id);
+      if (probe) capped.push(probe.question);
+    }
+    return capped;
+  }
+
   // The universal "what are you trying not to experience" question is asked
   // only when the person's own answers point toward avoidance — or when the
   // doorway always asks it.
