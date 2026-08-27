@@ -154,6 +154,15 @@ export interface Doorway {
    * "ifAvoidance" (default posture), "always", or "never".
    */
   universal: "always" | "ifAvoidance" | "never";
+  /**
+   * Optional fixed-length architecture. `prefixPages` questions come from the
+   * doorway's own opening chain, then the path continues into `stage2` and is
+   * capped at `totalPages`, so the branch always has the same number of pages
+   * however it is answered. Only used by doorways that opt in.
+   */
+  stage2?: string;
+  prefixPages?: number;
+  totalPages?: number;
 }
 
 /* ------------------------------------------------------------------ */
@@ -293,6 +302,39 @@ export const CORE_QUESTIONS: Question[] = [
 /* ------------------------------------------------------------------ */
 
 export const DOORWAYS: Doorway[] = [
+  {
+    // THE FIRE — anger/rage instrument. One event has activated intense anger
+    // and it is still running. Same fixed six-page architecture and the same
+    // immutable 1–9 evidence weights: no new numbers, thresholds, or scoring
+    // model. The instrument separates the feeling and the impulse from action,
+    // and finds what the force is actually pointing at.
+    // Never instructs, encourages or plans harm to anyone.
+    id: "fire",
+    label: "I'm fucking furious about what happened",
+    sub: "One event. The anger is still running.",
+    universal: "ifAvoidance",
+    stage2: "fury-want",
+    prefixPages: 3,
+    totalPages: 6,
+    questions: [
+      {
+        id: "fire-1",
+        prompt: "What kind of furious is this?",
+        note: "No lecture. Anger is information and force. We're finding what it's pointing at.",
+        choices: [
+          { id: "betray", label: "Someone I trusted did it. That's what makes it this bad.", evidence: { 8: 2, 2: 1 }, followUp: "fury-crossed-trust" },
+          { id: "disrespect", label: "I got treated like nothing, in front of people.", evidence: { 4: 2, 6: 1 }, followUp: "fury-crossed-line" },
+          { id: "injustice", label: "It was flat out unfair and nobody is going to fix it.", evidence: { 5: 3 }, followUp: "fury-crossed-fair" },
+          { id: "helpless", label: "I couldn't do a damn thing while it was happening.", evidence: { 7: 3 }, followUp: "fury-crossed-power" },
+          { id: "again", label: "It's not the first time. They did it again.", evidence: { 3: 3 }, followUp: "fury-crossed-line" },
+          { id: "mine", label: "It wasn't even aimed at me. It was aimed at someone who's mine.", evidence: { 2: 2, 4: 1 }, followUp: "fury-crossed-trust" },
+          { id: "hurt", label: "Underneath it I'm hurt, and the anger is easier to hold.", evidence: { 6: 3 }, followUp: "fury-crossed-hurt" },
+          { id: "still", label: "It's over and it's still running at full volume in me.", evidence: { 7: 2, 3: 1 }, followUp: "fury-crossed-power" },
+          { id: "blank", label: "I'm this angry and I couldn't tell you which part did it.", evidence: { 1: 2 }, followUp: "fury-crossed-fair" },
+        ],
+      },
+    ],
+  },
   {
     id: "lost",
     label: "I don't know what the hell to do today",
@@ -606,6 +648,138 @@ export const DOORWAYS: Doorway[] = [
 /* ------------------------------------------------------------------ */
 
 export const BRANCH_QUESTIONS: Record<string, Question> = {
+  /* --- THE FIRE — "I'm fucking furious about what happened" --------- */
+  /* Page 2: what was actually crossed, or what the anger is defending. */
+  "fury-crossed-trust": {
+    id: "fury-crossed-trust",
+    prompt: "What did they actually cross?",
+    next: "fury-under",
+    choices: [
+      { id: "a", label: "They knew this would hurt me and did it anyway.", evidence: { 8: 3 } },
+      { id: "b", label: "They said one thing to me and another behind me.", evidence: { 2: 2, 8: 1 } },
+      { id: "c", label: "They used something I told them in confidence.", evidence: { 4: 2, 8: 1 } },
+      { id: "d", label: "They picked someone else over me and didn't tell me.", evidence: { 5: 2, 2: 1 } },
+      { id: "e", label: "Nothing they said. It's what they didn't do when it counted.", evidence: { 7: 2, 8: 1 } },
+      { id: "f", label: "I know it crossed something. I can't name which part yet.", evidence: { 1: 2 } },
+    ],
+  },
+  "fury-crossed-line": {
+    id: "fury-crossed-line",
+    prompt: "Which line got crossed?",
+    next: "fury-under",
+    choices: [
+      { id: "a", label: "A line I've stated out loud to them before.", evidence: { 4: 3 } },
+      { id: "b", label: "A line I assumed was obvious and never said.", evidence: { 4: 2, 5: 1 } },
+      { id: "c", label: "The same line as last time, and the time before.", evidence: { 3: 3 } },
+      { id: "d", label: "How they talked to me in front of other people.", evidence: { 6: 2, 8: 1 } },
+      { id: "e", label: "Something that's mine — my time, my money, my kid, my work.", evidence: { 5: 2, 4: 1 } },
+      { id: "f", label: "I'm not sure it was a line. It just hit like one.", evidence: { 1: 2 } },
+    ],
+  },
+  "fury-crossed-fair": {
+    id: "fury-crossed-fair",
+    prompt: "What is the anger standing guard over?",
+    next: "fury-under",
+    choices: [
+      { id: "a", label: "The truth of what happened, before it gets rewritten.", evidence: { 5: 3 } },
+      { id: "b", label: "Someone I'm responsible for.", evidence: { 4: 2, 2: 1 } },
+      { id: "c", label: "My name, and what people now think of me.", evidence: { 6: 2, 8: 1 } },
+      { id: "d", label: "The version of me that doesn't get walked over.", evidence: { 2: 2, 6: 1 } },
+      { id: "e", label: "Something I built that they damaged.", evidence: { 9: 2, 4: 1 } },
+      { id: "f", label: "No idea. It's just loud.", evidence: { 1: 2 } },
+    ],
+  },
+  "fury-crossed-power": {
+    id: "fury-crossed-power",
+    prompt: "What got taken off you in that moment?",
+    next: "fury-under",
+    choices: [
+      { id: "a", label: "The chance to say anything back.", evidence: { 8: 3 } },
+      { id: "b", label: "Any say in what happened next.", evidence: { 7: 2, 4: 1 } },
+      { id: "c", label: "Being believed.", evidence: { 5: 2, 8: 1 } },
+      { id: "d", label: "The ground I'd built with them.", evidence: { 9: 2, 3: 1 } },
+      { id: "e", label: "Nothing was taken. I gave it away by going quiet.", evidence: { 6: 3 } },
+      { id: "f", label: "Can't say. I went blank while it was happening.", evidence: { 1: 2 } },
+    ],
+  },
+  "fury-crossed-hurt": {
+    id: "fury-crossed-hurt",
+    prompt: "What is the anger standing in front of?",
+    next: "fury-under",
+    choices: [
+      { id: "a", label: "That I mattered less to them than I thought.", evidence: { 6: 3 } },
+      { id: "b", label: "That I saw this coming and stayed anyway.", evidence: { 3: 2, 6: 1 } },
+      { id: "c", label: "That I couldn't protect someone.", evidence: { 7: 2, 4: 1 } },
+      { id: "d", label: "That I'm going to have to change something now.", evidence: { 9: 2, 5: 1 } },
+      { id: "e", label: "Both things at once — I'm hurt and I'm furious, and neither is fake.", evidence: { 2: 3 } },
+      { id: "f", label: "Something. I'd rather stay angry than look at it.", evidence: { 1: 1, 7: 1 }, avoids: true },
+    ],
+  },
+  /* Page 3: fact against interpretation, and the real stake under the rage. */
+  "fury-under": {
+    id: "fury-under",
+    prompt: "Say only what you actually saw or heard. How much of the fury is that part?",
+    choices: [
+      { id: "a", label: "All of it. What they did is the whole thing.", evidence: { 5: 3 } },
+      { id: "b", label: "Most of it is what I saw. Some is what I decided it meant.", evidence: { 5: 2, 2: 1 } },
+      { id: "c", label: "Half of it is a story I've built since.", evidence: { 2: 2, 5: 1 } },
+      { id: "d", label: "What I saw was small. What it says is huge, and that's the part burning.", evidence: { 6: 2, 5: 1 } },
+      { id: "e", label: "It's what it tells me about how they see me.", evidence: { 6: 3 } },
+      { id: "f", label: "It's that I stood there and couldn't stop it.", evidence: { 7: 3 } },
+      { id: "g", label: "There's a piece I'm assuming and haven't checked.", evidence: { 8: 3 } },
+      { id: "h", label: "I can't pull the two apart yet.", evidence: { 1: 2 } },
+    ],
+  },
+  /* Page 4 (stage 2): what the person wants to happen. Raw answers allowed. */
+  "fury-want": {
+    id: "fury-want",
+    prompt: "What do you want to happen?",
+    note: "Wanting it isn't doing it. Say the real one.",
+    next: "fury-power",
+    choices: [
+      { id: "a", label: "I want them to fucking pay.", evidence: { 5: 2, 7: 1 } },
+      { id: "b", label: "I want to break something.", evidence: { 7: 3 } },
+      { id: "c", label: "I want to scream until it's out of me.", evidence: { 7: 2, 3: 1 } },
+      { id: "d", label: "I want them to say out loud exactly what they did.", evidence: { 8: 3 } },
+      { id: "e", label: "I want them to feel what I felt.", evidence: { 2: 2, 6: 1 } },
+      { id: "f", label: "I want it undone, and I know that isn't on the table.", evidence: { 2: 3 } },
+      { id: "g", label: "I want them out of my life for good.", evidence: { 4: 2, 5: 1 } },
+      { id: "h", label: "I want to be the one who decides what happens next.", evidence: { 9: 2, 4: 1 } },
+      { id: "i", label: "I don't know. I want this to stop running.", evidence: { 1: 2 } },
+    ],
+  },
+  /* Page 5: force against action — what the wanted move actually costs. */
+  "fury-power": {
+    id: "fury-power",
+    prompt: "If you did the thing you most want to do right now, who ends up paying for it?",
+    next: "fury-close",
+    choices: [
+      { id: "a", label: "Me. I'd hand them the high ground and they'd keep it.", evidence: { 5: 3 } },
+      { id: "b", label: "Me, and people who had nothing to do with this.", evidence: { 4: 2, 6: 1 } },
+      { id: "c", label: "Them for a minute. Me for a lot longer.", evidence: { 5: 2, 3: 1 } },
+      { id: "d", label: "Nobody. It'd be a wall or a punchbag, not a person.", evidence: { 7: 2, 9: 1 } },
+      { id: "e", label: "Them, and part of me would take that trade.", evidence: { 2: 2, 7: 1 } },
+      { id: "f", label: "I already know the cost. That's the only reason I haven't.", evidence: { 9: 3 } },
+      { id: "g", label: "Right now I don't care. That's the honest answer.", evidence: { 7: 2, 1: 1 } },
+    ],
+  },
+  /* Page 6: closing — the anger stays theirs, and goes somewhere chosen. */
+  "fury-close": {
+    id: "fury-close",
+    prompt: "The anger is yours and it's force. Where are you putting it?",
+    note: "Not asking you to drop it. Asking where it goes.",
+    choices: [
+      { id: "a", label: "Into saying the exact thing to their face, once, and nothing after it.", evidence: { 8: 3 } },
+      { id: "b", label: "Into a line they don't get to cross again, stated plainly.", evidence: { 4: 3 } },
+      { id: "c", label: "Into moving my body until the charge is out of it.", evidence: { 7: 3 } },
+      { id: "d", label: "Into one thing tonight that's mine and has nothing to do with them.", evidence: { 9: 3 } },
+      { id: "e", label: "Into finding out the part I don't actually know yet.", evidence: { 5: 3 } },
+      { id: "f", label: "Into writing down what happened while I still remember it exactly.", evidence: { 4: 2, 5: 1 } },
+      { id: "g", label: "I'm keeping it. I'm not ready to spend it yet, and I know that.", evidence: { 2: 2, 7: 1 } },
+      { id: "h", label: "Nowhere yet. I'm not deciding anything while it's this loud.", evidence: { 1: 2, 7: 1 } },
+    ],
+  },
+
   /* --- "I don't know what the hell to do today" ------------------- */
   "lost-many": {
     id: "lost-many",
@@ -1094,6 +1268,28 @@ export function buildSequence(
   const sequence: Question[] = [];
   const seen = new Set<string>();
   for (const question of doorway.questions) expand(question, answers, sequence, seen);
+
+  // Fixed-length architecture: the opening chain is trimmed to `prefixPages`,
+  // then the path continues into the stage-2 chain and is capped, so the
+  // branch always runs the same number of pages however it is answered.
+  if (doorway.stage2) {
+    const prefixCount = doorway.prefixPages ?? 3;
+    const total = doorway.totalPages ?? 6;
+    const prefix = sequence.slice(0, prefixCount);
+    const out = [...prefix];
+    const prefixSeen = new Set(prefix.map((q) => q.id));
+    const last = prefix[prefix.length - 1];
+    if (prefix.length === prefixCount && last && answers[last.id]) {
+      const stage2 = getQuestion(doorway.stage2);
+      if (stage2) expand(stage2, answers, out, prefixSeen);
+    }
+    const capped = out.slice(0, total);
+    for (const id of deeperIds) {
+      const probe = DEEPER_PROBES.find((p) => p.question.id === id);
+      if (probe) capped.push(probe.question);
+    }
+    return capped;
+  }
 
   // The universal "what are you trying not to experience" question is asked
   // only when the person's own answers point toward avoidance — or when the
