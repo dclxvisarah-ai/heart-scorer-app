@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 
 import { FramingNote } from "@/components/FramingNote";
+import { RightNow } from "@/components/RightNow";
 import { NumberPanel } from "@/components/NumberPanel";
 import {
   DOORWAYS,
@@ -34,10 +35,16 @@ export const Route = createFileRoute("/")({
   component: GabrielsNumberPage,
 });
 
-type Stage = "start" | "questions" | "result";
+type Stage = "start" | "release" | "questions" | "result";
+
+/** Branches that open with the optional, unscored release panel. */
+const RELEASE_DOORWAYS = new Set(["fire"]);
 
 function GabrielsNumberPage() {
   const [stage, setStage] = useState<Stage>("start");
+  // RIGHT NOW overlay: de-escalation only, never scored. Question position
+  // (index/answers) is untouched while it is open.
+  const [rightNowOpen, setRightNowOpen] = useState(false);
   const [doorwayId, setDoorwayId] = useState<string | undefined>();
   const [answers, setAnswers] = useState<AnswerMap>({});
   const [index, setIndex] = useState(0);
@@ -89,6 +96,7 @@ function GabrielsNumberPage() {
     setSavedId(undefined);
     setDeeperIds([]);
     setLeftHere(false);
+    setRightNowOpen(false);
   }
 
   function choose(questionId: string, choiceId: string) {
@@ -181,7 +189,7 @@ function GabrielsNumberPage() {
                     setAnswers({});
                     setIndex(0);
                     setSavedId(undefined);
-                    setStage("questions");
+                    setStage(RELEASE_DOORWAYS.has(option.id) ? "release" : "questions");
                   }}
                   className="group rounded-xl border border-hairline bg-background/50 px-4 py-3.5 text-left transition-colors hover:border-teal/60 hover:bg-teal/5"
                 >
@@ -205,7 +213,18 @@ function GabrielsNumberPage() {
           </section>
         ) : null}
 
-        {stage === "questions" && current && doorway ? (
+        {stage === "release" && doorway ? (
+          <RightNow onExit={() => setStage("questions")} exitLabel="GO TO THE FIRE (the investigation)" />
+        ) : null}
+
+        {stage === "questions" && rightNowOpen && doorway ? (
+          <RightNow
+            onExit={() => setRightNowOpen(false)}
+            exitLabel={`RETURN TO THE FIRE — QUESTION ${index + 1}`}
+          />
+        ) : null}
+
+        {stage === "questions" && !rightNowOpen && current && doorway ? (
           <section className="card-cream animate-rise p-5 sm:p-7">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
@@ -221,9 +240,20 @@ function GabrielsNumberPage() {
                 ) : null}
                 <p className="eyebrow">{doorway.label}</p>
               </div>
-              <p className="text-xs text-muted-foreground">
-                {index + 1} of {sequence.length}
-              </p>
+              <div className="flex items-center gap-2">
+                {RELEASE_DOORWAYS.has(doorway.id) ? (
+                  <button
+                    type="button"
+                    onClick={() => setRightNowOpen(true)}
+                    className="rounded-full border border-terracotta/60 bg-terracotta/10 px-3 py-1.5 text-[11px] tracking-wide text-foreground uppercase transition-colors hover:bg-terracotta/20"
+                  >
+                    🔥 Right now — de-escalate
+                  </button>
+                ) : null}
+                <p className="text-xs text-muted-foreground">
+                  {index + 1} of {sequence.length}
+                </p>
+              </div>
             </div>
 
             <div className="mt-3 h-0.5 w-full overflow-hidden rounded-full bg-cream-deep">
