@@ -29,7 +29,10 @@ export function newRunId(label: string): string {
   return `run-${label.toLowerCase()}-${rand}`;
 }
 
-function append(record: LabRunRecord, event: Omit<LabEvent, "seq" | "at">): LabRunRecord {
+/** Distributes Omit over the event union so each variant keeps its own fields. */
+type DraftEvent<E extends LabEvent = LabEvent> = E extends E ? Omit<E, "seq" | "at"> : never;
+
+function append(record: LabRunRecord, event: DraftEvent): LabRunRecord {
   const seq = record.events.length + 1;
   const next = { ...event, seq, at: now() } as LabEvent;
   return { ...record, events: [...record.events, next] };
