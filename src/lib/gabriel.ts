@@ -154,6 +154,15 @@ export interface Doorway {
    * "ifAvoidance" (default posture), "always", or "never".
    */
   universal: "always" | "ifAvoidance" | "never";
+  /**
+   * Optional fixed-length architecture. `prefixPages` questions come from the
+   * doorway's own opening chain, then the path continues into `stage2` and is
+   * capped at `totalPages`, so the branch always has the same number of pages
+   * however it is answered. Only used by doorways that opt in.
+   */
+  stage2?: string;
+  prefixPages?: number;
+  totalPages?: number;
 }
 
 /* ------------------------------------------------------------------ */
