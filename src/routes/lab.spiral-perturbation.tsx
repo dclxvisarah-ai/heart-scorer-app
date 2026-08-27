@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   buildSequence,
@@ -10,7 +10,9 @@ import {
   type Question,
 } from "@/lib/gabriel";
 import {
+  answersFromRecord,
   diffRuns,
+  isRunFinished,
   reconstructAnswerVector,
   runEndSnapshot,
   type LabRunRecord,
@@ -18,6 +20,7 @@ import {
 import {
   downloadJson,
   endRun,
+  loadLabRuns,
   logAnswerMissing,
   logChoiceSelected,
   logQuestionShown,
@@ -25,6 +28,7 @@ import {
   startRun,
   toJson,
 } from "@/lib/lab/recorder";
+
 
 export const Route = createFileRoute("/lab/spiral-perturbation")({
   head: () => ({
