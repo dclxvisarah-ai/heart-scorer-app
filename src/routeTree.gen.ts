@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReadingsRouteImport } from './routes/readings'
+import { Route as LabSpiralPerturbationRouteImport } from './routes/lab.spiral-perturbation'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,40 @@ const ReadingsRoute = ReadingsRouteImport.update({
   path: '/readings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LabSpiralPerturbationRoute = LabSpiralPerturbationRouteImport.update({
+  id: '/lab/spiral-perturbation',
+  path: '/lab/spiral-perturbation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/readings': typeof ReadingsRoute
+  '/lab/spiral-perturbation': typeof LabSpiralPerturbationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/readings': typeof ReadingsRoute
+  '/lab/spiral-perturbation': typeof LabSpiralPerturbationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/readings': typeof ReadingsRoute
+  '/lab/spiral-perturbation': typeof LabSpiralPerturbationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/readings'
+  fullPaths: '/' | '/readings' | '/lab/spiral-perturbation'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/readings'
-  id: '__root__' | '/' | '/readings'
+  to: '/' | '/readings' | '/lab/spiral-perturbation'
+  id: '__root__' | '/' | '/readings' | '/lab/spiral-perturbation'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ReadingsRoute: typeof ReadingsRoute
+  LabSpiralPerturbationRoute: typeof LabSpiralPerturbationRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReadingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lab/spiral-perturbation': {
+      id: '/lab/spiral-perturbation'
+      path: '/lab/spiral-perturbation'
+      fullPath: '/lab/spiral-perturbation'
+      preLoaderRoute: typeof LabSpiralPerturbationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ReadingsRoute: ReadingsRoute,
+  LabSpiralPerturbationRoute: LabSpiralPerturbationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
