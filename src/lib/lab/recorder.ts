@@ -12,6 +12,8 @@ import {
   type LabRunRecord,
 } from "./contract";
 
+export type { LabRunRecord } from "./contract";
+
 /** Lab storage key. Deliberately distinct from the production history key. */
 export const LAB_STORAGE_KEY = "gabriels-lab-contract-v1";
 
