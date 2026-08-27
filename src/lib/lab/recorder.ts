@@ -133,6 +133,43 @@ export function persistLabRuns(records: LabRunRecord[]): void {
   }
 }
 
+/** Shape-checks a stored record without touching or reordering its events. */
+function isLabRunRecord(value: unknown): value is LabRunRecord {
+  if (typeof value !== "object" || value === null) return false;
+  const r = value as Partial<LabRunRecord>;
+  return (
+    r.contractVersion === CONTRACT_VERSION &&
+    typeof r.runId === "string" &&
+    typeof r.label === "string" &&
+    typeof r.doorwayId === "string" &&
+    typeof r.startedAt === "string" &&
+    Array.isArray(r.events)
+  );
+}
+
+/** Parses a persisted Lab export. Returns [] on anything unreadable. */
+export function parseLabRuns(json: string | null): LabRunRecord[] {
+  if (!json) return [];
+  try {
+    const parsed = JSON.parse(json) as { contractVersion?: string; runs?: unknown };
+    if (parsed.contractVersion !== CONTRACT_VERSION || !Array.isArray(parsed.runs)) return [];
+    return parsed.runs.filter(isLabRunRecord);
+  } catch {
+    return [];
+  }
+}
+
+/** Browser-safe read of the Lab key. Never throws, never writes. */
+export function loadLabRuns(): LabRunRecord[] {
+  if (typeof window === "undefined") return [];
+  try {
+    return parseLabRuns(window.localStorage.getItem(LAB_STORAGE_KEY));
+  } catch {
+    return [];
+  }
+}
+
+
 export function downloadJson(filename: string, json: string): void {
   if (typeof window === "undefined") return;
   const blob = new Blob([json], { type: "application/json" });
