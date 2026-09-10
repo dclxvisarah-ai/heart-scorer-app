@@ -59,7 +59,7 @@ function sharedProfile(d: Doorway) {
 describe("shared vs doorway-specific composition (recorded, unchanged)", () => {
   const expected: Record<string, { min: number; max: number }> = {
     fire: { min: 0, max: 0 },
-    lost: { min: 2, max: 3 },
+    lost: { min: 3, max: 3 },
     chance: { min: 2, max: 3 },
     spiral: { min: 2, max: 2 },
     drink: { min: 1, max: 3 },
@@ -68,7 +68,8 @@ describe("shared vs doorway-specific composition (recorded, unchanged)", () => {
     well: { min: 3, max: 3 },
     happened: { min: 2, max: 2 },
     loop: { min: 2, max: 3 },
-    surprise: { min: 3, max: 4 },
+    // 4 of 5 pages generic on every path — the most shared-dependent branch.
+    surprise: { min: 4, max: 4 },
   };
 
   for (const [id, want] of Object.entries(expected)) {
