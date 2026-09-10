@@ -3,7 +3,15 @@
 Baseline: `.lovable/inventory-current-baseline.md` (commit b02fcfe). Nothing here changes
 production behaviour; it records which branches may be used to develop the Relational State layer.
 
-## REMOVED (decision, Sep 10 2026) — no longer selectable or tested
+## PILOT-RESTORED (Sep 10 2026, temporary) — selectable again for qualitative review
+
+The seven branches below were restored to the active selectable/test set exactly as they existed
+in the last best working state, for the New York reviewer's qualitative pilot. This is NOT a
+decision that they are valid or production-ready, and nothing about their content was repaired,
+reworded, or redesigned. They remain unsuitable as a basis for developing or validating the
+Relational State layer. The table below records why they were flagged in the first place.
+
+## Previously REMOVED (decision, Sep 10 2026) — reason for flagging
 
 These branches were too short or too generic to produce trustworthy relational evidence: most of
 their pages were the shared `c1`–`c3` closers. They have been removed from `DOORWAYS` (and the
