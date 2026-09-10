@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { isAddictionResearchQuestion } from "./addiction-routing";
 import {
   CORE_QUESTIONS,
   DOORWAYS,
@@ -18,6 +19,14 @@ import {
  */
 
 const doorways = DOORWAYS as Doorway[];
+/**
+ * The Number-evidence graph only. The V5.3 addiction research questions
+ * (drink/gamble) carry no Number evidence and are fact-gated, so they are
+ * treated as terminal here: the enumerated contract below is unchanged by them.
+ */
+const nextUnanswered = (seq: Question[], answers: AnswerMap) =>
+  seq.find((q) => !answers[q.id] && !isAddictionResearchQuestion(q.id));
+
 const SHARED = new Set<string>([
   ...CORE_QUESTIONS.map((q) => q.id),
   UNIVERSAL_QUESTION.id,
@@ -28,7 +37,7 @@ function playThrough(d: Doorway, pick: (q: Question) => string) {
   const answers: AnswerMap = {};
   for (let i = 0; i < 20; i++) {
     const seq = buildSequence(d, answers);
-    const next = seq.find((q) => !answers[q.id]);
+    const next = nextUnanswered(seq, answers);
     if (!next) break;
     answers[next.id] = pick(next);
   }
@@ -42,7 +51,7 @@ function sharedProfile(d: Doorway) {
   let paths = 0;
   const rec = (answers: AnswerMap) => {
     const seq = buildSequence(d, answers);
-    const next = seq.find((q) => !answers[q.id]);
+    const next = nextUnanswered(seq, answers);
     if (!next) {
       paths++;
       const shared = seq.filter((q) => SHARED.has(q.id)).length;
@@ -103,7 +112,7 @@ describe("cross-branch contamination", () => {
       const ownIds = new Set<string>();
       const rec = (answers: AnswerMap) => {
         const seq = buildSequence(d, answers);
-        const next = seq.find((q) => !answers[q.id]);
+        const next = nextUnanswered(seq, answers);
         if (!next) {
           for (const q of seq) if (SHARED.has(q.id)) ownIds.add(q.id);
           return;

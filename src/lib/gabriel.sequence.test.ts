@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { isAddictionResearchQuestion } from "./addiction-routing";
 import { DOORWAYS, buildSequence, type AnswerMap, type Doorway, type Question } from "./gabriel";
 
 /**
@@ -7,6 +8,14 @@ import { DOORWAYS, buildSequence, type AnswerMap, type Doorway, type Question } 
  */
 
 const doorways = DOORWAYS as Doorway[];
+/**
+ * The Number-evidence graph only. The V5.3 addiction research questions
+ * (drink/gamble) carry no Number evidence and are fact-gated, so they are
+ * treated as terminal here: the enumerated contract below is unchanged by them.
+ */
+const nextUnanswered = (seq: Question[], answers: AnswerMap) =>
+  seq.find((q) => !answers[q.id] && !isAddictionResearchQuestion(q.id));
+
 const byId = (id: string): Doorway => {
   const d = doorways.find((x) => x.id === id);
   if (!d) throw new Error(`no doorway ${id}`);
@@ -18,7 +27,7 @@ function playThrough(d: Doorway, pick: (q: Question) => string): { answers: Answ
   const answers: AnswerMap = {};
   for (let i = 0; i < 20; i++) {
     const seq = buildSequence(d, answers);
-    const next = seq.find((q) => !answers[q.id]);
+    const next = nextUnanswered(seq, answers);
     if (!next) break;
     answers[next.id] = pick(next);
   }
@@ -32,7 +41,7 @@ function enumerate(d: Doorway) {
   let paths = 0;
   const rec = (answers: AnswerMap) => {
     const seq = buildSequence(d, answers);
-    const next = seq.find((q) => !answers[q.id]);
+    const next = nextUnanswered(seq, answers);
     if (!next) {
       paths++;
       lengths.add(seq.length);
