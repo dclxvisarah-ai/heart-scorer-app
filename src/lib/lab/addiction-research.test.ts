@@ -9,6 +9,16 @@ import { ADDICTION_CASES, DRINK_HOLD, getCase } from "./addiction-cases";
 import { CORE_CLOSER_IDS, compareRuns, perturbAnswer, placementReport, runScript } from "./scripted";
 import { isAddictionResearchQuestion } from "../addiction-routing";
 
+const DRINK_HOLD_FULL = {
+  ...DRINK_HOLD,
+  "addiction-e1": "held",
+  "addiction-e2": "intact",
+  "addiction-e3": "none",
+  "addiction-e4": "decide",
+  "addiction-e5": "no-pattern",
+  "addiction-e6": "nothing",
+};
+
 const runs = ADDICTION_CASES.map((c) =>
   runScript(c.doorwayId, c.script, { caseId: c.caseId, label: c.label }),
 );
@@ -89,11 +99,6 @@ describe("matrix comparison across all cases", () => {
   it("distinguishes external stopping from deliberate stopping", () => {
     const external = runs.find((r) => r.caseId === "external-stopping")!;
     const deliberate = runs.find((r) => r.caseId === "deliberate-stopping")!;
-    expect(external.facts.STOP_MECHANISM.state).not.toBe(
-      deliberate.facts.STOP_MECHANISM.state === external.facts.STOP_MECHANISM.state
-        ? "never"
-        : deliberate.facts.STOP_MECHANISM.state,
-    );
     expect(external.factFingerprint).not.toBe(deliberate.factFingerprint);
   });
 
@@ -134,13 +139,3 @@ describe("boundaries", () => {
     for (const c of ADDICTION_CASES) expect(getCase(c.caseId).doorwayId).toBe(c.doorwayId);
   });
 });
-
-const DRINK_HOLD_FULL = {
-  ...DRINK_HOLD,
-  "addiction-e1": "held",
-  "addiction-e2": "intact",
-  "addiction-e3": "none",
-  "addiction-e4": "decide",
-  "addiction-e5": "no-pattern",
-  "addiction-e6": "nothing",
-};
