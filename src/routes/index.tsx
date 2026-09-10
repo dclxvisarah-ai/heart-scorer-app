@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 
+import { DeepReadingPanel } from "@/components/DeepReadingPanel";
 import { FramingNote } from "@/components/FramingNote";
+import { buildDeepReading } from "@/lib/deep-reading";
 import { RightNow } from "@/components/RightNow";
 import { NumberPanel } from "@/components/NumberPanel";
 import { RelationalStatePanel } from "@/components/RelationalStatePanel";
@@ -76,6 +78,11 @@ function GabrielsNumberPage() {
   const relational = useMemo(
     () => (result ? deriveRelationalState(sequence, answers, result) : undefined),
     [result, sequence, answers],
+  );
+
+  const deepReading = useMemo(
+    () => (result ? buildDeepReading(result, relational ?? null) : null),
+    [result, relational],
   );
 
   useEffect(() => {
@@ -414,6 +421,8 @@ function GabrielsNumberPage() {
                 </>
               )}
             </div>
+
+            {deepReading ? <DeepReadingPanel reading={deepReading} /> : null}
 
             {relational ? <RelationalStatePanel state={relational} /> : null}
 
