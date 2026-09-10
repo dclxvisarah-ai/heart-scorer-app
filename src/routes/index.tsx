@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 
+import { DeepReadingPanel } from "@/components/DeepReadingPanel";
 import { FramingNote } from "@/components/FramingNote";
+import { buildDeepReading } from "@/lib/deep-reading";
 import { RightNow } from "@/components/RightNow";
 import { NumberPanel } from "@/components/NumberPanel";
 import { RelationalStatePanel } from "@/components/RelationalStatePanel";
