@@ -3,11 +3,12 @@
 Baseline: `.lovable/inventory-current-baseline.md` (commit b02fcfe). Nothing here changes
 production behaviour; it records which branches may be used to develop the Relational State layer.
 
-## REMOVAL CANDIDATES — DO NOT USE FOR RELATIONAL-STATE DEVELOPMENT
+## REMOVED (decision, Sep 10 2026) — no longer selectable or tested
 
-These branches are too short or too generic to produce trustworthy relational evidence: most of
-their pages are the shared `c1`–`c3` closers, so their territories and intersections come from
-generic material rather than the doorway itself. Do not spend effort repairing them.
+These branches were too short or too generic to produce trustworthy relational evidence: most of
+their pages were the shared `c1`–`c3` closers. They have been removed from `DOORWAYS` (and the
+orphaned `lost-*` questions deleted); shared core questions the surviving branches use are intact.
+Surviving doorways: `fire`, `chance`, `spiral`, `drink`. Do not repair the removed ones.
 
 | Doorway | Why excluded |
 |---|---|
