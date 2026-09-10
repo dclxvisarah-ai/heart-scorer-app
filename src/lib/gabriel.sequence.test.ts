@@ -238,7 +238,7 @@ describe("deeper probes in the sequence", () => {
     const { answers } = playThrough(d, (q) => q.choices[0]!.id);
     const withProbe = buildSequence(d, answers, ["deep-step"]);
     expect(withProbe).toHaveLength(7);
-    expect(withProbe[6].id).toBe("deep-step");
+    expect(withProbe[6]!.id).toBe("deep-step");
   });
 
   it("ignores unknown probe ids", () => {
