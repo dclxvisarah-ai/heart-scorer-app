@@ -82,7 +82,7 @@ describe("THE FIRE — fixed six pages", () => {
   });
 
   it("reaches fury-want -> fury-power -> fury-close as pages 4-6", () => {
-    const { sequence } = playThrough(byId("fire"), (q) => q.choices[0].id);
+    const { sequence } = playThrough(byId("fire"), (q) => q.choices[0]!.id);
     expect(sequence.map((q) => q.id)).toEqual([
       "fire-1",
       "fury-crossed-trust",
@@ -95,9 +95,9 @@ describe("THE FIRE — fixed six pages", () => {
 
   it("reaches the same stage-2 tail from every Q1 answer", () => {
     const fire = byId("fire");
-    for (const choice of fire.questions[0].choices) {
+    for (const choice of fire.questions[0]!.choices) {
       const { sequence } = playThrough(fire, (q) =>
-        q.id === "fire-1" ? choice.id : q.choices[0].id,
+        q.id === "fire-1" ? choice.id : q.choices[0]!.id,
       );
       expect(sequence).toHaveLength(6);
       expect(sequence.slice(3).map((q) => q.id)).toEqual(["fury-want", "fury-power", "fury-close"]);
@@ -105,7 +105,7 @@ describe("THE FIRE — fixed six pages", () => {
   });
 
   it("does not inject the shared CORE_QUESTIONS", () => {
-    const { sequence } = playThrough(byId("fire"), (q) => q.choices[0].id);
+    const { sequence } = playThrough(byId("fire"), (q) => q.choices[0]!.id);
     expect(sequence.map((q) => q.id).filter((id) => ["c1", "c2", "c3"].includes(id))).toEqual([]);
   });
 });
@@ -119,7 +119,7 @@ describe("SPIRALING — five base pages", () => {
 
   it("asks spiral-known as page 3 on the replay path", () => {
     const { sequence } = playThrough(byId("spiral"), (q) =>
-      q.id === "spiral-1" ? "replay" : q.choices[0].id,
+      q.id === "spiral-1" ? "replay" : q.choices[0]!.id,
     );
     expect(sequence.map((q) => q.id)).toEqual([
       "spiral-1",
@@ -128,16 +128,16 @@ describe("SPIRALING — five base pages", () => {
       "c1",
       "c2",
     ]);
-    expect(sequence[2].prompt).toBe("What's actually known?");
+    expect(sequence[2]!.prompt).toBe("What's actually known?");
   });
 
   it("asks spiral-known as page 3 from every Q1 answer", () => {
     const spiral = byId("spiral");
-    for (const choice of spiral.questions[0].choices) {
+    for (const choice of spiral.questions[0]!.choices) {
       const { sequence } = playThrough(spiral, (q) =>
-        q.id === "spiral-1" ? choice.id : q.choices[0].id,
+        q.id === "spiral-1" ? choice.id : q.choices[0]!.id,
       );
-      expect(sequence[2].id).toBe("spiral-known");
+      expect(sequence[2]!.id).toBe("spiral-known");
     }
   });
 });
@@ -171,13 +171,13 @@ describe("back navigation and stale answers", () => {
     const sequence = buildSequence(d, answers);
     const next: AnswerMap = { ...answers };
     for (const q of sequence.slice(index + 1)) delete next[q.id];
-    next[sequence[index].id] = choiceId;
+    next[sequence[index]!.id] = choiceId;
     return next;
   }
 
   it("leaves no answer outside the rebuilt sequence when Q1 is changed", () => {
     const fire = byId("fire");
-    const { answers } = playThrough(fire, (q) => q.choices[0].id);
+    const { answers } = playThrough(fire, (q) => q.choices[0]!.id);
     const edited = editAt(fire, answers, 0, "hurt");
     expect(Object.keys(edited)).toEqual(["fire-1"]);
     const rebuilt = buildSequence(fire, edited).map((q) => q.id);
@@ -187,10 +187,10 @@ describe("back navigation and stale answers", () => {
 
   it("leaves no stale answer at any edit position, in every doorway", () => {
     for (const d of doorways) {
-      const { answers, sequence } = playThrough(d, (q) => q.choices[0].id);
+      const { answers, sequence } = playThrough(d, (q) => q.choices[0]!.id);
       for (let i = 0; i < sequence.length; i++) {
-        const q = sequence[i];
-        const alt = q.choices[q.choices.length - 1].id;
+        const q = sequence[i]!;
+        const alt = q.choices[q.choices.length - 1]!.id;
         const edited = editAt(d, answers, i, alt);
         const rebuilt = new Set(buildSequence(d, edited).map((x) => x.id));
         const stale = Object.keys(edited).filter((id) => !rebuilt.has(id));
@@ -201,10 +201,10 @@ describe("back navigation and stale answers", () => {
 
   it("preserves the prefix before the edited page", () => {
     for (const d of doorways) {
-      const { answers, sequence } = playThrough(d, (q) => q.choices[0].id);
+      const { answers, sequence } = playThrough(d, (q) => q.choices[0]!.id);
       for (let i = 1; i < sequence.length; i++) {
-        const q = sequence[i];
-        const edited = editAt(d, answers, i, q.choices[q.choices.length - 1].id);
+        const q = sequence[i]!;
+        const edited = editAt(d, answers, i, q.choices[q.choices.length - 1]!.id);
         const rebuilt = buildSequence(d, edited).map((x) => x.id);
         expect(rebuilt.slice(0, i), `${d.id} edit@${i}`).toEqual(
           sequence.slice(0, i).map((x) => x.id),
@@ -224,7 +224,7 @@ describe("back navigation and stale answers", () => {
 describe("deeper probes in the sequence", () => {
   it("appends probes in the order supplied, after the base sequence", () => {
     const d = byId("spiral");
-    const { answers, sequence } = playThrough(d, (q) => q.choices[0].id);
+    const { answers, sequence } = playThrough(d, (q) => q.choices[0]!.id);
     const withProbes = buildSequence(d, answers, ["deep-known", "deep-hear"]);
     expect(withProbes.map((q) => q.id)).toEqual([
       ...sequence.map((q) => q.id),
@@ -235,7 +235,7 @@ describe("deeper probes in the sequence", () => {
 
   it("appends probes to the fixed-length Fire branch as well, past totalPages", () => {
     const d = byId("fire");
-    const { answers } = playThrough(d, (q) => q.choices[0].id);
+    const { answers } = playThrough(d, (q) => q.choices[0]!.id);
     const withProbe = buildSequence(d, answers, ["deep-step"]);
     expect(withProbe).toHaveLength(7);
     expect(withProbe[6].id).toBe("deep-step");
@@ -243,7 +243,7 @@ describe("deeper probes in the sequence", () => {
 
   it("ignores unknown probe ids", () => {
     const d = byId("spiral");
-    const { answers, sequence } = playThrough(d, (q) => q.choices[0].id);
+    const { answers, sequence } = playThrough(d, (q) => q.choices[0]!.id);
     expect(buildSequence(d, answers, ["not-a-probe"])).toHaveLength(sequence.length);
   });
 });

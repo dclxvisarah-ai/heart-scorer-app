@@ -61,7 +61,7 @@ function playThrough(d: Doorway, pick: (q: Question) => string) {
 
 describe("normalisation: raw / sqrt(max(reach,1)) * 2, rounded to two decimals", () => {
   it("matches an independent recomputation on a completed Fire path", () => {
-    const { answers, sequence } = playThrough(byId("fire"), (q) => q.choices[0].id);
+    const { answers, sequence } = playThrough(byId("fire"), (q) => q.choices[0]!.id);
     const result = evaluatePattern(sequence, answers);
     const want = expectedWeights(sequence, answers);
     for (const t of result.tallies) {
@@ -72,8 +72,8 @@ describe("normalisation: raw / sqrt(max(reach,1)) * 2, rounded to two decimals",
   it("matches an independent recomputation across every doorway, both extreme picks", () => {
     for (const d of doorways) {
       for (const pick of [
-        (q: Question) => q.choices[0].id,
-        (q: Question) => q.choices[q.choices.length - 1].id,
+        (q: Question) => q.choices[0]!.id,
+        (q: Question) => q.choices[q.choices.length - 1]!.id,
       ]) {
         const { answers, sequence } = playThrough(d, pick);
         const result = evaluatePattern(sequence, answers);
@@ -87,7 +87,7 @@ describe("normalisation: raw / sqrt(max(reach,1)) * 2, rounded to two decimals",
 
   it("rounds every weight to at most two decimals", () => {
     for (const d of doorways) {
-      const { answers, sequence } = playThrough(d, (q) => q.choices[0].id);
+      const { answers, sequence } = playThrough(d, (q) => q.choices[0]!.id);
       for (const t of evaluatePattern(sequence, answers).tallies) {
         expect(t.weight).toBe(round2(t.weight));
       }
@@ -95,7 +95,7 @@ describe("normalisation: raw / sqrt(max(reach,1)) * 2, rounded to two decimals",
   });
 
   it("gives a number with no raw evidence a weight of exactly 0", () => {
-    const { answers, sequence } = playThrough(byId("well"), (q) => q.choices[0].id);
+    const { answers, sequence } = playThrough(byId("well"), (q) => q.choices[0]!.id);
     const result = evaluatePattern(sequence, answers);
     const want = expectedWeights(sequence, answers);
     for (const t of result.tallies) {
@@ -153,7 +153,7 @@ describe("Available_n comes from the actual supplied sequence", () => {
   });
 
   it("ignores answers for questions outside the supplied sequence", () => {
-    const { answers, sequence } = playThrough(byId("spiral"), (q) => q.choices[0].id);
+    const { answers, sequence } = playThrough(byId("spiral"), (q) => q.choices[0]!.id);
     const clean = evaluatePattern(sequence, answers);
     const dirty = evaluatePattern(sequence, { ...answers, "not-in-sequence": "a", "fire-1": "betray" });
     expect(dirty.tallies).toEqual(clean.tallies);
@@ -161,7 +161,7 @@ describe("Available_n comes from the actual supplied sequence", () => {
   });
 
   it("ignores an answer id that does not exist on its question", () => {
-    const { answers, sequence } = playThrough(byId("spiral"), (q) => q.choices[0].id);
+    const { answers, sequence } = playThrough(byId("spiral"), (q) => q.choices[0]!.id);
     const result = evaluatePattern(sequence, { ...answers, "spiral-known": "zzz" });
     expect(() => result).not.toThrow();
     const want = expectedWeights(sequence, { ...answers, "spiral-known": "zzz" });
@@ -179,15 +179,15 @@ describe("thresholds: 2.4 primary, 0.35 lead, 1.8 support", () => {
   it("awards no primary below 2.4 even with a clear lead", () => {
     // raw 2 with reach 2 -> 2/sqrt(2)*2 = 2.83 ; raw 1 reach 1 -> 2.0
     const low = evaluatePattern([q("x", { 5: 1 })], { x: "a" });
-    expect(low.tallies[0].weight).toBe(2);
-    expect(low.tallies[0].weight).toBeLessThan(2.4);
+    expect(low.tallies[0]!.weight).toBe(2);
+    expect(low.tallies[0]!.weight).toBeLessThan(2.4);
     expect(low.primary).toBeUndefined();
     expect(low.coherent).toBe(false);
   });
 
   it("awards a primary at or above 2.4 with a lead of at least 0.35", () => {
     const r = evaluatePattern([q("x", { 5: 2 })], { x: "a" });
-    expect(r.tallies[0].weight).toBe(2.83);
+    expect(r.tallies[0]!.weight).toBe(2.83);
     expect(r.primary).toBe(5);
     expect(r.coherent).toBe(true);
   });
@@ -195,7 +195,7 @@ describe("thresholds: 2.4 primary, 0.35 lead, 1.8 support", () => {
   it("withholds a primary when the lead is smaller than 0.35", () => {
     // both numbers reach 2 and score 2.83 -> lead 0
     const r = evaluatePattern([q("x", { 5: 2, 2: 2 })], { x: "a" });
-    expect(r.tallies[0].weight - r.tallies[1].weight).toBeLessThan(0.35);
+    expect(r.tallies[0]!.weight - r.tallies[1]!.weight).toBeLessThan(0.35);
     expect(r.primary).toBeUndefined();
     expect(r.contested.length).toBeGreaterThan(1);
   });
@@ -203,8 +203,8 @@ describe("thresholds: 2.4 primary, 0.35 lead, 1.8 support", () => {
   it("lists only supporting numbers at or above 1.8", () => {
     for (const d of doorways) {
       for (const pick of [
-        (x: Question) => x.choices[0].id,
-        (x: Question) => x.choices[x.choices.length - 1].id,
+        (x: Question) => x.choices[0]!.id,
+        (x: Question) => x.choices[x.choices.length - 1]!.id,
       ]) {
         const { answers, sequence } = playThrough(d, pick);
         const r = evaluatePattern(sequence, answers);
@@ -264,7 +264,7 @@ describe("Undetermined is never forced", () => {
 describe("determinism", () => {
   it("re-evaluating identical input yields an identical result", () => {
     for (const d of doorways) {
-      const { answers, sequence } = playThrough(d, (q) => q.choices[0].id);
+      const { answers, sequence } = playThrough(d, (q) => q.choices[0]!.id);
       const a = evaluatePattern(sequence, answers);
       const b = evaluatePattern(buildSequence(d, { ...answers }), { ...answers });
       expect(b).toEqual(a);
@@ -273,7 +273,7 @@ describe("determinism", () => {
 
   it("is insensitive to answer-map key order", () => {
     const d = byId("drink");
-    const { answers, sequence } = playThrough(d, (q) => q.choices[0].id);
+    const { answers, sequence } = playThrough(d, (q) => q.choices[0]!.id);
     const reversed = Object.fromEntries(Object.entries(answers).reverse());
     expect(evaluatePattern(sequence, reversed)).toEqual(evaluatePattern(sequence, answers));
   });

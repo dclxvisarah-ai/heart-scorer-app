@@ -87,7 +87,7 @@ describe("shared vs doorway-specific composition (recorded, unchanged)", () => {
 
   it("records that thin branches are majority-generic on a first-choice traversal", () => {
     const shareOf = (id: string) => {
-      const seq = playThrough(doorways.find((d) => d.id === id)!, (q) => q.choices[0].id);
+      const seq = playThrough(doorways.find((d) => d.id === id)!, (q) => q.choices[0]!.id);
       return `${seq.filter((q) => SHARED.has(q.id)).length}/${seq.length}`;
     };
     // e.g. drink's first-choice path is drink-1 > drink-well > c1 > c2 > c3.
@@ -101,10 +101,10 @@ describe("shared vs doorway-specific composition (recorded, unchanged)", () => {
 
 describe("cross-branch contamination", () => {
   it("never puts another doorway's own opening question in a branch", () => {
-    const openers = new Set(doorways.map((d) => d.questions[0].id));
+    const openers = new Set(doorways.map((d) => d.questions[0]!.id));
     for (const d of doorways) {
-      const seq = playThrough(d, (q) => q.choices[0].id);
-      const foreign = seq.filter((q) => openers.has(q.id) && q.id !== d.questions[0].id);
+      const seq = playThrough(d, (q) => q.choices[0]!.id);
+      const foreign = seq.filter((q) => openers.has(q.id) && q.id !== d.questions[0]!.id);
       expect(foreign.map((q) => q.id), d.id).toEqual([]);
     }
   });
@@ -139,7 +139,7 @@ describe("known construct gaps (recorded, deliberately not fixed in this pass)",
     );
     expect(maxEight).toBeLessThanOrEqual(1);
     // and the branch is 5 pages long, so c3 (the 8:3 option) is never appended
-    const seq = playThrough(d, (q) => q.choices[0].id);
+    const seq = playThrough(d, (q) => q.choices[0]!.id);
     expect(seq.map((q) => q.id)).not.toContain("c3");
   });
 });
