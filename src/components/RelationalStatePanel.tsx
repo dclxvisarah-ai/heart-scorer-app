@@ -41,7 +41,10 @@ export function RelationalStatePanel({ state }: { state: RelationalState }) {
                 <ul className="mt-2 flex flex-col gap-1.5">
                   {t.snippets.slice(0, 3).map((s, i) => (
                     <li key={`${t.n}-${s.questionId}-${i}`} className="text-sm text-olive-soft">
-                      “{s.choiceLabel}”
+                      “{s.choiceLabel}”{" "}
+                      <span className="text-xs text-muted-foreground">
+                        ({s.roles[t.n] === "leading" ? "leading" : "underneath"})
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -73,8 +76,32 @@ export function RelationalStatePanel({ state }: { state: RelationalState }) {
             being called a connection.
           </p>
         )}
+
+        {state.unsupportedPairs.length > 0 ? (
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            Active side by side, but not connected by your answers:{" "}
+            {state.unsupportedPairs.map(([a, b]) => `${a} × ${b}`).join(", ")}. Shared vocabulary on
+            its own doesn't count as a connection.
+          </p>
+        ) : null}
       </div>
 
+      <div className="mt-6">
+        <h4 className="font-display text-base">Vocabulary field</h4>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Reference language for these territories — semantic context, not evidence in itself.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {state.vocabularyField.map((word) => (
+            <span
+              key={word}
+              className="rounded-full border border-hairline bg-background/60 px-2.5 py-1 text-xs text-olive-soft"
+            >
+              {word}
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
