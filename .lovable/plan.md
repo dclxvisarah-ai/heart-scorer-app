@@ -1,135 +1,100 @@
-# Architectural Audit — Gabriel's Number at b02fcfe (audit only, no code changed)
+# DRINK/GAMBLE Path-Level Research Audit
 
-Baseline confirmed: HEAD is `b02fcfe` ("Restored RIGHT NOW CSS rules"). All findings below come
-from executing the current `src/lib/gabriel.ts` and exhaustively enumerating every reachable
-path per doorway through the live `buildSequence` + `evaluatePattern`.
+**Scope:** Current HEAD `908206e9aaeb`; research only. No production source, questions, scoring, weights, routing, or UI changed.
 
-## 1. Doorways and reachable question graphs (current source)
+## Bottom line
 
-Eleven visible doorways. `DOORWAYS` is the visible list; there is no `hidden` flag and no
-four-item menu in this baseline.
+The requested gates do not exist in the current routing model. Choices contain only an ID, label, Number evidence, optional `followUp`, and optional `avoids`; deeper probes are selected only by overlap with contested Numbers. The engine cannot explicitly represent “attempted control,” “actual displacement,” “incurred cost,” “interruption,” “recognition,” “chasing,” “moved limit,” or “time absorption.”
 
-| Doorway | own Qs | Qs reachable via followUp/next | stage2 | page lengths | complete paths | options exercised |
+Current stopping is likewise Number-driven, not gate-driven: a path reaches its normal result after five or six questions, then offers a generic deeper probe only when the Number is Undetermined. None of those probes is DRINK- or GAMBLE-specific.
+
+## DRINK audit
+
+All root paths establish that an urge exists and clarify its immediate context or function. None establishes D1, D2, D3, or D4. Therefore none safely earns D5.
+
+| Reachable path | Evidence actually established | Unresolved distinction | Earned next research probe | What would make it unnecessary | Current stop | Incorrect-trigger risk |
 |---|---|---|---|---|---|---|
-| fire | 1 | 7 | fury-want (3/6) | all 6 | 217,728 | 71 |
-| lost | 1 | 10 | — | all 5 | 8,250 | 112 |
-| chance | 1 | 9 | — | 5 and 6 | 18,180 | 104 |
-| spiral | 2 | 10 | — | all 5 | 5,500 | 63 |
-| drink | 1 | 12 | — | 5 and 6 | 36,750 | 140 |
-| gamble | 2 | 2 | — | all 5 | 3,900 | 65 |
-| talk | 3 | 3 | — | 5 and 6 | 5,120 | 69 |
-| well | 2 | 2 | — | all 5 | 4,500 | 27 |
-| happened | 3 | 3 | — | all 5 | 1,600 | 22 |
-| loop | 3 | 3 | — | 5 and 6 | 5,400 | 68 |
-| surprise | 1 | 1 | — | all 5 | 7,200 | 61 |
+| `drink-1/well` or `/good` → `drink-well/a–h` | Difficulty sitting with positive experience, stillness, comfort, freedom, uncertainty, or an unexplained urge | No history of attempted control, actual life displacement, incurred cost, or brake | **D1** only | An explicit answer establishing whether change/control was attempted and what happened | `c3`, then result | Positive-state discomfort could be mistaken for impairment; it is not D2/D3 |
+| `drink-1/stress` → `drink-stress/a–e` | Stated source of stress; `/d` also marks avoidance | Same four behavioral distinctions remain open | **D1** only | Explicit attempted-control evidence | Usually `c3`; `/d` inserts generic `u1` and follow-up | Work/money stress is a cause, not drinking-caused displacement or cost |
+| `drink-1/bored` → `drink-bored/a–e` | Defaulting, social function, desired edge, planning friction, or uncertainty about substitutes | Whether drinking has displaced ordinary activities remains unknown | **D1** only; D2 is not yet earned as a conclusion | Explicit control-attempt answer; a direct present-tense displacement answer would later settle D2 | `c3`, then result | “Same slot,” “company,” or planning difficulty could be overread as D2; they describe function/substitution, not demonstrated displacement |
+| `drink-1/routine` → `drink-habit-1/a–h` | What the routine provides: familiarity, anticipation, state change, transition, escape, perceived control, automaticity, or uncertainty | Attempted change/control is still unanswered | **D1** only | Direct report of an attempt and its outcome | Continues through `habit-2–4`, then `c3` | `habit-1/f` “A sense of control” can falsely look like D1; it does not report an attempt to control drinking |
+| `drink-habit-2/a–j` | What the person imagines experiencing without the routine | Actual daily-life displacement and actual cost remain unknown | Does not independently advance beyond **D1** | Direct present-tense evidence that drinking displaced sleep, work, money, care, relationships, or obligations | Continues to `habit-3` | Responsibility/conversation options can be mistaken for D2; all answers are counterfactual |
+| `drink-habit-3/a–l` | Hypothesized changes: money, body, energy, mornings, sleep, presence, time, trust, unfamiliarity, alternatives, or uncertainty | Whether any meaningful cost has already occurred | D2/D3 are **not established**; no later probe is safely earned from these answers alone | A factual answer about present displacement or incurred cost | Continues to `habit-4` | `/a–h` are the largest false-trigger set: “might” benefits are not actual D2 displacement or D3 cost |
+| `drink-habit-4/a–e` | Relative salience of imagined loss/gain, ambivalence, dismissal, or refusal | Recognition of an actual pattern and readiness remain distinct and unresolved | **D5 not earned** | Prior explicit recognition grounded in actual D1–D4 evidence; then a readiness answer could resolve D5 | `c3`, then result | `/b` can look like readiness; `/c` recognizes tension, but neither proves behavioral recognition or readiness |
+| `drink-1/change` → `drink-change/a–h` | Desired internal-state shift; `/g` marks avoidance | Behavioral history and consequences remain open | **D1** only | Explicit attempted-control evidence | Usually `c3`; `/g` inserts generic `u1` and follow-up | Wanting a different feeling is not wanting to change drinking and must not trigger D1 as established |
+| `drink-1/happened` → `drink-happened/a–e` | A precipitating event or refusal to name it; root always marks avoidance | Behavioral history and consequences remain open | **D1** only | Explicit attempted-control evidence | Generic `u1` path, then usually `c1`, then result | Avoidance is orthogonal to D1–D4 and must not be treated as behavioral severity |
+| `drink-1/plain` → `drink-plain/a–e` | Time, taste, people, ritual, or no named connection | Behavioral history and consequences remain open | **D1** only | Explicit attempted-control evidence | `c3`, then result | Time-of-day association is not daily-life displacement |
+| `drink-1/unclear` → `drink-unclear/a–e` | Timing/antecedent or continued uncertainty; `/b` marks avoidance | Behavioral history and consequences remain open | **D1** only | Explicit attempted-control evidence | Usually `c3`; `/b` inserts generic `u1` and follow-up | “All day” is duration of urge, not displacement; a specific trigger is not cost |
 
-No dangling `followUp`/`next` target anywhere: every referenced id resolves. `BRANCH_QUESTIONS`
-holds 45 questions and all 45 are asked somewhere.
+### DRINK gate verdict
 
-## 2. The two reported findings, corrected
+- **D1 attempted change/control:** not established anywhere. Every completed DRINK path leaves it unresolved. `drink-habit-1/f` is only a claimed function (“a sense of control”), not control-attempt history.
+- **D2 basic daily-life displacement:** not established anywhere. `drink-habit-3` is hypothetical, not a report of current impairment.
+- **D3 meaningful cost:** not established anywhere. Money, sleep, energy, presence, and time appear only as things that *might* improve.
+- **D4 interruption/brake:** absent. No answer reports trying to stop/cut back, being interrupted, or what broke the sequence.
+- **D5 readiness after recognition:** not safely reachable. `drink-habit-4` measures imagined gain/loss and ambivalence; `c3/a` and generic `deep-step/a` can sound action-ready but are not gated by prior recognition.
+- **Safe stop:** under this specification, the current branch must stop after reporting what it actually learned. It cannot claim the D1–D5 sequence was resolved.
 
-**Finding 1 (Spiral / spiral-known) — not a defect.** `spiral-replay` indeed has no
-`followUp`/`next` to `spiral-known`, but `spiral-known` is the doorway's *second own question*,
-so `buildSequence` expands it directly. The live Spiral path is
-`spiral-1 > spiral-<state> > spiral-known > c1 > c2` — five pages. This matches the screenshot
-where Q3 is "What's actually known?". Nothing to repair; the wiring assumption was wrong, not
-the graph.
+## GAMBLE audit
 
-**Finding 2 (Fire cannot reach fury-want) — not a defect.** `fire-1 > fury-crossed-* >
-fury-under` is exactly 3 pages, so the prefix does reach `prefixPages: 3`, and stage 2 is
-entered. Verified live sequence: `fire-1 > fury-crossed-trust > fury-under > fury-want >
-fury-power > fury-close`. All 217,728 Fire paths are exactly 6 pages.
-`fury-want / fury-power / fury-close` are orphans *in the followUp graph only* — they are
-reached solely through `doorway.stage2`. That is intended by the fixed-length design, but it
-means any naive graph-reachability check reports them as unreachable (this audit's first pass
-did). Worth a comment and a test, not a rewiring.
+Every path is `gamble-1 → gamble-2`, followed by generic shared questions. Only two exact responses establish one of the requested gates.
 
-**Finding 3 (stale audit docs) — confirmed stale.** `.lovable/audit-spiraling-lock.md` claims
-Spiral has a fixed six-page architecture, `stage2: "spiral-known"`, `prefixPages: 3`,
-`totalPages: 6`, 15 reachable questions, 84 options and 55,440 paths. Current source has none
-of that: no stage2 on Spiral, 10 questions, 63 options, 5,500 paths, all 5 pages. Likewise
-`.lovable/audit-2026-08-19-baseline.md` (10 doorways, hidden `chance`/`gamble`/`talk`, six-page
-Spiral) and `docs/Chase_Stress_Test_2026-08-24.md` (the `bet` doorway, and a stale-answer prune
-in `index.tsx` L133–143) describe branches and code that do not exist at this commit.
+| Reachable response/path | Evidence actually established | Unresolved distinction | Earned probe | What makes it unnecessary | Current stop | Incorrect-trigger risk |
+|---|---|---|---|---|---|---|
+| `gamble-1/a` “Good mood,” `/b` “run going right,” `/d` bored, `/e` fun, or `/f` unsure | Mood/streak/action-seeking/recreation/uncertainty | No evidence of chasing | **No G1** | Direct chasing evidence is absent | Continue to `gamble-2`, then shared close/result | A winning streak must not be treated as chasing a loss |
+| `gamble-1/c` “I'm behind and want to catch up” | **Chasing is directly evidenced** | One-off versus repeated chase; what loss is being pursued | **G1 earned** | A direct answer resolving the chasing distinction | `avoids` currently sends this to generic `u1`, not G1 | Using `avoids` as a proxy for G1 is semantically unsafe, even though this one choice happens to evidence both |
+| `gamble-2/a` set amount and sticks to it | A limit exists and is reportedly held | No moved-limit evidence | **No G2** | The answer itself negates moved-limit evidence for this run | Shared close/result | A limit existing must not be treated as proof of prior movement |
+| `gamble-2/b` “I've moved it before” | **Moved limit is directly evidenced** | Frequency, direction, within-session versus between-session movement | **G2 earned** | A direct follow-up resolving how/when the limit moved | Shared close/result; no special route | Number 3/4 evidence does not encode G2, so a Number-tie probe can miss it entirely |
+| `gamble-2/c` “No line” | Absence of a stated limit | Whether no limit reflects low-stakes play, overconfidence, or loss of control | **No G2 under the stated rule** | Direct evidence that a previously set limit moved | Shared close/result | “No line” may be concerning, but it is not evidence that a limit moved |
+| `gamble-2/d` “Hadn't thought about it” | No prior limit consideration reported | Same | **No G2** | Direct moved-limit evidence | Shared close/result | Must not be promoted from uncertainty to moved-limit evidence |
+| Any combination containing `gamble-1/c` + `gamble-2/b` | Both chasing and moved-limit evidence | G1 and G2 follow-up distinctions remain | **Both G1 and G2 earned**, in preserved response order | Each becomes unnecessary only after its own distinction is explicitly resolved | Generic universal/shared route, then result | Current selector can offer only a Number-tie probe and cannot preserve these two earned gates |
+| Any GAMBLE path | No question asks about time absorption or displacement of sleep, work, money obligations, care, or relationships | G3 cannot be evaluated | **No G3** | Explicit time-absorption/displacement evidence | Shared close/result | Generic `c2` time horizon and `c3` next-hour language must not be mistaken for G3 |
 
-## 3. Real issues found
+### GAMBLE gate verdict
 
-1. **Documentation drift is the largest trust risk.** Three audit documents describe a
-   different application than the one that runs. Any Relational State work planned against them
-   would be planned against fiction.
-2. **`happened` cannot produce 8.** Confirmed over all 1,600 paths: primaries are
-   1,2,3,4,5,6,7,9 and Undetermined — 8 never occurs. Same defect the Aug-19 baseline recorded,
-   still present.
-3. **Very thin coverage in some branches.** `well` exercises 27 options and `happened` 22;
-   `happened` and `well` reach 5 total questions each. `spiral` yields 9 on 0.8% of paths and 6
-   on 1.4% — near-unreachable coordinates.
-4. **Fire's Undetermined rate is 27.8%** (60,528 / 217,728) — in range, but its 3 (2.9%) and
-   9 (5.3%) are thin relative to 7 (15.6%) and 5 (14.3%).
-5. **`Available_n` includes trailing unanswered questions.** `evaluatePattern` accumulates
-   availability for every question in the sequence, answered or not. At the result screen the
-   sequence is fully answered so it is harmless there, but mid-flow and immediately after a
-   deeper probe is appended the denominator counts a question with no answer, deflating weights.
-   Not a scoring change — a boundary to pin with a test before anything else touches the
-   evaluator.
-6. **Deeper probes carry weight 4**, above the documented max of 3, and are added after the
-   normalisation was calibrated. Intended, undocumented in the baseline docs.
-7. **Cross-branch injection is real but by design**: every branch shorter than 5 pages is
-   topped up with the shared generic `c1`/`c2`/`c3`, and `c3` is appended to longer branches.
-   So `drink`'s live 5-page path is `drink-1 > drink-well > c1 > c2 > c3` — three of five pages
-   are generic. This is the dominant source of evidence in the thin branches and the reason
-   `happened` can never reach 8 (its only 8-carrying option lives on `c3`, which that branch is
-   too long to receive). No accidental contamination beyond this documented mechanism; no
-   number is redefined per branch.
-8. **Q1–Q6 stage distinctness** can only be assessed for `fire`, the one six-page branch.
-   Its stages are distinct: kind of fury → what was crossed → what is under it → what you want
-   → what you would actually have power over → how it closes. No two Fire questions share an
-   evidence signature. No other branch claims a six-question progression at this commit.
+- **G1:** earned only by `gamble-1/c`.
+- **G2:** earned only by `gamble-2/b`.
+- **G3:** never earned; there is no evidentiary surface for it.
+- The four Q1/Q2 combinations reduce safely to: `c+b` earns G1 and G2; `c+other` earns G1 only; `other+b` earns G2 only; all other combinations earn neither. No combination earns G3.
+- The current `avoids` branch and all eight generic deeper probes are unrelated to these gates. A generic probe may be offered after any Undetermined Number result, including paths with no G1/G2/G3 evidence, because selection uses only contested Number overlap.
 
-## 4. Back-navigation and deeper probes — verified sound
+## Why current routing is not auditable enough
 
-- `choose` in `src/routes/index.tsx` deletes every answer after the edited page, then rebuilds.
-  Verified: editing `fire-1` from `betray` to `hurt` leaves exactly `{fire-1}` and the new path
-  is `fire-1 > fury-crossed-hurt`. No stale answer survives, so no phantom evidence.
-- The secondary "drop answers not on the rebuilt path" prune described in the Chase document is
-  absent here, and is not needed: prefix-deterministic sequences plus the slice-delete cover it.
-- `goBack` from the result returns to the last question; `goDeeper` appends the probe by id and
-  `buildSequence` re-appends it on every rebuild, so probe order is stable.
-- Undetermined never forced; `getDeeperProbe` returns undefined when probes run out.
+`Choice.evidence` records Number weights, not the proposition established by the answer. `followUp` can route from one immediate answer, and `avoids` can trigger one generic branch, but there is no explicit semantic fact ledger, no actual-versus-hypothetical marker, no prerequisite expression, no gate-resolution state, and no ordered queue when several probes are earned.
 
-## 5. Test coverage gaps
+Consequently, safe routing cannot be inferred from weights or words:
 
-The only test file is `src/lib/lab/__tests__/contract.test.ts` (15 tests, Lab recorder only).
-There is **zero** test coverage of `gabriel.ts`. Nothing currently guards:
-graph integrity, path lengths, stage2 entry for Fire, Spiral's five-page shape,
-per-doorway number reachability, evidence weight bounds, `Available_n` derivation from the
-actual sequence, threshold/rounding behaviour, determinism, back-edit invalidation, or
-deeper-probe appending.
+- Number weights are many-to-many and are not evidence that D1–D5/G1–G3 occurred.
+- String matching would falsely classify “sense of control,” “might have more money/time,” “what I'd gain,” “run going right,” and “no line.”
+- `getDeeperProbe(contested, askedIds)` cannot inspect the selected answers and cannot know which gate was earned.
+- The generic `avoids` flag describes experiential avoidance, not drinking/gambling progression.
 
-## 6. Smallest safe repair / regression sequence (proposed, not yet done)
+## Smallest later architecture change
 
-No scoring formula, weight, threshold, wording or question change in any step below.
+Add **additive, research-only semantic routing metadata** without touching existing Number evidence:
 
-1. **Freeze the truth in tests** — add `src/lib/gabriel.graph.test.ts`:
-   every `followUp`/`next` resolves; every question in `BRANCH_QUESTIONS` is asked by some
-   doorway *including via stage2*; no duplicate choice ids; branch-question weights ≤ 3;
-   per-choice evidence sum ≤ 3.
-2. **Pin the sequence contract** — `src/lib/gabriel.sequence.test.ts`: Fire is always exactly 6
-   pages and always reaches `fury-want > fury-power > fury-close`; Spiral is always exactly 5
-   pages with `spiral-known` at page 3; per-doorway page-length sets match the table above;
-   editing an earlier answer discards every later answer.
-3. **Pin the evaluator** — `src/lib/gabriel.evaluator.test.ts`: `Available_n` equals the sum of
-   per-question maxima over the sequence actually passed in; `raw / sqrt(max(reach,1)) * 2`
-   with 2-decimal rounding; the 2.4 / 0.35 / 1.8 gates; determinism on re-evaluation; the
-   documented Fire and Spiral transcripts above as golden fixtures.
-4. **Correct the documentation** — mark `.lovable/audit-spiraling-lock.md`,
-   `.lovable/audit-2026-08-19-baseline.md` and `docs/Chase_Stress_Test_2026-08-24.md` as
-   describing superseded states, and add one current inventory document containing section 1 of
-   this audit as the single source of truth.
-5. **Record, do not yet fix, the open construct issues** — `happened` cannot reach 8; thin
-   Spiral 6/9; generic `c1`–`c3` dominating short branches; probe weight 4; availability
-   counting unanswered trailing questions. Each gets an entry with the intended coordinate left
-   blank for your review.
-6. **Only then** open the Relational State Layer design, against the corrected inventory.
+1. Each relevant choice may declare explicit facts it **establishes**, **negates**, or leaves **unknown**, including an `actual | hypothetical` status.
+2. Each research probe declares its required facts, the distinction it resolves, and its stop condition.
+3. A small deterministic selector receives the ordered answered path, derives gate state from exact selected choices, and returns zero or more earned probe IDs in encounter order.
 
-Steps 1–3 add test files only. Step 4 touches documents only. Nothing in this sequence modifies
-`src/lib/gabriel.ts`, `src/routes/index.tsx`, or any user-facing wording.
+The minimum conceptual shape is:
+
+```text
+choice.routingEvidence?: [{ fact, state: established | negated | unknown, basis: actual | hypothetical }]
+probe.requires: fact-expression
+probe.resolves: gate-id
+probe.stopWhen: fact-expression
+```
+
+This should remain separate from `evidence` and `evaluatePattern()`. A single `tags: string[]` field is insufficient because safe routing must distinguish present fact from negation, uncertainty, and hypothetical language. No wording, scoring, weight, multi-select, or branch redesign is required to add this capability later.
+
+## Source anchors
+
+- Choice/Question/Doorway metadata: `src/lib/gabriel.ts:123–166`
+- DRINK doorway and root routing: `src/lib/gabriel.ts:420–443`
+- GAMBLE doorway and responses: `src/lib/gabriel.ts:445–474`
+- Shared closing questions: `src/lib/gabriel.ts:262–298`
+- DRINK follow-ups: `src/lib/gabriel.ts:1066–1215`
+- Sequence, avoidance insertion, and generic padding: `src/lib/gabriel.ts:1249–1325`
+- Generic deeper probes and selector: `src/lib/gabriel.ts:1336–1474`
+- Result-only deeper-probe entry: `src/routes/index.tsx:137–160, 354–420`
