@@ -48,8 +48,22 @@ function enumerate(d: Doorway) {
 }
 
 describe("visible doorways", () => {
-  it("exposes exactly the four surviving doorways in order", () => {
-    expect(doorways.map((d) => d.id)).toEqual(["fire", "chance", "spiral", "drink"]);
+  it("exposes the four core doorways plus the seven pilot-restored ones, in order", () => {
+    // Pilot evaluation state (Sep 10 2026): the seven previously retired doorways are
+    // temporarily selectable again for qualitative review. Their content is unchanged.
+    expect(doorways.map((d) => d.id)).toEqual([
+      "fire",
+      "lost",
+      "chance",
+      "spiral",
+      "drink",
+      "gamble",
+      "talk",
+      "well",
+      "happened",
+      "loop",
+      "surprise",
+    ]);
   });
 
   it("declares the fixed-length architecture on Fire only", () => {

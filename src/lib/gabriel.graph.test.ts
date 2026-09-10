@@ -162,6 +162,7 @@ describe("evidence weight bounds", () => {
       "chance-info/a",
       "chance-split/a",
       "drink-habit-4/c",
+      "happened-3/a",
       "spiral-known/b",
       "spiral-stuck/d",
       "uf-conversation/c",
