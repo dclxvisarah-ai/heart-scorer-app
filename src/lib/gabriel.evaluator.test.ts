@@ -95,7 +95,7 @@ describe("normalisation: raw / sqrt(max(reach,1)) * 2, rounded to two decimals",
   });
 
   it("gives a number with no raw evidence a weight of exactly 0", () => {
-    const { answers, sequence } = playThrough(byId("well"), (q) => q.choices[0]!.id);
+    const { answers, sequence } = playThrough(byId("spiral"), (q) => q.choices[0]!.id);
     const result = evaluatePattern(sequence, answers);
     const want = expectedWeights(sequence, answers);
     for (const t of result.tallies) {

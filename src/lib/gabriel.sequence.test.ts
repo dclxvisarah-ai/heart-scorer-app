@@ -48,20 +48,8 @@ function enumerate(d: Doorway) {
 }
 
 describe("visible doorways", () => {
-  it("exposes exactly the eleven current doorways in order", () => {
-    expect(doorways.map((d) => d.id)).toEqual([
-      "fire",
-      "lost",
-      "chance",
-      "spiral",
-      "drink",
-      "gamble",
-      "talk",
-      "well",
-      "happened",
-      "loop",
-      "surprise",
-    ]);
+  it("exposes exactly the four surviving doorways in order", () => {
+    expect(doorways.map((d) => d.id)).toEqual(["fire", "chance", "spiral", "drink"]);
   });
 
   it("declares the fixed-length architecture on Fire only", () => {
@@ -145,16 +133,9 @@ describe("SPIRALING — five base pages", () => {
 describe("per-doorway page-length sets (live audit snapshot)", () => {
   const expected: Record<string, { lengths: number[]; paths: number; options: number }> = {
     fire: { lengths: [6], paths: 217728, options: 71 },
-    lost: { lengths: [5], paths: 8250, options: 112 },
     chance: { lengths: [5, 6], paths: 18180, options: 104 },
     spiral: { lengths: [5], paths: 5500, options: 63 },
     drink: { lengths: [5, 6], paths: 36750, options: 140 },
-    gamble: { lengths: [5], paths: 3900, options: 65 },
-    talk: { lengths: [5, 6], paths: 5120, options: 69 },
-    well: { lengths: [5], paths: 4500, options: 27 },
-    happened: { lengths: [5], paths: 1600, options: 22 },
-    loop: { lengths: [5, 6], paths: 5400, options: 68 },
-    surprise: { lengths: [5], paths: 7200, options: 61 },
   };
 
   for (const [id, want] of Object.entries(expected)) {

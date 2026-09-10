@@ -59,17 +59,9 @@ function sharedProfile(d: Doorway) {
 describe("shared vs doorway-specific composition (recorded, unchanged)", () => {
   const expected: Record<string, { min: number; max: number }> = {
     fire: { min: 0, max: 0 },
-    lost: { min: 3, max: 3 },
     chance: { min: 2, max: 3 },
     spiral: { min: 2, max: 2 },
     drink: { min: 1, max: 3 },
-    gamble: { min: 3, max: 3 },
-    talk: { min: 2, max: 3 },
-    well: { min: 3, max: 3 },
-    happened: { min: 2, max: 2 },
-    loop: { min: 2, max: 3 },
-    // 4 of 5 pages generic on every path — the most shared-dependent branch.
-    surprise: { min: 4, max: 4 },
   };
 
   for (const [id, want] of Object.entries(expected)) {
@@ -92,9 +84,6 @@ describe("shared vs doorway-specific composition (recorded, unchanged)", () => {
     };
     // e.g. drink's first-choice path is drink-1 > drink-well > c1 > c2 > c3.
     expect(shareOf("drink")).toBe("3/5");
-    expect(shareOf("well")).toBe("3/5");
-    expect(shareOf("gamble")).toBe("3/5");
-    expect(shareOf("happened")).toBe("2/5");
     expect(shareOf("fire")).toBe("0/6");
   });
 });
