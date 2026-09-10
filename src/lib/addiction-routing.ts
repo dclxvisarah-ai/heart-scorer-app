@@ -367,6 +367,12 @@ export const ADDICTION_QUESTIONS: Record<string, Question> = {
   [G3.id]: G3,
 };
 
+/** True for the research-layer questions only (they carry no Number evidence). */
+export function isAddictionResearchQuestion(id: string): boolean {
+  return Object.prototype.hasOwnProperty.call(ADDICTION_QUESTIONS, id);
+}
+
+
 /** The existing addiction doorways. Nothing else uses this layer. */
 export const ADDICTION_DOORWAY_IDS = ["drink", "gamble"] as const;
 
