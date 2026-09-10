@@ -422,6 +422,8 @@ function GabrielsNumberPage() {
               )}
             </div>
 
+            {deepReading ? <DeepReadingPanel reading={deepReading} /> : null}
+
             {relational ? <RelationalStatePanel state={relational} /> : null}
 
             {result.primary ? (
