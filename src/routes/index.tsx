@@ -80,6 +80,11 @@ function GabrielsNumberPage() {
     [result, sequence, answers],
   );
 
+  const deepReading = useMemo(
+    () => (result ? buildDeepReading(result, relational ?? null) : null),
+    [result, relational],
+  );
+
   useEffect(() => {
     if (stage !== "result" || !result || !doorway) return;
     const id = `${doorway.id}-${Object.keys(answers).length}`;
