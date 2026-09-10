@@ -407,6 +407,8 @@ function GabrielsNumberPage() {
               )}
             </div>
 
+            {relational ? <RelationalStatePanel state={relational} /> : null}
+
             {result.primary ? (
               <div className="card-cream p-5 sm:p-7">
                 <h3 className="font-display text-lg">Why the pattern led there</h3>
