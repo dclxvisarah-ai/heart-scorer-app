@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { FramingNote } from "@/components/FramingNote";
 import { RightNow } from "@/components/RightNow";
 import { NumberPanel } from "@/components/NumberPanel";
+import { RelationalStatePanel } from "@/components/RelationalStatePanel";
+import { deriveRelationalState } from "@/lib/relational-state";
 import {
   DOORWAYS,
   FRAMING_LINES,
@@ -68,6 +70,12 @@ function GabrielsNumberPage() {
   const result = useMemo(
     () => (stage === "result" ? evaluatePattern(sequence, answers) : undefined),
     [stage, sequence, answers],
+  );
+
+  /** Read-only layer over the same sequence/answers the number came from. */
+  const relational = useMemo(
+    () => (result ? deriveRelationalState(sequence, answers, result) : undefined),
+    [result, sequence, answers],
   );
 
   useEffect(() => {

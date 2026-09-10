@@ -137,8 +137,10 @@ export interface RelationalState {
  */
 export const ACTIVATION_WEIGHT = 1.8;
 
-/** At most this many territories are described, strongest first. */
-const MAX_TERRITORIES = 4;
+/**
+ * No cap: every territory the evidence actually activated is described,
+ * strongest first. Active territories are never silently discarded.
+ */
 
 /* ------------------------------------------------------------------ */
 /* Derivation                                                          */
@@ -188,7 +190,7 @@ function describe(a: GNumber, b: GNumber, support: EvidenceSnippet[]): string {
   const answers = `${count} of your answers carr${count === 1 ? "ies" : "y"} both`;
 
   if (bothLeading.length > 0) {
-    return `${answers}, and in "${bothLeading[0]!.choiceLabel}" they arrive together with equal weight — ${label(a)} and ${label(b)} are moving as one thing here, not two separate questions.`;
+    return `${answers}, and in "${bothLeading[0]!.choiceLabel}" they arrive with equal weight — in that answer neither ${label(a)} nor ${label(b)} is carrying more of it than the other.`;
   }
   if (aLeads.length > 0 && bLeads.length > 0) {
     return `${answers}. Sometimes ${label(a)} leads and ${label(b)} sits underneath, sometimes it reverses — the two keep trading places rather than settling.`;
@@ -217,7 +219,7 @@ export function deriveRelationalState(
 
   const activeNumbers = result.tallies
     .filter((t) => t.weight >= ACTIVATION_WEIGHT)
-    .slice(0, MAX_TERRITORIES)
+    
     .map((t) => t.n);
 
   const territories: ActiveTerritory[] = activeNumbers.map((n) => ({
@@ -318,7 +320,8 @@ function summarise(
       relationships.length > 0
         ? " Your answers do tie some of them together, but not far enough apart to separate one from the rest."
         : " Nothing in your answers ties them together yet — they are running alongside each other.";
-    return `${list} are all active in what you described.${link}`;
+    const verb = territories.length === 1 ? "is" : "are";
+    return `${list} ${verb} active in what you described.${link}`;
   }
   if (status === "partially resolved") {
     return `${list} are active. ${label(result.primary!)} is the clearest, and part of what surrounds it is connected to it by your own answers while part of it is still standing on its own.`;
