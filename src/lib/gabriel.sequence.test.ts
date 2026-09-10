@@ -44,7 +44,7 @@ function enumerate(d: Doorway) {
     const next = nextUnanswered(seq, answers);
     if (!next) {
       paths++;
-      lengths.add(seq.length);
+      lengths.add(seq.filter((q) => !isAddictionResearchQuestion(q.id)).length);
       return;
     }
     for (const c of next.choices) {
