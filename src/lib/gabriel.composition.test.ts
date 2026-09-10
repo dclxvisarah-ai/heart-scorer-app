@@ -59,17 +59,9 @@ function sharedProfile(d: Doorway) {
 describe("shared vs doorway-specific composition (recorded, unchanged)", () => {
   const expected: Record<string, { min: number; max: number }> = {
     fire: { min: 0, max: 0 },
-    lost: { min: 3, max: 3 },
     chance: { min: 2, max: 3 },
     spiral: { min: 2, max: 2 },
     drink: { min: 1, max: 3 },
-    gamble: { min: 3, max: 3 },
-    talk: { min: 2, max: 3 },
-    well: { min: 3, max: 3 },
-    happened: { min: 2, max: 2 },
-    loop: { min: 2, max: 3 },
-    // 4 of 5 pages generic on every path — the most shared-dependent branch.
-    surprise: { min: 4, max: 4 },
   };
 
   for (const [id, want] of Object.entries(expected)) {
@@ -92,9 +84,6 @@ describe("shared vs doorway-specific composition (recorded, unchanged)", () => {
     };
     // e.g. drink's first-choice path is drink-1 > drink-well > c1 > c2 > c3.
     expect(shareOf("drink")).toBe("3/5");
-    expect(shareOf("well")).toBe("3/5");
-    expect(shareOf("gamble")).toBe("3/5");
-    expect(shareOf("happened")).toBe("2/5");
     expect(shareOf("fire")).toBe("0/6");
   });
 });
@@ -127,19 +116,9 @@ describe("cross-branch contamination", () => {
   });
 });
 
-describe("known construct gaps (recorded, deliberately not fixed in this pass)", () => {
-  it("documents that `happened` can never reach 8, because its only 8-heavy option lives on c3", () => {
-    const d = doorways.find((x) => x.id === "happened")!;
-    const own = [
-      ...d.questions,
-      // happened has no followUps; its three questions are all doorway-specific
-    ];
-    const maxEight = Math.max(
-      ...own.flatMap((q) => q.choices.map((c) => c.evidence[8] ?? 0)),
-    );
-    expect(maxEight).toBeLessThanOrEqual(1);
-    // and the branch is 5 pages long, so c3 (the 8:3 option) is never appended
-    const seq = playThrough(d, (q) => q.choices[0]!.id);
-    expect(seq.map((q) => q.id)).not.toContain("c3");
+describe("removed branches (decision, not repair)", () => {
+  it("no longer exposes the retired doorways", () => {
+    const retired = ["surprise", "well", "happened", "gamble", "lost", "loop", "talk"];
+    for (const id of retired) expect(doorways.find((d) => d.id === id)).toBeUndefined();
   });
 });
