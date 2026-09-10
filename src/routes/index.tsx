@@ -211,8 +211,14 @@ function GabrielsNumberPage() {
                   <span className="block text-sm leading-snug text-foreground sm:text-base">
                     {option.label}
                   </span>
+                  {option.researchLayer ? (
+                    <span className="mt-1 inline-block rounded-full border border-teal/40 bg-teal/10 px-2 py-0.5 text-[10px] tracking-[0.12em] text-teal uppercase">
+                      {option.researchLayer}
+                    </span>
+                  ) : null}
                   <span className="mt-0.5 block text-xs text-muted-foreground">{option.sub}</span>
                 </button>
+
               ))}
             </div>
 
