@@ -320,7 +320,8 @@ function summarise(
       relationships.length > 0
         ? " Your answers do tie some of them together, but not far enough apart to separate one from the rest."
         : " Nothing in your answers ties them together yet — they are running alongside each other.";
-    return `${list} are all active in what you described.${link}`;
+    const verb = territories.length === 1 ? "is" : "are";
+    return `${list} ${verb} active in what you described.${link}`;
   }
   if (status === "partially resolved") {
     return `${list} are active. ${label(result.primary!)} is the clearest, and part of what surrounds it is connected to it by your own answers while part of it is still standing on its own.`;
