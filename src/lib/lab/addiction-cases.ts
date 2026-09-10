@@ -188,7 +188,7 @@ export const ADDICTION_CASES: AddictionCase[] = [
       "gamble-2": "a",
       "gamble-g1": "win-back",
       "gamble-g3": "nothing",
-      u1: "u1-uncertainty",
+      u1: "u1-enjoy",
       "addiction-e1": "held",
       "addiction-e2": "intact",
       "addiction-e3": "none",
