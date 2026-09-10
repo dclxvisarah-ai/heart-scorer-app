@@ -116,19 +116,9 @@ describe("cross-branch contamination", () => {
   });
 });
 
-describe("known construct gaps (recorded, deliberately not fixed in this pass)", () => {
-  it("documents that `happened` can never reach 8, because its only 8-heavy option lives on c3", () => {
-    const d = doorways.find((x) => x.id === "happened")!;
-    const own = [
-      ...d.questions,
-      // happened has no followUps; its three questions are all doorway-specific
-    ];
-    const maxEight = Math.max(
-      ...own.flatMap((q) => q.choices.map((c) => c.evidence[8] ?? 0)),
-    );
-    expect(maxEight).toBeLessThanOrEqual(1);
-    // and the branch is 5 pages long, so c3 (the 8:3 option) is never appended
-    const seq = playThrough(d, (q) => q.choices[0]!.id);
-    expect(seq.map((q) => q.id)).not.toContain("c3");
+describe("removed branches (decision, not repair)", () => {
+  it("no longer exposes the retired doorways", () => {
+    const retired = ["surprise", "well", "happened", "gamble", "lost", "loop", "talk"];
+    for (const id of retired) expect(doorways.find((d) => d.id === id)).toBeUndefined();
   });
 });
