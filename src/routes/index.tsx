@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { FramingNote } from "@/components/FramingNote";
 import { RightNow } from "@/components/RightNow";
 import { NumberPanel } from "@/components/NumberPanel";
+import { RelationalStatePanel } from "@/components/RelationalStatePanel";
+import { deriveRelationalState } from "@/lib/relational-state";
 import {
   DOORWAYS,
   FRAMING_LINES,

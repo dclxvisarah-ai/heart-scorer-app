@@ -137,8 +137,10 @@ export interface RelationalState {
  */
 export const ACTIVATION_WEIGHT = 1.8;
 
-/** At most this many territories are described, strongest first. */
-const MAX_TERRITORIES = 4;
+/**
+ * No cap: every territory the evidence actually activated is described,
+ * strongest first. Active territories are never silently discarded.
+ */
 
 /* ------------------------------------------------------------------ */
 /* Derivation                                                          */
