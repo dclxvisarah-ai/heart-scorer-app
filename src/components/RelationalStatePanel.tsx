@@ -86,22 +86,6 @@ export function RelationalStatePanel({ state }: { state: RelationalState }) {
         ) : null}
       </div>
 
-      <div className="mt-6">
-        <h4 className="font-display text-base">Vocabulary field</h4>
-        <p className="mt-1 text-xs text-muted-foreground">
-          Reference language for these territories — semantic context, not evidence in itself.
-        </p>
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {state.vocabularyField.map((word) => (
-            <span
-              key={word}
-              className="rounded-full border border-hairline bg-background/60 px-2.5 py-1 text-xs text-olive-soft"
-            >
-              {word}
-            </span>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
