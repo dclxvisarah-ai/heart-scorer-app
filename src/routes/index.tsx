@@ -72,6 +72,12 @@ function GabrielsNumberPage() {
     [stage, sequence, answers],
   );
 
+  /** Read-only layer over the same sequence/answers the number came from. */
+  const relational = useMemo(
+    () => (result ? deriveRelationalState(sequence, answers, result) : undefined),
+    [result, sequence, answers],
+  );
+
   useEffect(() => {
     if (stage !== "result" || !result || !doorway) return;
     const id = `${doorway.id}-${Object.keys(answers).length}`;

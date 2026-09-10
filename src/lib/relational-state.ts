@@ -190,7 +190,7 @@ function describe(a: GNumber, b: GNumber, support: EvidenceSnippet[]): string {
   const answers = `${count} of your answers carr${count === 1 ? "ies" : "y"} both`;
 
   if (bothLeading.length > 0) {
-    return `${answers}, and in "${bothLeading[0]!.choiceLabel}" they arrive together with equal weight — ${label(a)} and ${label(b)} are moving as one thing here, not two separate questions.`;
+    return `${answers}, and in "${bothLeading[0]!.choiceLabel}" they arrive with equal weight — in that answer neither ${label(a)} nor ${label(b)} is carrying more of it than the other.`;
   }
   if (aLeads.length > 0 && bLeads.length > 0) {
     return `${answers}. Sometimes ${label(a)} leads and ${label(b)} sits underneath, sometimes it reverses — the two keep trading places rather than settling.`;
@@ -219,7 +219,7 @@ export function deriveRelationalState(
 
   const activeNumbers = result.tallies
     .filter((t) => t.weight >= ACTIVATION_WEIGHT)
-    .slice(0, MAX_TERRITORIES)
+    
     .map((t) => t.n);
 
   const territories: ActiveTerritory[] = activeNumbers.map((n) => ({
