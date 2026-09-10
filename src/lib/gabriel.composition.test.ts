@@ -116,9 +116,9 @@ describe("cross-branch contamination", () => {
   });
 });
 
-describe("removed branches (decision, not repair)", () => {
-  it("no longer exposes the retired doorways", () => {
-    const retired = ["surprise", "well", "happened", "gamble", "lost", "loop", "talk"];
-    for (const id of retired) expect(doorways.find((d) => d.id === id)).toBeUndefined();
+describe("pilot-restored branches (temporary evaluation state, not repair)", () => {
+  it("exposes the seven previously retired doorways again for qualitative review", () => {
+    const pilot = ["surprise", "well", "happened", "gamble", "lost", "loop", "talk"];
+    for (const id of pilot) expect(doorways.find((d) => d.id === id), id).toBeDefined();
   });
 });
