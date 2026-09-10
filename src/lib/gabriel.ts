@@ -12,7 +12,13 @@
  * traditional Kabbalah or Pythagorean numerology officially assigns.
  */
 
+import {
+  ADDICTION_RESEARCH_VERSION,
+  getEarnedAddictionQuestions,
+} from "./addiction-routing";
+
 export type GNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
 
 export const G_NUMBERS: GNumber[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -163,6 +169,12 @@ export interface Doorway {
   stage2?: string;
   prefixPages?: number;
   totalPages?: number;
+  /**
+   * Optional research-layer version badge shown on the start menu. Only the
+   * addiction doorways updated by the V5.3 pass carry this.
+   */
+  researchLayer?: string;
+
 }
 
 /* ------------------------------------------------------------------ */
@@ -422,6 +434,7 @@ export const DOORWAYS: Doorway[] = [
     label: "I feel like I want a drink and I don't know why",
     sub: "Could be nothing. Could be worth a look",
     universal: "ifAvoidance",
+    researchLayer: ADDICTION_RESEARCH_VERSION,
     questions: [
       {
         id: "drink-1",
@@ -446,6 +459,7 @@ export const DOORWAYS: Doorway[] = [
     label: "I'm feeling lucky — should I gamble?",
     sub: "Playful, but let's be honest about it",
     universal: "ifAvoidance",
+    researchLayer: ADDICTION_RESEARCH_VERSION,
     questions: [
       {
         id: "gamble-1",
@@ -1313,6 +1327,26 @@ export function buildSequence(
     const closing = CORE_QUESTIONS[CORE_QUESTIONS.length - 1];
     if (closing && !seen.has(closing.id)) sequence.push(closing);
   }
+
+  // Research-only addiction layer (DRINK / GAMBLE). Fact-gated: these
+  // questions are appended only when a specific routing distinction is
+  // genuinely unresolved. They carry no Number evidence, so the evaluator is
+  // unaffected, and they are never triggered by a contested Number.
+  {
+    const extra = getEarnedAddictionQuestions(
+      doorway.id,
+      sequence.map((q) => q.id),
+      answers,
+    );
+    for (const question of extra) {
+      if (seen.has(question.id)) continue;
+      seen.add(question.id);
+      sequence.push(question);
+    }
+  }
+
+
+
 
   // Deeper probes, asked only when the person chose to go deeper from an
   // undetermined result. They are appended in the order they were offered.
