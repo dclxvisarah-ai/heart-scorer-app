@@ -19,3 +19,14 @@
 ## Next (blocked on the above review)
 - Relational State Layer design, against the corrected inventory. Not started; explicitly
   out of scope for this pass.
+
+## Lab (research only, no production change)
+- Done: scripted synthetic harness `src/lib/lab/scripted.ts`, eleven controlled
+  addiction cases, 18 research assertions, report
+  `.lovable/addiction-layer-lab-report.md`.
+- Findings awaiting Sarah: V5.3 places research questions after the generic
+  closers with zero Number evidence; STOP_MECHANISM cannot separate external from
+  chosen stopping; E2 "before" erases history; G3 is self-gated and unreachable;
+  the DRINK routine path locks Number 3 regardless of any addiction answer.
+- Blocked: no production correction until the fact-model and placement fixes are
+  approved.
