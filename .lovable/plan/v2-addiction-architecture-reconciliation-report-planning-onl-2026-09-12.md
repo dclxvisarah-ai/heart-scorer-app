@@ -177,3 +177,17 @@ G3's prerequisite can be established without depending on one E2 option.
 ---
 
 No test readiness is claimed. No production change is authorized by this reconciliation.
+
+---
+
+## G. Decisions recorded 2026-09-12 (Sarah)
+
+1. Closers — **keep exactly one generic closer** in DRINK/GAMBLE; earned addiction questions run inside the investigation before it. Generic pages are never used to pad the addiction path.
+2. Structural location — **none yet.** The addiction read stands entirely on its own. No coordinate, no annotation, no Number inferred from any addiction fact.
+3. GAMBLE — **no new questions.** Gambling stays as it is; the time-role probe remains reachable only from an upstream source that already exists.
+4. Detail dimensions — **all approved as research-only metadata with no scoring effect**: control result value (held / returned / no change), cost type, stop-mechanism locus, and simultaneous current + historical state.
+
+Still open: where the addiction read appears on the result screen and its product wording,
+and whether recognition/readiness need inquiry structure beyond a plain-language output.
+
+Implementation of the above requires its own approved plan. Nothing is built by this record.
