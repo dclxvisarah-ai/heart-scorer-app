@@ -6,7 +6,7 @@ import type { RelationalState } from "./relational-state";
 
 function result(primary: PatternResult["primary"], choiceLabels: string[] = []): PatternResult {
   return {
-    primary,
+    ...(primary ? { primary } : {}),
     supporting: primary === 5 ? [1] : [],
     contested: primary ? [] : [5, 1],
     reasoning: "",
