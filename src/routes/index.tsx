@@ -339,23 +339,10 @@ function GabrielsNumberPage() {
                 <>
                   <div className="mt-4 flex items-baseline gap-4">
                     <span className="numeral text-6xl text-teal sm:text-7xl">{result.primary}</span>
-                    <div>
-                      <p className="font-display text-xl leading-tight sm:text-2xl">
-                        {NUMBERS[result.primary].name}
-                      </p>
-                      <p className="mt-0.5 text-xs tracking-[0.14em] text-muted-foreground uppercase">
-                        {NUMBERS[result.primary].tree}
-                      </p>
-                    </div>
+                    <p className="font-display text-xl leading-tight sm:text-2xl">
+                      {NUMBERS[result.primary].name}
+                    </p>
                   </div>
-
-                  <p className="mt-5 text-sm leading-relaxed text-foreground">
-                    {NUMBERS[result.primary].meaning}
-                  </p>
-                  <p className="mt-3 rounded-xl border border-teal/30 bg-teal/8 px-4 py-3 text-sm leading-relaxed text-foreground">
-                    <span className="font-medium">Core lesson.</span>{" "}
-                    {NUMBERS[result.primary].lesson}
-                  </p>
                 </>
               ) : (
                 <>
