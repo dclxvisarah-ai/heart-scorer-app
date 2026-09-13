@@ -8,7 +8,6 @@ import { deriveRelationalState } from "@/lib/relational-state";
 import {
   DOORWAYS,
   FRAMING_LINES,
-  NUMBERS,
   buildSequence,
   evaluatePattern,
   getDoorway,

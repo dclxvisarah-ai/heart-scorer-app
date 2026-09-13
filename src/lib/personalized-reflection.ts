@@ -30,8 +30,8 @@ function quotedAnswers(result: PatternResult, state: RelationalState | null): st
 
 function answerOpening(labels: string[]): string {
   if (labels.length === 0) return "Taken together, your answers do not force a clean conclusion.";
-  if (labels.length === 1) return `You answered “${labels[0]}.”`;
-  return `You answered “${labels[0]}” and “${labels[1]}.”`;
+  if (labels.length === 1) return `You answered “${labels[0]}”.`;
+  return `You answered “${labels[0]}” and “${labels[1]}”.`;
 }
 
 /** Same inputs always produce the same single-paragraph reflection. */
